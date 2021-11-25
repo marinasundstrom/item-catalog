@@ -34,7 +34,7 @@ MAUI contains abstractions that make it easier to leverage common functionality 
 
 ## Blazor
 
-Blazor is an open-source framework for building apps with components, based on the familiar Razor syntax.
+Blazor is an open-source framework for building apps for the Web using components, based on the familiar Razor syntax.
 
 It lets you combine HTML, CSS and C# to build interactive experiences for the Web, like Single-Page Applications.
 
