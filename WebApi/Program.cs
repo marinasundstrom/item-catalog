@@ -85,7 +85,7 @@ if(!context.Items.Any())
         new Item(Guid.NewGuid().ToString(), "Hat", "Green hat")
         {
             CreatedAt = DateTime.Now
-        },
+        }
     });
 
     await context.SaveChangesAsync();
