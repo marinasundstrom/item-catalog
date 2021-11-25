@@ -8,9 +8,9 @@ Watch video [here](https://youtu.be/wXaQB18FvRk).
 
 ## Introduction
 
-Multi-platform app, with Web backend and API.
+Multi-platform app, with Web backend and API. Written entirely in .NET.
 
-App can be compiled for iOS, macOS, Android, Windows.
+App can be compiled to run on iOS, macOS, Android, or Windows.
 
 Contains a WebApi. Uses SQL Server and emulated Azure Blob Storage out of box. Also Nginx.
 
@@ -36,15 +36,18 @@ MAUI contains abstractions that make it easier to leverage common functionality 
 
 Blazor is an open-source framework for building apps for the Web using components, based on the familiar Razor syntax.
 
-It lets you combine HTML, CSS and C# to build interactive experiences for the Web, like Single-Page Applications.
+It lets you combine HTML, CSS and C# to build interactive experiences for the Web.
 
 There are two kinds of Blazor Web apps: Client-side (WebAssembly) and Server-side rendered.
 
 But, in this MAUI app it works a bit different.
+### Hybrid Native app
 
 Despite the UI being built with HTML and CSS, there is no Web Server or Web Assembly in this app. The UI is rendered in the same process as the rest of the app. :) 
 
 With some work, you can share components with your standard Blazor Web App.
+
+This approach is similar to *React Native*, which lets you use React components that have been written for the web with mobile apps. The obvious difference is that, instead of React components and JavaScript,  Blazor lets your use Razor components and C# across the stack.
 
 ## Tye
 
