@@ -49,6 +49,22 @@ With some work, you can share components with your standard Blazor Web App.
 
 This approach is similar to *React Native*, which lets you use React components that have been written for the web with mobile apps. The obvious difference is that, instead of React components and JavaScript,  Blazor lets your use Razor components and C# across the stack.
 
+## ASP.NET Core
+
+ASP.NET Core is an open-source framework for building Web Apps. 
+
+You can build apps with MVC or Razor pages. You can also build Web APIs. Now we have true "Minimal" APIs which are hooking directly into the core
+
+You can mix and match the technologies since they are based on the same core. Essentially, a pipeline of middlewares that handle HTTP requests.
+
+Blazor (Server-side) is actually a part of ASP.NET Core too - so everything works great together. 
+
+There are many libraries and third-party frameworks that can enhance your ASP.NET Core apps. Open API and Swagger UI is supported out of box via third-party library.
+
+In this app, the server-side logic is hosted in an ASP.NET Core app that exposes a Web API. 
+
+Using Open API you can generate client classes that are used by the MAUI app. Essentially, it hides away the details of making requests to the server via HTTP.
+
 ## Tye
 
 A challenge when building distributed applications is to orchestrate services during development time. It might be your own projects, database server, Nginx. How to configure them, and make them communicate.
