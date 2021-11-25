@@ -40,11 +40,23 @@ It lets you combine HTML, CSS and C# to build interactive experiences for the We
 
 There are two kinds of Blazor Web apps: Client-side (WebAssembly) and Server-side rendered.
 
-But, in this MAUI app its works a bit different.
+But, in this MAUI app it works a bit different.
 
 Despite the UI being built with HTML and CSS, there is no Web Server or Web Assembly in this app. The UI is rendered in the same process as the rest of the app. :) 
 
 With some work, you can share components with your standard Blazor Web App.
+
+## Tye
+
+A challenge when building distributed applications is to orchestrate services during development time. It might be your own projects, database server, Nginx. How to configure them, and make them communicate.
+
+You can always run stuff locally or in containers, but that implies manual configuration. Setting up a virtual network. Tye handles all this for you. 
+
+Much like full orchestrators, such as *Docker Compose*, it gives you a way to declare your services and the desired configuration in a file (```tye.yaml```). It then runs your projects and containers (in Docker), setting up networks and such for you. Even enabling service discovery.
+
+You can check in this ```tye.yaml``` file with your source code to let other developers get going in no time.
+
+When you are ready to release your application, Tye helps you publish it to Kubernetes.
 
 ## How to run
 
