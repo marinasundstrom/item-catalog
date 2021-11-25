@@ -24,6 +24,27 @@ Dev environment is based around projects and containers orchestrated by .NET Tye
 <a href="/Screenshots/iPhone.png">
 <img src="/Screenshots/iPhone.png" height="250"  alt="iPhone"  /></a>
 
+## MAUI, what?
+
+.NET Multi-platform App UI (MAUI) is an modern open-source app framework that is the evolution of Xamarin.Forms. Enabling you to build native apps with .NET - not just mobile but also desktop. It still has the XAML model for declaring UI.
+
+But in this app, it is combined with Blazor.
+
+MAUI contains abstractions that make it easier to leverage common functionality across the platforms. Camera, File Pickers, Compass etc.
+
+## Blazor
+
+Blazor is an open-source framework for building apps with components, based on the familiar Razor syntax.
+
+It lets you combine HTML, CSS and C# to build interactive experiences for the Web, like Single-Page Applications.
+
+There are two kinds of Blazor Web apps: Client-side (WebAssembly) and Server-side rendered.
+
+But, in this MAUI app its works a bit different.
+
+Despite the UI being built with HTML and CSS, there is no Web Server or Web Assembly in this app. The UI is rendered in the same process as the rest of the app. :) 
+
+With some work, you can share components with your standard Blazor Web App.
 
 ## How to run
 
