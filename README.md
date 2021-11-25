@@ -1,0 +1,140 @@
+# Item Catalog
+
+App for cataloging items with pictures.
+
+Built with .NET MAUI using Blazor. Components are from MudBlazor. It is multi-platform.
+
+Watch video [here](https://youtu.be/wXaQB18FvRk).
+
+## Introduction
+
+Multi-platform app, with Web backend and API.
+
+App can be compiled for iOS, macOS, Android, Windows.
+
+Contains a WebApi. Uses SQL Server and emulated Azure Blob Storage out of box. Also Nginx.
+
+Dev environment is based around projects and containers orchestrated by .NET Tye. Enabling you to launch all backend services with one simple command.
+
+## Screenshots
+
+<a href="/Screenshots/macOS.png">
+<img src="/Screenshots/macOS.png" height="250"  alt="macOS" /></a>
+
+<a href="/Screenshots/iPhone.png">
+<img src="/Screenshots/iPhone.png" height="250"  alt="iPhone"  /></a>
+
+
+## How to run
+
+### Build Requirements
+
+* .NET 6 SDK
+* Tye CLI tools
+* Docker Desktop
+
+### Start app
+
+Just start the app via Visual Studio or CLI.
+
+### Start services
+
+Given that you have the Tye CLI tools installed:
+
+To start all the services, you run this command in he ```WebApi``` project folder:
+
+```sh
+tye run
+```
+
+This starts all backend dependencies (SQL Server, Azurite, Nginx etc.)
+
+#### Watch
+
+To start with file watch:
+
+```sh
+tye run --watch
+```
+
+### Important 1 - Startup Issue
+
+The WebApi might not work properly when cold-started. This is because it fails to connect to SQL server due to it not having fully started yet.
+
+If you are in *watch mode*, make change to a random file, like ```Program.cs```. Reverse it before it has been applied.
+
+Then the WebApi will restart, and everything will work.
+
+### Important 2 - Expose Blobs via public URL 
+
+To publicly expose Blobs via their URLs you have to change Azurite's configuration.
+
+*(This requires Azurite to have been run once for the files to be created)*
+
+Open the file ```WebApi/.data/azurite/__azurite_db_blob__.json```:
+
+Add the ```"publicAccess": "blob"``` key-value in the section shown below:
+
+
+```json
+        {
+            "name": "$CONTAINERS_COLLECTION$",
+            "data": [
+                {
+                    "accountName": "devstoreaccount1",
+                    "name": "images",
+                    "properties": {
+                        "etag": "\"0x1C839AE6CDF11F0\"",
+                        "lastModified": "2021-05-14T15:08:51.726Z",
+                        "leaseStatus": "unlocked",
+                        "leaseState": "available",
+                        "hasImmutabilityPolicy": false,
+                        "hasLegalHold": false,
+              --- >  "publicAccess": "blob" <---- 
+                    },
+                   // Omitted
+        },
+```
+
+Then, restart Azurite.
+
+### Important 3 - Certificates
+Certificates should be placed in ```WebApi/certs```. They are used by Nginx.
+
+Requested file names:
+
+```
+localhost.crt
+localhost.key
+```
+
+This is how you generate self-signed certificates (also used by ASP.NET Core) on macOS:
+
+```
+dotnet dev-certs https -ep aspnetapp.pfx -p crypticpassword
+dotnet dev-certs https --trust
+```
+
+```
+sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain <<certificate>>'
+```
+
+Extract private key
+
+```
+openssl pkcs12 -in aspnetapp.pfx -nocerts -out localhost.key
+```
+
+
+Extract certificate
+
+```
+openssl pkcs12 -in aspnetapp.pfx -clcerts -nokeys -out localhost.crt
+```
+
+Remove passphrase from key
+
+```
+cp localhost.key localhost.key.bak
+openssl rsa -in localhost.key.bak -out localhost.key
+```

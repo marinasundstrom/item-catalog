@@ -1,0 +1,149 @@
+﻿@using System.ComponentModel.DataAnnotations
+@inject ISnackbar Snackbar
+
+<div style="width: 350px; max-width: 350px;">
+    <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
+        <MudCard>
+            <MudCardContent>
+                <MudTextField Label="Name" HelperText="Max. 60 characters"
+                              @bind-Value="model.Name" For="@(() => model.Name)" />
+                <MudTextField Label="Description" Lines="3" Class="mt-3"
+                              @bind-Value="model.Description" For="@(() => model.Description)" />
+                @* <InputFile id="fileInput2" OnChange="UploadFiles" Class="mt-3" hidden accept=".jpg, .jpeg, .png" /> *@
+
+                @*
+                    <MudButton HtmlTag="label"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Filled.CloudUpload"
+                               for="fileInput2"
+                               Class="mt-3">
+                        @(model.File is null ? "Upload your images" : model.File.Name)
+                    </MudButton>
+                *@
+
+                <MudButton HtmlTag="label"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Filled.CloudUpload"
+                           for="fileInput2"
+                           Class="mt-3"
+                           OnClick="PickImage">
+                    @(model.Stream is null ? "Choose an image" : "Change image")
+                </MudButton>
+
+                 @if(model.Stream is not null)
+                 {
+                    <MudIconButton Variant="Variant.Filled"
+                                   Color="Color.Secondary"
+                                   Icon="@Icons.Filled.Remove"
+                                   Class="ml-3 mt-3"
+                                   OnClick="() => model.Stream = null">
+                    </MudIconButton>
+
+                    using var memoryStream = new MemoryStream();
+                    model.Stream.CopyTo(memoryStream);
+                    model.Stream.Seek(0, SeekOrigin.Begin);
+                    var imageBytes = memoryStream.ToArray();
+
+                    <img style="height: 150px; margin-top: 15px" src="data:image/png;base64,@Convert.ToBase64String(imageBytes)" />
+                 }
+
+                <MudText Typo="Typo.subtitle2" GutterBottom="true" Class="mt-3">Max 2 mb.</MudText>
+
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Add</MudButton>
+            </MudCardActions>
+        </MudCard>
+
+    </EditForm>
+</div>
+@code {
+    FormModel model = new FormModel();
+    bool success;
+
+    public class FormModel
+    {
+        [Required]
+        [StringLength(60, ErrorMessage = "Name length can't be more than 8.")]
+        public string Name { get; set; }
+
+        [Required]
+        [StringLength(240, ErrorMessage = "Description length can't be more than 240.")]
+        public string Description { get; set; }
+
+        // public IBrowserFile File { get; set; }
+
+        public Stream? Stream { get; set; }
+    }
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    void OnValidSubmit() => MudDialog.Close(DialogResult.Ok(model));
+    void Cancel() => MudDialog.Cancel();
+
+    /*
+    private void UploadFiles(InputFileChangeEventArgs e)
+    {
+        model.File = e.File;
+    }
+    */
+
+    async Task PickImage()
+    {
+
+        var r = await App.Current.MainPage.DisplayActionSheet("Choose an image", "Cancel", "Cancel", new[]
+        {
+            "Photos",
+            "Files"
+        });
+
+        FileResult fileResult = null;
+
+        switch (r)
+        {
+            case "Photos":
+                fileResult = await MediaPicker.PickPhotoAsync(new MediaPickerOptions()
+                {
+                    Title = "Pick an image"
+                });
+                break;
+
+            case "Files":
+
+                var customFileType = FilePickerFileType.Images;
+
+                var options = new PickOptions
+                {
+                    PickerTitle = "Please select an image",
+                    FileTypes = customFileType,
+                };
+
+                fileResult = await FilePicker.PickAsync(options);
+                break;
+        }
+
+        if (fileResult is null) return;
+
+        var stream = await fileResult.OpenReadAsync();
+
+        if (stream.Length > 1014 * 1000 * 2)
+        {
+            model.Stream = null;
+
+            Snackbar.Add("Image is too big.", Severity.Error);
+
+            return;
+        }
+
+#if IOS
+        stream = await iOS.ImageConverter.ConvertToJpegAsync(stream);
+#elif MACCATALYST
+        stream = await MacCatalyst.ImageConverter.ConvertToJpegAsync(stream);
+#endif
+
+        model.Stream = stream;
+    }
+}

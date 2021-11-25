@@ -1,0 +1,166 @@
+﻿@page "/items"
+@using Microsoft.AspNetCore.SignalR.Client
+@using Catalog.Client
+@implements IAsyncDisposable
+@inject ISnackbar Snackbar
+@inject INotificationService NotificationService
+@inject IClient CatalogClient
+@inject IItemsClient ItemsClient
+@inject IDialogService DialogService
+
+<MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Items</MudText>
+
+    <MudButton @onclick="OpenDialog" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2">
+        New item
+    </MudButton>
+
+    <MudTable T="Item" @ref="table" ServerData="@(new Func<TableState, Task<TableData<Item>>>(ServerReload))" OnRowClick="RowClickEvent" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+        <HeaderContent>
+            <MudTh></MudTh>
+            <MudTh>Name</MudTh>
+            <MudTh>Description</MudTh>
+            <MudTh>Added</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>
+                <img src="@context.Image" style="height: 150px" />
+            </MudTd>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Description">@context.Description</MudTd>
+            <MudTd DataLabel="Created">@context.CreatedAt.ToString("g")</MudTd>
+            <MudTd><MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="async () => await DeleteItem(context)" /></MudTd>
+        </RowTemplate>
+        <NoRecordsContent>
+            <MudText>No matching records found</MudText>
+        </NoRecordsContent>
+        <LoadingContent>
+            <MudText>Loading...</MudText>
+        </LoadingContent>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+
+@code {
+    MudTable<Item> table;
+    HubConnection hubConnection;
+    Stream imageToUpload = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            hubConnection = new HubConnectionBuilder()
+                .WithUrl($"{MauiProgram.UriString}hubs/items")
+                .Build();
+
+            hubConnection.On<Item>("ItemAdded", OnItemAdded);
+            hubConnection.On<string, string>("ItemDeleted", OnItemDeleted);
+            hubConnection.On<string, string>("ImageUploaded", OnImageUploaded);
+
+            await hubConnection.StartAsync();
+        }
+        catch (Exception exc)
+        {
+            Snackbar.Add(exc.Message.ToString(), Severity.Error);
+        }
+    }
+
+    async Task OnItemAdded(Item item)
+    {
+        Snackbar.Add("Item was added", Severity.Success);
+
+        if (imageToUpload is not null)
+        {
+            /* using var ms = new MemoryStream();
+            await model.File.OpenReadStream(1024 * 1000 * 2).CopyToAsync(ms);
+            ms.Seek(0, SeekOrigin.Begin); */
+            /* await ItemsClient.UploadImageAsync(id,
+                new FileParameter(model.File.OpenReadStream(1024 * 1000 * 2))); */
+
+            try
+            {
+                await ItemsClient.UploadImageAsync(item.Id,
+                new FileParameter(imageToUpload));
+            }
+            catch(Exception exc)
+            {
+                Snackbar.Add(exc.Message, Severity.Error);
+            }
+        }
+
+        imageToUpload?.Dispose();
+        imageToUpload = null;
+
+        await table.ReloadServerData();
+    }
+
+    async Task OnItemDeleted(string id, string name)
+    {
+        Snackbar.Add($"\"{name}\" was removed", Severity.Success);
+
+        await table.ReloadServerData();
+    }
+
+    async Task OnImageUploaded(string id, string image)
+    {
+        Snackbar.Add($"Image was uploaded", Severity.Success);
+
+        await table.ReloadServerData();
+    }
+
+    private async Task<TableData<Item>> ServerReload(TableState state)
+    {
+        var results = await CatalogClient.GetAsync(state.Page, state.PageSize);
+
+        return new TableData<Item>() { TotalItems = results.TotalCount, Items = results.Items };
+    }
+
+    private void RowClickEvent(TableRowClickEventArgs<Item> args)
+    {
+        NotificationService.ShowNotification("Message", $"You clicked {args.Item.Name}");
+        //Snackbar.Add($"You clicked {args.Item.Name}");
+    }
+
+    private async Task OpenDialog()
+    {
+        var dialogReference = DialogService.Show<AddItemDialog>("New item");
+        var result = await dialogReference.Result;
+        var model = (AddItemDialog.FormModel)result.Data;
+
+        if (result.Cancelled)
+            return;
+
+        try
+        {
+            imageToUpload = model.Stream;
+
+            await CatalogClient.PostAsync(new CreateItemDto()
+            {
+                Name = model.Name,
+                Description = model.Description
+            });
+        }
+        catch (Exception exc)
+        {
+            Snackbar.Add(exc.Message.ToString(), Severity.Error);
+        }
+    }
+
+    async Task DeleteItem(Item item)
+    {
+        var result = await DialogService.ShowMessageBox($"Delete '{item.Name}'?", "Are you sure?", "Yes", "No");
+
+        if(result.GetValueOrDefault())
+        {
+            await CatalogClient.DeleteAsync(item.Id);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await hubConnection.DisposeAsync();
+    }
+}
+
