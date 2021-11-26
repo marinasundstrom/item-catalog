@@ -86,12 +86,3 @@ app.UseEndpoints(endpoints =>
 });
 
 app.Run();
-
-record Blob(string Name, string ContentType);
-
-public class CreateItemDto
-{
-    public string Name { get; set; } = null!;
-
-    public string Description { get; set; } = null!;
-}

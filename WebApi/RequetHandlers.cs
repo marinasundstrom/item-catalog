@@ -71,4 +71,11 @@ static class RequestHandlers
 
         return app;
     }
+
+    public class CreateItemDto
+    {
+        public string Name { get; set; } = null!;
+
+        public string Description { get; set; } = null!;
+    }
 }
