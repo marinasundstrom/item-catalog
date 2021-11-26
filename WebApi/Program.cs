@@ -77,23 +77,7 @@ app.MapGet("/info", () =>
 .WithTags("Info")
 .Produces<string>();
 
-using var scope = app.Services.CreateScope();
-
-var context = scope.ServiceProvider.GetRequiredService<CatalogContext>();
-//await context.Database.EnsureDeletedAsync();
-await context.Database.EnsureCreatedAsync();
-
-if (!context.Items.Any())
-{
-    context.Items.AddRange(new Item[] {
-        new Item(Guid.NewGuid().ToString(), "Hat", "Green hat")
-        {
-            CreatedAt = DateTime.Now
-        }
-    });
-
-    await context.SaveChangesAsync();
-}
+await app.SeedAsync();
 
 app.UseEndpoints(endpoints =>
 {
