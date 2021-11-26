@@ -1,6 +1,8 @@
-using UserNotifications;
 using Catalog.Services;
+
 using MudBlazor;
+
+using UserNotifications;
 
 namespace Catalog.iOS;
 

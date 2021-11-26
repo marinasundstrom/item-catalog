@@ -1,5 +1,7 @@
 ﻿using System;
+
 using Foundation;
+
 using UIKit;
 
 namespace Catalog.iOS;
@@ -19,4 +21,3 @@ public static class ImageConverter
         return memoryStream;
     }
 }
-

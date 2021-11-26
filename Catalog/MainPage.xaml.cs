@@ -1,14 +1,13 @@
 ﻿using System;
+
 using Microsoft.Maui.Controls;
 
-namespace Catalog
+namespace Catalog;
+
+public partial class MainPage : ContentPage
 {
-    public partial class MainPage : ContentPage
+    public MainPage()
     {
-        public MainPage()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
-

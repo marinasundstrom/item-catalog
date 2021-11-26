@@ -1,4 +1,5 @@
 using Catalog.Services;
+
 using MudBlazor;
 
 namespace Catalog.Droid;
