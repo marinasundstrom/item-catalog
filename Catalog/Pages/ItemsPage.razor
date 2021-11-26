@@ -53,13 +53,46 @@
         {
             hubConnection = new HubConnectionBuilder()
                 .WithUrl($"{MauiProgram.UriString}hubs/items")
+                .WithAutomaticReconnect()
                 .Build();
 
             hubConnection.On<Item>("ItemAdded", OnItemAdded);
             hubConnection.On<string, string>("ItemDeleted", OnItemDeleted);
             hubConnection.On<string, string>("ImageUploaded", OnImageUploaded);
 
+            hubConnection.Closed += (error) =>
+            {
+                if(error is not null) 
+                {
+                    Snackbar.Add($"{error.Message}", Severity.Error);
+                }
+
+                Snackbar.Add("Connection closed");
+
+                /*
+                await Task.Delay(new Random().Next(0,5) * 1000);
+                await hubConnection.StartAsync(); */
+
+                return Task.CompletedTask;
+            };
+
+            hubConnection.Reconnected += (error) =>
+            {
+                Snackbar.Add("Reconnected");
+
+                return Task.CompletedTask;
+            };
+
+            hubConnection.Reconnecting += (error) =>
+            {
+                Snackbar.Add("Reconnecting");
+
+                return Task.CompletedTask;
+            };
+
             await hubConnection.StartAsync();
+
+              Snackbar.Add("Connected");
         }
         catch (Exception exc)
         {
