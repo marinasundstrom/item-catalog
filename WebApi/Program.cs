@@ -1,15 +1,18 @@
 ﻿using Azure.Identity;
 using Azure.Storage.Blobs;
+
+using MediatR;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
-using WebApi.Data;
-using WebApi.Hubs;
-using MediatR;
+
 using WebApi;
 using WebApi.Application;
+using WebApi.Data;
+using WebApi.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +27,7 @@ services
 services.AddSqlServer<CatalogContext>(Configuration.GetConnectionString("mssql"));
 
 services.AddEndpointsApiExplorer();
- 
+
 // Register the Swagger services
 services.AddOpenApiDocument(config =>
 {
@@ -54,7 +57,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    
+
     app.UseOpenApi();
     app.UseSwaggerUi3(c => c.DocumentTitle = "Web API v1");
 }
@@ -65,7 +68,8 @@ app.UseRouting();
 
 app.MapApplicationRequests();
 
-app.MapGet("/info", () => {
+app.MapGet("/info", () =>
+{
     return System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString();
 })
 .WithDisplayName("GetInfo")
@@ -79,7 +83,7 @@ var context = scope.ServiceProvider.GetRequiredService<CatalogContext>();
 //await context.Database.EnsureDeletedAsync();
 await context.Database.EnsureCreatedAsync();
 
-if(!context.Items.Any()) 
+if (!context.Items.Any())
 {
     context.Items.AddRange(new Item[] {
         new Item(Guid.NewGuid().ToString(), "Hat", "Green hat")

@@ -10,4 +10,3 @@ public interface IItemsClient
 
     Task ImageUploaded(string id, string image);
 }
-

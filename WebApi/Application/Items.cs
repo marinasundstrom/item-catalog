@@ -1,7 +1,10 @@
-﻿using MediatR;
+﻿using Azure.Storage.Blobs;
+
+using MediatR;
+
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Azure.Storage.Blobs;
+
 using WebApi.Data;
 using WebApi.Hubs;
 
@@ -160,7 +163,7 @@ public class UploadImageCommand : IRequest<UploadImageResult>
 {
     public string Id { get; set; }
 
-     public Stream Stream { get; set; }
+    public Stream Stream { get; set; }
 
     public UploadImageCommand(string id, Stream stream)
     {

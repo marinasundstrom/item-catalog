@@ -1,10 +1,11 @@
 using MediatR;
+
 using WebApi.Application;
 using WebApi.Data;
 
 namespace WebApi;
 
-static class RequestHandlers 
+static class RequestHandlers
 {
     static async Task<IResult> GetItems(IMediator mediator, CancellationToken cancellationToken, int page = 0, int pageSize = 10)
     {
@@ -17,7 +18,7 @@ static class RequestHandlers
     {
         var item = await mediator.Send(new GetItemQuery(id), cancellationToken);
 
-        if(item == null)
+        if (item == null)
         {
             return Results.NotFound();
         }
@@ -36,7 +37,7 @@ static class RequestHandlers
     {
         var result = await mediator.Send(new DeleteItemCommand(id), cancellationToken);
 
-        if(result == DeletionResult.NotFound)
+        if (result == DeletionResult.NotFound)
         {
             return Results.NotFound();
         }
@@ -44,7 +45,7 @@ static class RequestHandlers
         return Results.Ok();
     }
 
-    public static WebApplication MapApplicationRequests(this WebApplication app) 
+    public static WebApplication MapApplicationRequests(this WebApplication app)
     {
         app.MapGet("/", GetItems)
         .WithTags("Items")
