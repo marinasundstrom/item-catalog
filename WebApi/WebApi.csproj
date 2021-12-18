@@ -20,18 +20,4 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
-    <None Remove="Microsoft.Tye.Extensions.Configuration" />
-    <None Remove="Data\" />
-    <None Remove="Controllers\" />
-    <None Remove="Hubs\" />
-    <None Remove="Items\" />
-    <None Remove="MediatR.Extensions.Microsoft.DependencyInjection" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Hubs\" />
-  </ItemGroup>
 </Project>

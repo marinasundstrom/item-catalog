@@ -127,6 +127,9 @@ csharp_using_directive_placement = outside_namespace:silent
 ## Namespace directive preferences
 csharp_style_namespace_declarations = file_scoped:warning
 
+## Namespace directive preferences
+csharp_style_namespace_declarations = file_scoped:warning
+
 #### C# Formatting Rules ####
 
 # New line preferences
