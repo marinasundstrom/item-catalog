@@ -1,28 +1,36 @@
-﻿using Azure.Storage.Blobs;
+﻿using System.Text.Json.Serialization;
+
+using Azure.Storage.Blobs;
 
 using MediatR;
 
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
+using Newtonsoft.Json.Converters;
+
 using WebApi.Data;
 using WebApi.Hubs;
 
 namespace WebApi.Application;
 
-public class GetItemsQuery : IRequest<Results<Item>>
+public class GetItemsQuery : IRequest<Results<ItemDto>>
 {
     public int Page { get; set; }
 
     public int PageSize { get; set; }
+    public string? SortBy { get; }
+    public SortDirection? SortDirection { get; }
 
-    public GetItemsQuery(int page, int pageSize)
+    public GetItemsQuery(int page, int pageSize, string? sortBy = null, SortDirection? sortDirection = null)
     {
         Page = page;
         PageSize = pageSize;
+        SortBy = sortBy;
+        SortDirection = sortDirection;
     }
 
-    public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, Results<Item>>
+    public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, Results<ItemDto>>
     {
         private readonly CatalogContext context;
 
@@ -31,25 +39,46 @@ public class GetItemsQuery : IRequest<Results<Item>>
             this.context = context;
         }
 
-        public async Task<Results<Item>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
+        public async Task<Results<ItemDto>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
         {
-            var totalCount = await context.Items.CountAsync();
-
             var query = context.Items
-                .OrderBy(i => i.CreatedAt)
+                .OrderBy(i => i.Created)
                 .Skip(request.Page * request.PageSize)
                 .Take(request.PageSize).AsQueryable();
 
+
+            var totalCount = await query.CountAsync();
+
+            if (request.SortBy is not null)
+            {
+                query = query.OrderBy(
+                    request.SortBy,
+                    request.SortDirection == Application.SortDirection.Desc ? WebApi.SortDirection.Descending : WebApi.SortDirection.Ascending);
+            }
+
             var items = await query.ToListAsync(cancellationToken);
 
-            return new Results<Item>(items, totalCount);
+            return new Results<ItemDto>(
+                items.Select(item => new ItemDto(item.Id, item.Name, item.Description, item.Image, item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy)),
+                totalCount);
         }
     }
 }
 
+[JsonConverter(typeof(StringEnumConverter))]
+public enum SortDirection
+{
+    Asc = 2,
+    Desc = 1
+}
+
+public record ItemDto(
+    string Id, string Name, string? Description, string? Image,
+    DateTime Created, string CreatedBy, DateTime? LastModified, string? LastModifiedBy);
+
 public record class Results<T>(IEnumerable<T> Items, int TotalCount);
 
-public class GetItemQuery : IRequest<Item?>
+public class GetItemQuery : IRequest<ItemDto?>
 {
     public string Id { get; set; }
 
@@ -58,7 +87,7 @@ public class GetItemQuery : IRequest<Item?>
         Id = id;
     }
 
-    public class GetItemQueryHandler : IRequestHandler<GetItemQuery, Item?>
+    public class GetItemQueryHandler : IRequestHandler<GetItemQuery, ItemDto?>
     {
         private readonly CatalogContext context;
 
@@ -67,9 +96,13 @@ public class GetItemQuery : IRequest<Item?>
             this.context = context;
         }
 
-        public async Task<Item?> Handle(GetItemQuery request, CancellationToken cancellationToken)
+        public async Task<ItemDto?> Handle(GetItemQuery request, CancellationToken cancellationToken)
         {
-            return await context.Items.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
+            var item = await context.Items.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
+
+            if (item == null) return null;
+
+            return new ItemDto(item.Id, item.Name, item.Description, item.Image, item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy);
         }
     }
 }
@@ -99,15 +132,14 @@ public class AddItemCommand : IRequest
 
         public async Task<Unit> Handle(AddItemCommand request, CancellationToken cancellationToken)
         {
-            var item = new Item(Guid.NewGuid().ToString(), request.Name, request.Description)
-            {
-                CreatedAt = DateTime.Now
-            };
+            var item = new Item(Guid.NewGuid().ToString(), request.Name, request.Description);
 
             context.Items.Add(item);
             await context.SaveChangesAsync();
 
-            await hubContext.Clients.All.ItemAdded(item);
+            var itemDto = new ItemDto(item.Id, item.Name, item.Description, item.Image, item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy);
+
+            await hubContext.Clients.All.ItemAdded(itemDto);
 
             return Unit.Value;
         }
@@ -143,7 +175,8 @@ public class DeleteItemCommand : IRequest<DeletionResult>
                 return DeletionResult.NotFound;
             }
 
-            item.DeletedAt = DateTime.Now;
+            context.Items.Remove(item);
+
             await context.SaveChangesAsync();
 
             await hubContext.Clients.All.ItemDeleted(item.Id, item.Name);

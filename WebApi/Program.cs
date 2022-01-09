@@ -13,6 +13,7 @@ using WebApi;
 using WebApi.Application;
 using WebApi.Data;
 using WebApi.Hubs;
+using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,10 @@ var Configuration = builder.Configuration;
 services
     .AddControllers()
     .AddNewtonsoftJson();
+
+services.AddHttpContextAccessor();
+
+services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 services.AddSqlServer<CatalogContext>(Configuration.GetConnectionString("mssql"));
 

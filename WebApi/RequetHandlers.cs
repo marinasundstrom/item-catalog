@@ -7,9 +7,10 @@ namespace WebApi;
 
 static class RequestHandlers
 {
-    static async Task<IResult> GetItems(IMediator mediator, CancellationToken cancellationToken, int page = 0, int pageSize = 10)
+    static async Task<IResult> GetItems(IMediator mediator, CancellationToken cancellationToken, int page = 0, int pageSize = 10,
+        string? sortBy = null, Application.SortDirection sortDirection =  Application.SortDirection.Desc)
     {
-        var result = await mediator.Send(new GetItemsQuery(page, pageSize), cancellationToken);
+        var result = await mediator.Send(new GetItemsQuery(page, pageSize, sortBy, sortDirection), cancellationToken);
 
         return Results.Ok(result);
     }
@@ -26,7 +27,7 @@ static class RequestHandlers
         return Results.Ok(item);
     }
 
-    static async Task<IResult> PostItem(CreateItemDto dto, IMediator mediator, CancellationToken cancellationToken)
+    static async Task<IResult> AddItem(AddItemDto dto, IMediator mediator, CancellationToken cancellationToken)
     {
         await mediator.Send(new AddItemCommand(dto.Name, dto.Description), cancellationToken);
 
@@ -48,31 +49,31 @@ static class RequestHandlers
     public static WebApplication MapApplicationRequests(this WebApplication app)
     {
         app.MapGet("/", GetItems)
+        .WithName("Items_GetItems")
         .WithTags("Items")
-        .WithGroupName("Items")
-        .Produces<Results<Item>>(StatusCodes.Status200OK);
+        .Produces<Results<ItemDto>>(StatusCodes.Status200OK);
 
         app.MapGet("/{id}", GetItem)
+        .WithName("Items_GetItem")
         .WithTags("Items")
-        .WithGroupName("Items")
-        .Produces<Item>(StatusCodes.Status200OK)
+        .Produces<ItemDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        app.MapPost("/", PostItem)
+        app.MapPost("/", AddItem)
+        .WithName("Items_AddItem")
         .WithTags("Items")
-        .WithGroupName("Items")
         .Produces<string>(StatusCodes.Status200OK);
 
         app.MapDelete("/{id}", DeleteItem)
+        .WithName("Items_DeleteItem")
         .WithTags("Items")
-        .WithGroupName("Items")
         .Produces(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
         return app;
     }
 
-    public class CreateItemDto
+    public class AddItemDto
     {
         public string Name { get; set; } = null!;
 

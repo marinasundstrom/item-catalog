@@ -1,10 +1,11 @@
+using WebApi.Application;
 using WebApi.Data;
 
 namespace WebApi.Hubs;
 
 public interface IItemsClient
 {
-    Task ItemAdded(Item item);
+    Task ItemAdded(ItemDto item);
 
     Task ItemDeleted(string id, string name);
 

@@ -4,7 +4,6 @@
 @implements IAsyncDisposable
 @inject ISnackbar Snackbar
 @inject INotificationService NotificationService
-@inject IClient CatalogClient
 @inject IItemsClient ItemsClient
 @inject IDialogService DialogService
 
@@ -14,12 +13,12 @@
         New item
     </MudButton>
 
-    <MudTable T="Item" @ref="table" ServerData="@(new Func<TableState, Task<TableData<Item>>>(ServerReload))" OnRowClick="RowClickEvent" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+    <MudTable T="ItemDto" @ref="table" ServerData="@(new Func<TableState, Task<TableData<ItemDto>>>(ServerReload))" OnRowClick="RowClickEvent" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
         <HeaderContent>
             <MudTh></MudTh>
-            <MudTh>Name</MudTh>
-            <MudTh>Description</MudTh>
-            <MudTh>Added</MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<ItemDto, object>(x=>x.Name)">Name</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<ItemDto, object>(x=>x.Description)">Description</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<ItemDto, object>(x=>x.Created)">Created</MudTableSortLabel></MudTh>
             <MudTh></MudTh>
         </HeaderContent>
         <RowTemplate>
@@ -28,7 +27,7 @@
             </MudTd>
             <MudTd DataLabel="Name">@context.Name</MudTd>
             <MudTd DataLabel="Description">@context.Description</MudTd>
-            <MudTd DataLabel="Created">@context.CreatedAt.ToString("g")</MudTd>
+            <MudTd DataLabel="Created">@context.Created.ToString("g")</MudTd>
             <MudTd><MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="async () => await DeleteItem(context)" /></MudTd>
         </RowTemplate>
         <NoRecordsContent>
@@ -43,7 +42,7 @@
     </MudTable>
 
 @code {
-    MudTable<Item> table;
+    MudTable<ItemDto> table;
     HubConnection hubConnection;
     Stream imageToUpload = null;
 
@@ -56,7 +55,7 @@
                 .WithAutomaticReconnect()
                 .Build();
 
-            hubConnection.On<Item>("ItemAdded", OnItemAdded);
+            hubConnection.On<ItemDto>("ItemAdded", OnItemAdded);
             hubConnection.On<string, string>("ItemDeleted", OnItemDeleted);
             hubConnection.On<string, string>("ImageUploaded", OnImageUploaded);
 
@@ -100,7 +99,7 @@
         }
     }
 
-    async Task OnItemAdded(Item item)
+    async Task OnItemAdded(ItemDto item)
     {
         Snackbar.Add("Item was added", Severity.Success);
 
@@ -143,14 +142,15 @@
         await table.ReloadServerData();
     }
 
-    private async Task<TableData<Item>> ServerReload(TableState state)
+    private async Task<TableData<ItemDto>> ServerReload(TableState state)
     {
-        var results = await CatalogClient.GetAsync(state.Page, state.PageSize);
+        var results = await ItemsClient.GetItemsAsync(state.Page, state.PageSize, state.SortLabel,
+            state.SortDirection == MudBlazor.SortDirection.Ascending ? Catalog.Client.SortDirection.Asc : Catalog.Client.SortDirection.Desc);
 
-        return new TableData<Item>() { TotalItems = results.TotalCount, Items = results.Items };
+        return new TableData<ItemDto>() { TotalItems = results.TotalCount, Items = results.Items };
     }
 
-    private void RowClickEvent(TableRowClickEventArgs<Item> args)
+    private void RowClickEvent(TableRowClickEventArgs<ItemDto> args)
     {
         NotificationService.ShowNotification("Message", $"You clicked {args.Item.Name}");
         //Snackbar.Add($"You clicked {args.Item.Name}");
@@ -169,7 +169,7 @@
         {
             imageToUpload = model.Stream;
 
-            await CatalogClient.PostAsync(new CreateItemDto()
+            await ItemsClient.AddItemAsync(new AddItemDto()
             {
                 Name = model.Name,
                 Description = model.Description
@@ -181,13 +181,13 @@
         }
     }
 
-    async Task DeleteItem(Item item)
+    async Task DeleteItem(ItemDto item)
     {
         var result = await DialogService.ShowMessageBox($"Delete '{item.Name}'?", "Are you sure?", "Yes", "No");
 
         if(result.GetValueOrDefault())
         {
-            await CatalogClient.DeleteAsync(item.Id);
+            await ItemsClient.DeleteItemAsync(item.Id);
         }
     }
 

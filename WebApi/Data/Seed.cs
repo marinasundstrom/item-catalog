@@ -14,9 +14,6 @@ static class Seed
         {
             context.Items.AddRange(new Item[] {
                 new Item(Guid.NewGuid().ToString(), "Hat", "Green hat")
-                {
-                    CreatedAt = DateTime.Now
-                }
             });
 
             await context.SaveChangesAsync();
