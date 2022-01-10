@@ -32,6 +32,8 @@ public static class MauiProgram
 
         builder.Services.AddApp();
 
+        Options.UseNativeUpload = true;
+
         var services = builder.Services;
 
         services.Remove(services.First(x => x.ServiceType == typeof(IFilePickerService)));

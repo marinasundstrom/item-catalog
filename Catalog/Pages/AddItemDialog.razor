@@ -11,45 +11,47 @@
                               @bind-Value="model.Name" For="@(() => model.Name)" />
                 <MudTextField Label="Description" Lines="3" Class="mt-3"
                               @bind-Value="model.Description" For="@(() => model.Description)" />
-                @* <InputFile id="fileInput2" OnChange="UploadFiles" Class="mt-3" hidden accept=".jpg, .jpeg, .png" /> *@
 
-                @*
+                @if (!Options.UseNativeUpload)
+                {
+                    <InputFile id="fileInput2" OnChange="UploadFiles" Class="mt-3" hidden accept=".jpg, .jpeg, .png" />
+
                     <MudButton HtmlTag="label"
                                Variant="Variant.Filled"
                                Color="Color.Primary"
                                StartIcon="@Icons.Filled.CloudUpload"
                                for="fileInput2"
                                Class="mt-3">
-                        @(model.File is null ? "Upload your images" : model.File.Name)
+                        @(model.Stream is null ? "Choose an image" : "Change image")
                     </MudButton>
-                *@
+                }
+                else
+                {
+                    <MudButton HtmlTag="label"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Filled.CloudUpload"
+                               for="fileInput2"
+                               Class="mt-3"
+                               OnClick="async () => { model.Stream = await FilePickerService.PickImage(); await Process(model.Stream); }">
+                        @(model.Stream is null ? "Choose an image" : "Change image")
+                    </MudButton>
+                }
 
-                <MudButton HtmlTag="label"
-                           Variant="Variant.Filled"
-                           Color="Color.Primary"
-                           StartIcon="@Icons.Filled.CloudUpload"
-                           for="fileInput2"
-                           Class="mt-3"
-                           OnClick="async () => model.Stream = await FilePickerService.PickImage()">
-                    @(model.Stream is null ? "Choose an image" : "Change image")
-                </MudButton>
-
-                 @if(model.Stream is not null)
-                 {
+                @if (model.Stream is not null)
+                {
                     <MudIconButton Variant="Variant.Filled"
                                    Color="Color.Secondary"
                                    Icon="@Icons.Filled.Remove"
                                    Class="ml-3 mt-3"
-                                   OnClick="() => model.Stream = null">
+                                   OnClick="() => { model.Stream = null; imageBytes = null; }">
                     </MudIconButton>
 
-                    using var memoryStream = new MemoryStream();
-                    model.Stream.CopyTo(memoryStream);
-                    model.Stream.Seek(0, SeekOrigin.Begin);
-                    var imageBytes = memoryStream.ToArray();
-
-                    <img style="height: 150px; margin-top: 15px" src="data:image/png;base64,@Convert.ToBase64String(imageBytes)" />
-                 }
+                    @if (imageBytes is not null)
+                    {
+                        <img style="height: 150px; margin-top: 15px" src="data:image/png;base64,@Convert.ToBase64String(imageBytes)" />
+                    }
+                }
 
                 <MudText Typo="Typo.subtitle2" GutterBottom="true" Class="mt-3">Max 2 mb.</MudText>
 
@@ -63,6 +65,7 @@
 </div>
 @code {
     FormModel model = new FormModel();
+    byte[]? imageBytes = null;
     bool success;
 
     public class FormModel
@@ -85,10 +88,40 @@
     void OnValidSubmit() => MudDialog.Close(DialogResult.Ok(model));
     void Cancel() => MudDialog.Cancel();
 
-    /*
-    private void UploadFiles(InputFileChangeEventArgs e)
+    private async Task UploadFiles(InputFileChangeEventArgs e)
     {
-        model.File = e.File;
+        const int maxSize = 1014 * 1000 * 3;
+
+        if (e.File.Size > maxSize)
+        {
+            Snackbar.Add("Image is too big.", Severity.Error);
+
+            return;
+        }
+
+        var stream = e.File.OpenReadStream(maxSize);
+
+        await Process(stream);
     }
-    */
+
+    private async Task Process(Stream stream)
+    {
+        var memoryStream = new MemoryStream();
+        await stream.CopyToAsync(memoryStream);
+        memoryStream.Seek(0, SeekOrigin.Begin);
+
+        imageBytes = await GetBytes(memoryStream);
+
+        memoryStream.Seek(0, SeekOrigin.Begin);
+
+        Console.WriteLine(memoryStream.Length);
+
+        model.Stream = memoryStream;
+    }
+
+    private async Task<byte[]> GetBytes(MemoryStream memoryStream)
+    {
+        var imageBytes = memoryStream.ToArray();
+        return imageBytes;
+    }
 }
