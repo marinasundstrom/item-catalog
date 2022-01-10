@@ -31,7 +31,7 @@ services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 services.AddSqlServer<CatalogContext>(Configuration.GetConnectionString("mssql"));
 
-services.AddEndpointsApiExplorer();
+services.AddEndpointsApiExplorer(); 
 
 // Register the Swagger services
 services.AddOpenApiDocument(config =>

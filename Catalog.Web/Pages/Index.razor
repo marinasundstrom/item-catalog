@@ -1,0 +1,20 @@
+﻿@page "/"
+@inject IDialogService DialogService
+
+<MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Hello, World!</MudText>
+
+
+<MudText Typo="Typo.body1" GutterBottom="true">Welcome to your new app.</MudText>
+
+<MudButton OnClick="async () => await OnClick()" Variant="Variant.Filled" Color="Color.Primary">@buttonText</MudButton>
+
+@code {
+    string buttonText = "Click me!";
+
+    public async Task OnClick()
+    {
+        buttonText = "You have clicked the button!";
+
+        await DialogService.ShowMessageBox("Message", "Hello World!");
+    }
+}

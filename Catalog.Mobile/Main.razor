@@ -4,7 +4,7 @@
 <MudDialogProvider MaxWidth="MaxWidth.Medium" />
 <MudSnackbarProvider />
 
-<Router AppAssembly="@GetType().Assembly">
+<Router AppAssembly="@typeof(MauiApp).Assembly" AdditionalAssemblies="new [] { typeof(Constants).Assembly }">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>

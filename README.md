@@ -4,6 +4,8 @@ App for cataloging items with pictures.
 
 Built with .NET MAUI using Blazor. Components are from MudBlazor. It is multi-platform.
 
+There is also a Web version of the app.
+
 Watch video [here](https://youtu.be/wXaQB18FvRk).
 
 ## Introduction
@@ -108,6 +110,10 @@ To start with file watch:
 ```sh
 tye run --watch
 ```
+
+#### Web app
+
+The Web app is hosted at: ```https://localhost:8080/```
 
 ### Important 1 - Startup Issue
 

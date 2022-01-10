@@ -51,7 +51,7 @@
         try
         {
             hubConnection = new HubConnectionBuilder()
-                .WithUrl($"{MauiProgram.UriString}hubs/items")
+                .WithUrl($"{Constants.ApiUriString}hubs/items")
                 .WithAutomaticReconnect()
                 .Build();
 

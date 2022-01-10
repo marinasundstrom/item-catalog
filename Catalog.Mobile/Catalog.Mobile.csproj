@@ -63,6 +63,7 @@
 	
 	<ItemGroup>
 	  <ProjectReference Include="..\WebApi.Client\WebApi.Client.csproj" />
+	  <ProjectReference Include="..\Catalog\Catalog.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <_MauiCompileToAdd Remove="Platforms\iOS\ImageConverter.cs" />
@@ -73,5 +74,19 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="Platforms\MacCatalyst\ImageConverter.cs" />
+	  <None Remove="Pages\" />
+	  <None Remove="Services\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Pages\" />
+	  <Folder Include="Services\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <RazorComponent Remove="Pages\Index.razor" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="Pages\Index.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
 	</ItemGroup>
 </Project>

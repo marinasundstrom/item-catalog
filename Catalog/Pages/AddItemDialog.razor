@@ -1,5 +1,6 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @inject ISnackbar Snackbar
+@inject IFilePickerService FilePickerService
 
 <div style="width: 350px; max-width: 350px;">
     <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
@@ -29,7 +30,7 @@
                            StartIcon="@Icons.Filled.CloudUpload"
                            for="fileInput2"
                            Class="mt-3"
-                           OnClick="PickImage">
+                           OnClick="async () => model.Stream = await FilePickerService.PickImage()">
                     @(model.Stream is null ? "Choose an image" : "Change image")
                 </MudButton>
 
@@ -90,60 +91,4 @@
         model.File = e.File;
     }
     */
-
-    async Task PickImage()
-    {
-
-        var r = await App.Current.MainPage.DisplayActionSheet("Choose an image", "Cancel", "Cancel", new[]
-        {
-            "Photos",
-            "Files"
-        });
-
-        FileResult fileResult = null;
-
-        switch (r)
-        {
-            case "Photos":
-                fileResult = await MediaPicker.PickPhotoAsync(new MediaPickerOptions()
-                {
-                    Title = "Pick an image"
-                });
-                break;
-
-            case "Files":
-
-                var customFileType = FilePickerFileType.Images;
-
-                var options = new PickOptions
-                {
-                    PickerTitle = "Please select an image",
-                    FileTypes = customFileType,
-                };
-
-                fileResult = await FilePicker.PickAsync(options);
-                break;
-        }
-
-        if (fileResult is null) return;
-
-        var stream = await fileResult.OpenReadAsync();
-
-        if (stream.Length > 1014 * 1000 * 2)
-        {
-            model.Stream = null;
-
-            Snackbar.Add("Image is too big.", Severity.Error);
-
-            return;
-        }
-
-#if IOS
-        stream = await iOS.ImageConverter.ConvertToJpegAsync(stream);
-#elif MACCATALYST
-        stream = await MacCatalyst.ImageConverter.ConvertToJpegAsync(stream);
-#endif
-
-        model.Stream = stream;
-    }
 }

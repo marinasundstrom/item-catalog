@@ -6,6 +6,12 @@
 #
 name: webapi
 services:
+- name: webapp
+  project: Catalog.Web/Catalog.Web.csproj
+  bindings:
+  - protocol: https
+    port: 5010
+
 - name: webapi
   project: WebApi/WebApi.csproj
   bindings:

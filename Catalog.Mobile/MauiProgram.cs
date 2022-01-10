@@ -30,29 +30,18 @@ public static class MauiProgram
 
         builder.Services.AddBlazorWebView();
 
-        builder.Services.AddMudServices();
-
-        builder.Services.AddHttpClient(nameof(Catalog.Client.IClient), (sp, http) =>
-        {
-            http.BaseAddress = new Uri(UriString);
-        })
-        .AddTypedClient<Catalog.Client.IClient>((http, sp) => new Catalog.Client.Client(http));
-
-        builder.Services.AddHttpClient(nameof(Catalog.Client.IItemsClient), (sp, http) =>
-        {
-            http.BaseAddress = new Uri(UriString);
-        })
-        .AddTypedClient<Catalog.Client.IItemsClient>((http, sp) => new Catalog.Client.ItemsClient(http));
+        builder.Services.AddApp();
 
         var services = builder.Services;
-#if WINDOWS
-            services.AddSingleton<INotificationService, WinUI.NotificationService>();
-#elif MACCATALYST
-            services.AddSingleton<INotificationService, MacCatalyst.NotificationService>();
-#elif IOS
-        services.AddScoped<INotificationService, iOS.NotificationService>();
-#elif ANDROID
-            services.AddScoped<INotificationService, Droid.NotificationService>();
+
+        services.Remove(services.First(x => x.ServiceType == typeof(IFilePickerService)));
+
+        services.AddSingleton<IFilePickerService, FilePickerService>();
+
+#if MACCATALYST
+        services.Remove(services.First(x => x.ServiceType == typeof(INotificationService)));
+
+        services.AddSingleton<INotificationService, MacCatalyst.NotificationService>();
 #endif
 
         return builder.Build();
