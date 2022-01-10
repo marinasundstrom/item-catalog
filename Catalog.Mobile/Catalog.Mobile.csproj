@@ -51,6 +51,10 @@
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="$(TargetFramework.Contains('-ios'))">
+        <RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
+    </PropertyGroup>
+
 	<ItemGroup>
 		<Content Remove="Properties\launchSettings.json" />
 	</ItemGroup>
@@ -65,28 +69,5 @@
 	  <ProjectReference Include="..\WebApi.Client\WebApi.Client.csproj" />
 	  <ProjectReference Include="..\Catalog\Catalog.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-	  <_MauiCompileToAdd Remove="Platforms\iOS\ImageConverter.cs" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Compile Include="Platforms\iOS\ImageConverter.cs" />
-	  <Compile Include="Platforms\MacCatalyst\ImageConverter.cs" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Remove="Platforms\MacCatalyst\ImageConverter.cs" />
-	  <None Remove="Pages\" />
-	  <None Remove="Services\" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Pages\" />
-	  <Folder Include="Services\" />
-	</ItemGroup>
-	<ItemGroup>
-	  <RazorComponent Remove="Pages\Index.razor" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Content Include="Pages\Index.razor">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </Content>
-	</ItemGroup>
+
 </Project>
