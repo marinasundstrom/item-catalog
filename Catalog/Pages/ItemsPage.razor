@@ -68,10 +68,6 @@
 
                 Snackbar.Add("Connection closed");
 
-                /*
-                await Task.Delay(new Random().Next(0,5) * 1000);
-                await hubConnection.StartAsync(); */
-
                 return Task.CompletedTask;
             };
 
@@ -91,7 +87,7 @@
 
             await hubConnection.StartAsync();
 
-              Snackbar.Add("Connected");
+            Snackbar.Add("Connected");
         }
         catch (Exception exc)
         {
@@ -105,16 +101,10 @@
 
         if (imageToUpload is not null)
         {
-            /* using var ms = new MemoryStream();
-            await model.File.OpenReadStream(1024 * 1000 * 2).CopyToAsync(ms);
-            ms.Seek(0, SeekOrigin.Begin); */
-            /* await ItemsClient.UploadImageAsync(id,
-                new FileParameter(model.File.OpenReadStream(1024 * 1000 * 2))); */
-
             try
             {
                 await ItemsClient.UploadImageAsync(item.Id,
-                new FileParameter(imageToUpload));
+                    new FileParameter(imageToUpload));
             }
             catch(Exception exc)
             {
@@ -153,7 +143,6 @@
     private void RowClickEvent(TableRowClickEventArgs<ItemDto> args)
     {
         NotificationService.ShowNotification("Message", $"You clicked {args.Item.Name}");
-        //Snackbar.Add($"You clicked {args.Item.Name}");
     }
 
     private async Task OpenDialog()
