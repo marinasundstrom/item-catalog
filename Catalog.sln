@@ -12,11 +12,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F4543430-B73F-4E9B-A833-54A5A7E6E016}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		tye.yaml = tye.yaml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Web", "Catalog.Web\Catalog.Web.csproj", "{477A0CC5-4676-461D-B440-98AE44366007}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog", "Catalog\Catalog.csproj", "{35B8EA7C-7836-493F-9A7A-617450B7278E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker", "Worker\Worker.csproj", "{B1340B6E-DFEF-474F-AF38-E3785E87580C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts.csproj", "{6C545AF3-D120-42E1-9085-84304FC9365E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +49,14 @@ Global
 		{35B8EA7C-7836-493F-9A7A-617450B7278E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35B8EA7C-7836-493F-9A7A-617450B7278E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35B8EA7C-7836-493F-9A7A-617450B7278E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1340B6E-DFEF-474F-AF38-E3785E87580C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1340B6E-DFEF-474F-AF38-E3785E87580C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1340B6E-DFEF-474F-AF38-E3785E87580C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1340B6E-DFEF-474F-AF38-E3785E87580C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C545AF3-D120-42E1-9085-84304FC9365E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C545AF3-D120-42E1-9085-84304FC9365E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C545AF3-D120-42E1-9085-84304FC9365E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C545AF3-D120-42E1-9085-84304FC9365E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

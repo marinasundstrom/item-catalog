@@ -31,6 +31,12 @@ public static class ServiceExtensions
         })
         .AddTypedClient<Catalog.Client.IItemsClient>((http, sp) => new Catalog.Client.ItemsClient(http));
 
+        services.AddHttpClient(nameof(Catalog.Client.IDoSomethingClient), (sp, http) =>
+        {
+            http.BaseAddress = new Uri(Constants.ApiUriString);
+        })
+        .AddTypedClient<Catalog.Client.IDoSomethingClient>((http, sp) => new Catalog.Client.DoSomethingClient(http));
+
         return services;
     }
 }

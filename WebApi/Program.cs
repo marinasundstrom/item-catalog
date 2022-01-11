@@ -1,6 +1,10 @@
 ﻿using Azure.Identity;
 using Azure.Storage.Blobs;
 
+using Contracts;
+
+using MassTransit;
+
 using MediatR;
 
 using Microsoft.AspNetCore.Http;
@@ -57,6 +61,18 @@ services.AddSignalR();
 
 services.AddMediatR(typeof(Program));
 
+services.AddMassTransit(x =>
+{
+    x.SetKebabCaseEndpointNameFormatter();
+    x.AddConsumers(typeof(Program).Assembly);
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.ConfigureEndpoints(context);
+    });
+})
+.AddMassTransitHostedService()
+.AddGenericRequestClient();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -88,6 +104,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
     endpoints.MapHub<ItemsHub>("/hubs/items");
+    endpoints.MapHub<SomethingHub>("/hubs/something");
 });
 
 app.Run();

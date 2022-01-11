@@ -18,6 +18,12 @@ services:
   - protocol: https
     port: 5020
 
+- name: worker
+  project: Worker/Worker.csproj
+  bindings:
+  - protocol: https
+    port: 5030
+
 - name: azurite
   image: mcr.microsoft.com/azure-storage/azurite
   args: "azurite-blob --loose --blobHost 0.0.0.0 -l /data"
@@ -53,6 +59,15 @@ services:
   volumes:
     - source: .data/sql-edge
       target: /var/opt/mssql/data
+
+- name: rabbitmq
+  image: rabbitmq:3-management
+  bindings:
+    - name: rabbit
+      port: 5672
+      protocol: rabbitmq
+    - name: management
+      port: 15672
 
 - name: nginx
   image: nginx
