@@ -9,37 +9,37 @@
 
 <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Items</MudText>
 
-    <MudButton @onclick="OpenDialog" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2">
-        New item
-    </MudButton>
+<MudButton @onclick="OpenDialog" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2">
+    New item
+</MudButton>
 
-    <MudTable T="ItemDto" @ref="table" SortLabel="Sort By" ServerData="@(new Func<TableState, Task<TableData<ItemDto>>>(ServerReload))" OnRowClick="RowClickEvent" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
-        <HeaderContent>
-            <MudTh></MudTh>
-            <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Name">Name</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Description">Description</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Created">Created</MudTableSortLabel></MudTh>
-            <MudTh></MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd>
-                <img src="@context.Image" style="height: 150px" />
-            </MudTd>
-            <MudTd DataLabel="Name">@context.Name</MudTd>
-            <MudTd DataLabel="Description">@context.Description</MudTd>
-            <MudTd DataLabel="Created">@context.Created.ToString("g")</MudTd>
-            <MudTd><MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="async () => await DeleteItem(context)" /></MudTd>
-        </RowTemplate>
-        <NoRecordsContent>
-            <MudText>No matching records found</MudText>
-        </NoRecordsContent>
-        <LoadingContent>
-            <MudText>Loading...</MudText>
-        </LoadingContent>
-        <PagerContent>
-            <MudTablePager />
-        </PagerContent>
-    </MudTable>
+<MudTable T="ItemDto" @ref="table" SortLabel="Sort By" ServerData="@(new Func<TableState, Task<TableData<ItemDto>>>(ServerReload))" OnRowClick="RowClickEvent" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+    <HeaderContent>
+        <MudTh></MudTh>
+        <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Name">Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Description">Description</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Created">Created</MudTableSortLabel></MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd>
+            <img src="@context.Image" style="height: 150px" />
+        </MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="Created">@context.Created.ToString("g")</MudTd>
+        <MudTd><MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="async () => await DeleteItem(context)" /></MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No matching records found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
 
 @code {
     MudTable<ItemDto> table;
@@ -61,7 +61,7 @@
 
             hubConnection.Closed += (error) =>
             {
-                if(error is not null) 
+                if (error is not null)
                 {
                     Snackbar.Add($"{error.Message}", Severity.Error);
                 }
@@ -106,7 +106,7 @@
                 await ItemsClient.UploadImageAsync(item.Id,
                     new FileParameter(imageToUpload));
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Snackbar.Add(exc.Message, Severity.Error);
             }
@@ -174,7 +174,7 @@
     {
         var result = await DialogService.ShowMessageBox($"Delete '{item.Name}'?", "Are you sure?", "Yes", "No");
 
-        if(result.GetValueOrDefault())
+        if (result.GetValueOrDefault())
         {
             await ItemsClient.DeleteItemAsync(item.Id);
         }
