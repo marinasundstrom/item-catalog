@@ -88,16 +88,14 @@
 
     private async Task UploadFiles(InputFileChangeEventArgs e)
     {
-        const int maxSize = 1014 * 1000 * 3;
-
-        if (e.File.Size > maxSize)
+        if (e.File.Size > Constants.FileMaxSize)
         {
             Snackbar.Add("Image is too big.", Severity.Error);
 
             return;
         }
 
-        var stream = e.File.OpenReadStream(maxSize);
+        var stream = e.File.OpenReadStream(Constants.FileMaxSize);
 
         await Process(stream);
     }

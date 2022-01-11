@@ -50,7 +50,7 @@ public class FilePickerService : IFilePickerService
 
         var stream = await fileResult.OpenReadAsync();
 
-        if (stream.Length > 1014 * 1000 * 3)
+        if (stream.Length > Constants.FileMaxSize)
         {
             Snackbar.Add("Image is too big.", Severity.Error);
 
