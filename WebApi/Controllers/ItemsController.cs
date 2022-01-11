@@ -18,6 +18,7 @@ public class ItemsController : ControllerBase
 {
     [HttpPost("{id}/UploadImage")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> UploadImage([FromRoute] string id, IFormFile file,
         [FromServices] IMediator mediator, CancellationToken cancellationToken)
     {
