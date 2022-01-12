@@ -75,6 +75,11 @@ services.AddMassTransit(x =>
 .AddMassTransitHostedService()
 .AddGenericRequestClient();
 
+services.AddStackExchangeRedisCache(o =>
+{
+    o.Configuration = Configuration.GetConnectionString("redis");
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

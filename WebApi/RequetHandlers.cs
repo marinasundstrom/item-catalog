@@ -1,5 +1,7 @@
 using MediatR;
 
+using Microsoft.Extensions.Caching.Distributed;
+
 using WebApi.Application;
 using WebApi.Data;
 
@@ -15,13 +17,24 @@ static class RequestHandlers
         return Results.Ok(result);
     }
 
-    static async Task<IResult> GetItem(string id, IMediator mediator, CancellationToken cancellationToken)
+    static async Task<IResult> GetItem(string id, IMediator mediator, IDistributedCache cache, CancellationToken cancellationToken)
     {
-        var item = await mediator.Send(new GetItemQuery(id), cancellationToken);
+        string cacheKey = $"item-{id}";
 
-        if (item == null)
+        var item = await cache.GetAsync<ItemDto?>(cacheKey, cancellationToken);
+
+        if (item is null)
         {
-            return Results.NotFound();
+            item = await mediator.Send(new GetItemQuery(id), cancellationToken);
+
+            if (item == null)
+            {
+                return Results.NotFound();
+            }
+
+            await cache.SetAsync(cacheKey, item,
+                new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow =  TimeSpan.FromMinutes(1) },
+                cancellationToken);
         }
 
         return Results.Ok(item);
@@ -34,7 +47,7 @@ static class RequestHandlers
         return Results.Ok(string.Empty);
     }
 
-    static async Task<IResult> DeleteItem(string id, IMediator mediator, CancellationToken cancellationToken)
+    static async Task<IResult> DeleteItem(string id, IMediator mediator, IDistributedCache cache, CancellationToken cancellationToken)
     {
         var result = await mediator.Send(new DeleteItemCommand(id), cancellationToken);
 
@@ -42,6 +55,10 @@ static class RequestHandlers
         {
             return Results.NotFound();
         }
+
+        string cacheKey = $"item-{id}";
+
+        await cache.RemoveAsync(cacheKey, cancellationToken);
 
         return Results.Ok();
     }
