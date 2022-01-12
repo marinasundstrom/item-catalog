@@ -1,49 +1,36 @@
-﻿@page "/worker"
+﻿@page "/notifications"
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.SignalR.Client
 @using Catalog.Client
 @implements IAsyncDisposable
 @inject ISnackbar Snackbar
-@inject IDoSomethingClient DoSomethingClient
 
-<MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Worker</MudText>
+<MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Notifications</MudText>
 
-<EditForm Model="@this" OnValidSubmit="OnSubmit">
+<MudText Typo="Typo.body1" GutterBottom="true">If þe servere will, þhou schalt receiven a newe message every minute.</MudText>
 
-    <DataAnnotationsValidator />
+<ul class="mt-4">
+    @foreach(var notification in notifications)
+     {
+        <li>@notification</li>
+     }
+</ul>
 
-    <MudGrid>
-        <MudItem xs="12" sm="6">
-            <MudNumericField Label="LHS" @bind-Value="Lhs" For="() => Lhs"></MudNumericField>
-        </MudItem>
-        <MudItem xs="12" sm="6">
-            <MudNumericField Label="RHS" @bind-Value="Rhs" For="() => Rhs"></MudNumericField>
-        </MudItem>
-    </MudGrid>
-
-    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" StartIcon="@Icons.Filled.Send" Color="Color.Primary" Class="mb-2 mt-2">Send</MudButton>
-
-</EditForm>
 
 @code {
     HubConnection hubConnection;
-
-    [Required]
-    public double? Lhs { get; set; }
-
-    [Required]
-    public double? Rhs { get; set; }
+    List<string> notifications = new List<string>();
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             hubConnection = new HubConnectionBuilder()
-                .WithUrl($"{Constants.ApiUriString}hubs/something")
+                .WithUrl($"{Constants.ApiUriString}hubs/notifications")
                 .WithAutomaticReconnect()
                 .Build();
 
-            hubConnection.On<string>("ResponseReceived", OnResponseReceived);
+            hubConnection.On<string>("NotificationReceived", OnNotificationReceived);
 
             hubConnection.Closed += (error) =>
             {
@@ -81,14 +68,11 @@
         }
     }
 
-    async Task OnSubmit()
+    async Task OnNotificationReceived(string message)
     {
-        await DoSomethingClient.DoSomethingAsync(Lhs, Rhs);
-    }
+        notifications.Add(message);
 
-    async Task OnResponseReceived(string message)
-    {
-        Snackbar.Add(message, Severity.Info);
+        StateHasChanged();
     }
 
     public async ValueTask DisposeAsync()

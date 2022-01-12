@@ -10,6 +10,9 @@
     <PackageReference Include="MassTransit.AspNetCore" Version="7.1.6" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="7.1.6" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+    <PackageReference Include="Hangfire.Core" Version="1.8.0-beta4" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.0-beta4" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.7.28" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,4 +21,13 @@
     </ProjectReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Hangfire.Core" />
+    <None Remove="Hangfire.AspNetCore" />
+    <None Remove="Hangfire.SqlServer" />
+    <None Remove="Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
 </Project>

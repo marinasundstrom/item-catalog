@@ -11,7 +11,7 @@ public class DoSomethingConsumer : IConsumer<DoSomething>
     {
         var message = context.Message;
 
-        await Task.Delay(Random.Shared.Next(5000)); 
+        await Task.Delay(Random.Shared.Next(5000));
 
         var result = message.LHS + message.RHS;
 

@@ -23,4 +23,3 @@ public class DoSomethingResponseConsumer : IConsumer<DoSomethingResponse>
         await _hubContext.Clients.All.ResponseReceived(message.Message);
     }
 }
-

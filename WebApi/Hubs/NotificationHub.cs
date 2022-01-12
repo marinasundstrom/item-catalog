@@ -1,10 +1,9 @@
-﻿using System;
-
+﻿
 using Microsoft.AspNetCore.SignalR;
 
 namespace WebApi.Hubs;
 
-public class ItemsHub : Hub<IItemsClient>
+public class NotificationHub : Hub<INotificationClient>
 {
 
 }
