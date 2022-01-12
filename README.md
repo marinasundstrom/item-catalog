@@ -6,6 +6,8 @@ Built with .NET MAUI using Blazor. Components are from MudBlazor. It is multi-pl
 
 There is also a Web version of the app.
 
+A "Worker" service demonstrates how to communicate with a microservice through asynchronous messaging.
+
 Watch video [here](https://youtu.be/wXaQB18FvRk).
 
 ## Introduction
