@@ -17,7 +17,9 @@ public class DoSomethingController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> DoSomething(double lhs, double rhs, [FromServices] IBus bus, CancellationToken cancellationToken)
     {
-        await bus.Publish(new DoSomething(lhs, rhs), cancellationToken);
+        var sendEndpoint = await bus.GetSendEndpoint(new Uri("queue:do-something"));
+
+        await sendEndpoint.Send(new DoSomething(lhs, rhs), cancellationToken);
 
         return NoContent();
     }
