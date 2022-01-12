@@ -1,4 +1,5 @@
 using WebApi.Data;
+using WebApi.Models;
 
 static class Seed 
 {

@@ -2,6 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
+using WebApi.Models;
 using WebApi.Services;
 
 namespace WebApi.Data;

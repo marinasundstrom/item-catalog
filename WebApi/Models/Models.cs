@@ -1,6 +1,5 @@
 ﻿using System;
-
-namespace WebApi.Data;
+namespace WebApi.Models;
 
 public class Item : AuditableEntity, ISoftDelete
 {
@@ -25,4 +24,3 @@ public class Item : AuditableEntity, ISoftDelete
     public DateTime? Deleted { get; set; }
     public string? DeletedBy { get; set; }
 }
-

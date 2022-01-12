@@ -17,6 +17,7 @@ using WebApi;
 using WebApi.Application;
 using WebApi.Data;
 using WebApi.Hubs;
+using WebApi.Models;
 using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);

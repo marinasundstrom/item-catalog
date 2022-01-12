@@ -11,6 +11,7 @@ using Newtonsoft.Json.Converters;
 
 using WebApi.Data;
 using WebApi.Hubs;
+using WebApi.Models;
 
 namespace WebApi.Application;
 

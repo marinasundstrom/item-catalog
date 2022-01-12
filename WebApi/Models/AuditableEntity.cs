@@ -1,4 +1,4 @@
-﻿namespace WebApi.Data;
+﻿namespace WebApi.Models;
 
 public abstract class AuditableEntity
 {

@@ -3,6 +3,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+using WebApi.Models;
+
 namespace WebApi.Data.Configurations;
 
 public class ItemConfiguration : IEntityTypeConfiguration<Item>
