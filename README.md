@@ -14,11 +14,19 @@ Watch video [here](https://youtu.be/wXaQB18FvRk).
 
 Multi-platform app, with Web backend and API. Written entirely in .NET.
 
-App can be compiled to run on iOS, macOS, Android, or Windows.
+App can be compiled to run on iOS, macOS, Android, Windows, and, of course, Web. Thanks to .NET and Blazor.
 
-Contains a WebApi. Uses SQL Server and emulated Azure Blob Storage out of box. Also Nginx.
+Contains a WebApi. Uses SQL Server and emulated Azure Blob Storage out of box.
+
+The "Worker" service is used to demonstrate how to off-load tasks to a micro service using asynchronous messaging. The library used is MassTransit, and for transport it uses RabbitMQ. It also Hangfire to schedule recurring tasks.
+
+SignalR is used for real-time communication between server and client.
+
+Nginx is used as a reverse-proxy.
 
 Dev environment is based around projects and containers orchestrated by .NET Tye. Enabling you to launch all backend services with one simple command.
+
+Redis is also integrated.
 
 ## Screenshots
 
