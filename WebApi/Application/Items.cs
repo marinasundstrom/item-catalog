@@ -33,10 +33,12 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
     public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, Results<ItemDto>>
     {
         private readonly CatalogContext context;
+        private readonly IUrlHelper urlHelper;
 
-        public GetItemsQueryHandler(CatalogContext context)
+        public GetItemsQueryHandler(CatalogContext context, IUrlHelper urlHelper)
         {
             this.context = context;
+            this.urlHelper = urlHelper;
         }
 
         public async Task<Results<ItemDto>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
@@ -59,7 +61,7 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
             var items = await query.ToListAsync(cancellationToken);
 
             return new Results<ItemDto>(
-                items.Select(item => new ItemDto(item.Id, item.Name, item.Description, item.Image, item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy)),
+                items.Select(item => new ItemDto(item.Id, item.Name, item.Description, urlHelper.CreateImageUrl(item.Image), item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy)),
                 totalCount);
         }
     }
@@ -90,10 +92,12 @@ public class GetItemQuery : IRequest<ItemDto?>
     public class GetItemQueryHandler : IRequestHandler<GetItemQuery, ItemDto?>
     {
         private readonly CatalogContext context;
+        private readonly IUrlHelper urlHelper;
 
-        public GetItemQueryHandler(CatalogContext context)
+        public GetItemQueryHandler(CatalogContext context, IUrlHelper urlHelper)
         {
             this.context = context;
+            this.urlHelper = urlHelper;
         }
 
         public async Task<ItemDto?> Handle(GetItemQuery request, CancellationToken cancellationToken)
@@ -102,7 +106,7 @@ public class GetItemQuery : IRequest<ItemDto?>
 
             if (item == null) return null;
 
-            return new ItemDto(item.Id, item.Name, item.Description, item.Image, item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy);
+            return new ItemDto(item.Id, item.Name, item.Description, urlHelper.CreateImageUrl(item.Image!), item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy);
         }
     }
 }
@@ -122,11 +126,13 @@ public class AddItemCommand : IRequest
     public class AddItemCommandHandler : IRequestHandler<AddItemCommand>
     {
         private readonly CatalogContext context;
+        private readonly IUrlHelper urlHelper;
         private readonly IHubContext<ItemsHub, IItemsClient> hubContext;
 
-        public AddItemCommandHandler(CatalogContext context, IHubContext<ItemsHub, IItemsClient> hubContext)
+        public AddItemCommandHandler(CatalogContext context, IUrlHelper urlHelper, IHubContext<ItemsHub, IItemsClient> hubContext)
         {
             this.context = context;
+            this.urlHelper = urlHelper;
             this.hubContext = hubContext;
         }
 
@@ -137,7 +143,7 @@ public class AddItemCommand : IRequest
             context.Items.Add(item);
             await context.SaveChangesAsync();
 
-            var itemDto = new ItemDto(item.Id, item.Name, item.Description, item.Image, item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy);
+            var itemDto = new ItemDto(item.Id, item.Name, item.Description, urlHelper.CreateImageUrl(item.Image), item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy);
 
             await hubContext.Clients.All.ItemAdded(itemDto);
 
@@ -207,12 +213,14 @@ public class UploadImageCommand : IRequest<UploadImageResult>
     public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, UploadImageResult>
     {
         private readonly CatalogContext context;
+        private readonly IUrlHelper urlHelper;
         private readonly BlobServiceClient blobServiceClient;
         private readonly IHubContext<ItemsHub, IItemsClient> hubContext;
 
-        public UploadImageCommandHandler(CatalogContext context, BlobServiceClient blobServiceClient, IHubContext<ItemsHub, IItemsClient> hubContext)
+        public UploadImageCommandHandler(CatalogContext context, IUrlHelper urlHelper, BlobServiceClient blobServiceClient, IHubContext<ItemsHub, IItemsClient> hubContext)
         {
             this.context = context;
+            this.urlHelper = urlHelper;
             this.blobServiceClient = blobServiceClient;
             this.hubContext = hubContext;
         }
@@ -228,12 +236,14 @@ public class UploadImageCommand : IRequest<UploadImageResult>
 
             var blobContainerClient = blobServiceClient.GetBlobContainerClient("images");
 
-            var response = await blobContainerClient.UploadBlobAsync(request.Id, request.Stream, cancellationToken);
+            string imageId = $"image-{request.Id}";
 
-            item.Image = $"http://127.0.0.1:10000/devstoreaccount1/images/{request.Id}";
+            var response = await blobContainerClient.UploadBlobAsync(imageId, request.Stream, cancellationToken);
+
+            item.Image = imageId;
             await context.SaveChangesAsync();
 
-            await hubContext.Clients.All.ImageUploaded(item.Id, item.Image);
+            await hubContext.Clients.All.ImageUploaded(item.Id, urlHelper.CreateImageUrl(item.Image)!);
 
             return UploadImageResult.Successful;
         }

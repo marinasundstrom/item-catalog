@@ -61,6 +61,8 @@ services.AddSignalR();
 
 services.AddMediatR(typeof(Program));
 
+services.AddScoped<WebApi.Application.IUrlHelper, UrlHelper>();
+
 services.AddMassTransit(x =>
 {
     x.SetKebabCaseEndpointNameFormatter();

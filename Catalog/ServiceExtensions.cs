@@ -2,6 +2,7 @@
 
 using Catalog.Services;
 
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
 
@@ -21,19 +22,22 @@ public static class ServiceExtensions
 
         services.AddHttpClient(nameof(Catalog.Client.IClient), (sp, http) =>
         {
-            http.BaseAddress = new Uri(Constants.ApiUriString);
+            var navigationManager = sp.GetRequiredService<NavigationManager>();
+            http.BaseAddress = new Uri($"{navigationManager.BaseUri}/api/");
         })
         .AddTypedClient<Catalog.Client.IClient>((http, sp) => new Catalog.Client.Client(http));
 
         services.AddHttpClient(nameof(Catalog.Client.IItemsClient), (sp, http) =>
         {
-            http.BaseAddress = new Uri(Constants.ApiUriString);
+            var navigationManager = sp.GetRequiredService<NavigationManager>();
+            http.BaseAddress = new Uri($"{navigationManager.BaseUri}/api/");
         })
         .AddTypedClient<Catalog.Client.IItemsClient>((http, sp) => new Catalog.Client.ItemsClient(http));
 
         services.AddHttpClient(nameof(Catalog.Client.IDoSomethingClient), (sp, http) =>
         {
-            http.BaseAddress = new Uri(Constants.ApiUriString);
+            var navigationManager = sp.GetRequiredService<NavigationManager>();
+            http.BaseAddress = new Uri($"{navigationManager.BaseUri}/api/");
         })
         .AddTypedClient<Catalog.Client.IDoSomethingClient>((http, sp) => new Catalog.Client.DoSomethingClient(http));
 

@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.SignalR.Client
 @using Catalog.Client
 @implements IAsyncDisposable
+@inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
 @inject INotificationService NotificationService
 @inject IItemsClient ItemsClient
@@ -51,7 +52,7 @@
         try
         {
             hubConnection = new HubConnectionBuilder()
-                .WithUrl($"{Constants.ApiUriString}hubs/items")
+                .WithUrl($"{NavigationManager.BaseUri}api/hubs/items")
                 .WithAutomaticReconnect()
                 .Build();
 

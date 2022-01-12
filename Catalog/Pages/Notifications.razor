@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.SignalR.Client
 @using Catalog.Client
 @implements IAsyncDisposable
+@inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
 
 <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Notifications</MudText>
@@ -10,10 +11,10 @@
 <MudText Typo="Typo.body1" GutterBottom="true">If þe servere will, þhou schalt receiven a newe message every minute.</MudText>
 
 <ul class="mt-4">
-    @foreach(var notification in notifications)
-     {
+    @foreach (var notification in notifications)
+    {
         <li>@notification</li>
-     }
+    }
 </ul>
 
 
@@ -26,7 +27,7 @@
         try
         {
             hubConnection = new HubConnectionBuilder()
-                .WithUrl($"{Constants.ApiUriString}hubs/notifications")
+                .WithUrl($"{NavigationManager.BaseUri}api/hubs/notifications")
                 .WithAutomaticReconnect()
                 .Build();
 
