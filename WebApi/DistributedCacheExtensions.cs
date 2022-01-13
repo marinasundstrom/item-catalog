@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Extensions.Caching.Distributed;
 
-public static class DistributedCaching
+public static class DistributedCacheExtensions
 {
     public async static Task SetAsync<T>(this IDistributedCache distributedCache, string key, T value, DistributedCacheEntryOptions options, CancellationToken token = default)
     {
