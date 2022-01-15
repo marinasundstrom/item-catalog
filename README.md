@@ -10,6 +10,8 @@ A "Worker" service demonstrates how to communicate with a microservice through a
 
 Watch video [here](https://youtu.be/wXaQB18FvRk).
 
+Read the [Docs](https://github.com/marinasundstrom/item-catalog/tree/main/docs)
+
 ## Introduction
 
 Multi-platform app, with Web backend and API. Written entirely in .NET.
