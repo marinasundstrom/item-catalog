@@ -1,5 +1,6 @@
 ﻿using System;
 
+using Catalog.Application.Queries;
 using Catalog.Infrastructure.Persistence;
 
 using MediatR;

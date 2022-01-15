@@ -4,6 +4,8 @@ using Microsoft.Extensions.Caching.Distributed;
 
 using Catalog.Application;
 using Catalog.Infrastructure.Persistence;
+using Catalog.Application.Queries;
+using Catalog.Application.Commands;
 
 namespace WebApi;
 
@@ -12,7 +14,7 @@ static class RequestHandlers
     static async Task<IResult> GetItems(IMediator mediator, CancellationToken cancellationToken, int page = 0, int pageSize = 10,
         string? sortBy = null, Catalog.Application.SortDirection sortDirection = Catalog.Application.SortDirection.Desc)
     {
-        var result = await mediator.Send(new GetItemsQuery(page, pageSize, sortBy, sortDirection), cancellationToken);
+        var result = await mediator.Send(new GetItemsQuery(page + 1, pageSize, sortBy, sortDirection), cancellationToken);
 
         return Results.Ok(result);
     }

@@ -4,12 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 using Catalog.Domain.Entities;
 using Catalog.Infrastructure;
+using Catalog.Infrastructure.Repositories;
 
 namespace Catalog.Infrastructure.Persistence;
 
-public class CatalogContext : DbContext
+class CatalogContext : DbContext, IUnitOfWork
 {
     private readonly ICurrentUserService _currentUserService;
+    private ItemsRepository _items;
 
     public CatalogContext(DbContextOptions<CatalogContext> options, ICurrentUserService currentUserService) : base(options)
     {
@@ -22,6 +24,8 @@ public class CatalogContext : DbContext
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(Configurations.ItemConfiguration).Assembly);
     }
+
+    IItemsRepository IUnitOfWork.Items => _items ??= new ItemsRepository(this);
 
 #nullable disable
 
@@ -60,5 +64,11 @@ public class CatalogContext : DbContext
         var result = await base.SaveChangesAsync(cancellationToken);
 
         return result;
+    }
+
+    public async Task<ITransaction> BeginTransactionAsync()
+    {
+        return new UoWTransaction(
+            await Database.BeginTransactionAsync());
     }
 }

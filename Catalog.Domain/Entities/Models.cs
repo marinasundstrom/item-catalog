@@ -2,7 +2,7 @@
 
 namespace Catalog.Domain.Entities;
 
-public class Item : AuditableEntity, ISoftDelete
+public class Item : AuditableEntity, IAggregateRoot<string>, ISoftDelete
 {
     public Item()
     {

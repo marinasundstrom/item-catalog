@@ -7,7 +7,7 @@ using Catalog.Domain.Entities;
 
 namespace Catalog.Infrastructure.Persistence.Configurations;
 
-public class ItemConfiguration : IEntityTypeConfiguration<Item>
+class ItemConfiguration : IEntityTypeConfiguration<Item>
 {
     public void Configure(EntityTypeBuilder<Item> builder)
     {
