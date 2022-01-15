@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Security.Claims;
 
+using Catalog.Infrastructure;
+
 namespace WebApi.Services;
 
 public class CurrentUserService : ICurrentUserService

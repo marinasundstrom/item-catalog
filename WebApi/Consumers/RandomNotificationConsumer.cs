@@ -3,22 +3,23 @@
 using Contracts;
 using Microsoft.AspNetCore.SignalR;
 using WebApi.Hubs;
+using Catalog.Application.Common.Interfaces;
 
 namespace Worker.Consumers;
 
 public class RandomNotificationConsumer : IConsumer<RandomNotification>
 {
-    private readonly IHubContext<NotificationHub, INotificationClient> _hubContext;
+    private readonly INotificationClient _notificationClient;
 
-    public RandomNotificationConsumer(IHubContext<NotificationHub, INotificationClient> hubContext)
+    public RandomNotificationConsumer(INotificationClient notificationClient)
     {
-        _hubContext = hubContext;
+        _notificationClient = notificationClient;
     }
 
     public async Task Consume(ConsumeContext<RandomNotification> context)
     {
         var message = context.Message;
 
-        await _hubContext.Clients.All.NotificationReceived(message.Message);
+        await _notificationClient.NotificationReceived(message.Message);
     }
 }

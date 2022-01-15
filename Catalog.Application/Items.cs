@@ -1,19 +1,17 @@
 ﻿using System.Text.Json.Serialization;
 
-using Azure.Storage.Blobs;
-
 using MediatR;
 
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 using Newtonsoft.Json.Converters;
 
-using WebApi.Data;
-using WebApi.Hubs;
-using WebApi.Models;
+using Catalog.Infrastructure.Persistence;
+using Catalog.Domain.Entities;
+using Catalog.Infrastructure;
+using Catalog.Application.Common.Interfaces;
 
-namespace WebApi.Application;
+namespace Catalog.Application;
 
 public class GetItemsQuery : IRequest<Results<ItemDto>>
 {
@@ -56,7 +54,7 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
             {
                 query = query.OrderBy(
                     request.SortBy,
-                    request.SortDirection == Application.SortDirection.Desc ? WebApi.SortDirection.Descending : WebApi.SortDirection.Ascending);
+                    request.SortDirection == Application.SortDirection.Desc ? Infrastructure.SortDirection.Descending : Infrastructure.SortDirection.Ascending);
             }
 
             var items = await query.ToListAsync(cancellationToken);
@@ -67,19 +65,6 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
         }
     }
 }
-
-[JsonConverter(typeof(StringEnumConverter))]
-public enum SortDirection
-{
-    Asc = 2,
-    Desc = 1
-}
-
-public record ItemDto(
-    string Id, string Name, string? Description, string? Image,
-    DateTime Created, string CreatedBy, DateTime? LastModified, string? LastModifiedBy);
-
-public record class Results<T>(IEnumerable<T> Items, int TotalCount);
 
 public class GetItemQuery : IRequest<ItemDto?>
 {
@@ -128,13 +113,13 @@ public class AddItemCommand : IRequest
     {
         private readonly CatalogContext context;
         private readonly IUrlHelper urlHelper;
-        private readonly IHubContext<ItemsHub, IItemsClient> hubContext;
+        private readonly IItemsClient client;
 
-        public AddItemCommandHandler(CatalogContext context, IUrlHelper urlHelper, IHubContext<ItemsHub, IItemsClient> hubContext)
+        public AddItemCommandHandler(CatalogContext context, IUrlHelper urlHelper, IItemsClient client)
         {
             this.context = context;
             this.urlHelper = urlHelper;
-            this.hubContext = hubContext;
+            this.client = client;
         }
 
         public async Task<Unit> Handle(AddItemCommand request, CancellationToken cancellationToken)
@@ -146,7 +131,7 @@ public class AddItemCommand : IRequest
 
             var itemDto = new ItemDto(item.Id, item.Name, item.Description, urlHelper.CreateImageUrl(item.Image), item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy);
 
-            await hubContext.Clients.All.ItemAdded(itemDto);
+            await client.ItemAdded(itemDto);
 
             return Unit.Value;
         }
@@ -165,12 +150,12 @@ public class DeleteItemCommand : IRequest<DeletionResult>
     public class DeleteItemCommandHandler : IRequestHandler<DeleteItemCommand, DeletionResult>
     {
         private readonly CatalogContext context;
-        private readonly IHubContext<ItemsHub, IItemsClient> hubContext;
+        private readonly IItemsClient client;
 
-        public DeleteItemCommandHandler(CatalogContext context, IHubContext<ItemsHub, IItemsClient> hubContext)
+        public DeleteItemCommandHandler(CatalogContext context, IItemsClient client)
         {
             this.context = context;
-            this.hubContext = hubContext;
+            this.client = client;
         }
 
         public async Task<DeletionResult> Handle(DeleteItemCommand request, CancellationToken cancellationToken)
@@ -186,7 +171,7 @@ public class DeleteItemCommand : IRequest<DeletionResult>
 
             await context.SaveChangesAsync();
 
-            await hubContext.Clients.All.ItemDeleted(item.Id, item.Name);
+            await client.ItemDeleted(item.Id, item.Name);
 
             return DeletionResult.Successful;
         }
@@ -215,15 +200,15 @@ public class UploadImageCommand : IRequest<UploadImageResult>
     {
         private readonly CatalogContext context;
         private readonly IUrlHelper urlHelper;
-        private readonly BlobServiceClient blobServiceClient;
-        private readonly IHubContext<ItemsHub, IItemsClient> hubContext;
+        private readonly IFileUploaderService _fileUploaderService;
+        private readonly IItemsClient client;
 
-        public UploadImageCommandHandler(CatalogContext context, IUrlHelper urlHelper, BlobServiceClient blobServiceClient, IHubContext<ItemsHub, IItemsClient> hubContext)
+        public UploadImageCommandHandler(CatalogContext context, IUrlHelper urlHelper, IFileUploaderService fileUploaderService, IItemsClient client)
         {
             this.context = context;
             this.urlHelper = urlHelper;
-            this.blobServiceClient = blobServiceClient;
-            this.hubContext = hubContext;
+            this._fileUploaderService = fileUploaderService;
+            this.client = client;
         }
 
         public async Task<UploadImageResult> Handle(UploadImageCommand request, CancellationToken cancellationToken)
@@ -235,16 +220,14 @@ public class UploadImageCommand : IRequest<UploadImageResult>
                 return UploadImageResult.Successful;
             }
 
-            var blobContainerClient = blobServiceClient.GetBlobContainerClient("images");
-
             string imageId = $"image-{request.Id}";
 
-            var response = await blobContainerClient.UploadBlobAsync(imageId, request.Stream, cancellationToken);
+            await _fileUploaderService.UploadFileAsync(imageId, request.Stream, cancellationToken);
 
             item.Image = imageId;
             await context.SaveChangesAsync();
 
-            await hubContext.Clients.All.ImageUploaded(item.Id, urlHelper.CreateImageUrl(item.Image)!);
+            await client.ImageUploaded(item.Id, urlHelper.CreateImageUrl(item.Image)!);
 
             return UploadImageResult.Successful;
         }

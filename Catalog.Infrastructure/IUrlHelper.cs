@@ -1,4 +1,4 @@
-﻿namespace WebApi.Application;
+﻿namespace Catalog.Infrastructure;
 
 public interface IUrlHelper
 {

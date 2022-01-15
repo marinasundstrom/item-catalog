@@ -4,22 +4,23 @@ using MassTransit;
 using Contracts;
 using Microsoft.AspNetCore.SignalR;
 using WebApi.Hubs;
+using Catalog.Application.Common.Interfaces;
 
 namespace Worker.Consumers;
 
 public class DoSomethingResponseConsumer : IConsumer<DoSomethingResponse>
 {
-    private readonly IHubContext<SomethingHub, ISomethingClient> _hubContext;
+    private readonly ISomethingClient _somethingClient;
 
-    public DoSomethingResponseConsumer(IHubContext<SomethingHub, ISomethingClient> hubContext)
+    public DoSomethingResponseConsumer(ISomethingClient somethingClient)
     {
-        _hubContext = hubContext;
+        _somethingClient = somethingClient;
     }
 
     public async Task Consume(ConsumeContext<DoSomethingResponse> context)
     {
         var message = context.Message;
 
-        await _hubContext.Clients.All.ResponseReceived(message.Message);
+        await _somethingClient.ResponseReceived(message.Message);
     }
 }

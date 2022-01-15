@@ -1,24 +1,16 @@
 ﻿using Azure.Identity;
 using Azure.Storage.Blobs;
 
-using Contracts;
+using Catalog.Infrastructure;
+using Catalog.Infrastructure.Persistence;
 
 using MassTransit;
-
-using MediatR;
-
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 
 using WebApi;
-using WebApi.Application;
-using WebApi.Data;
+using Catalog.Application;
 using WebApi.Hubs;
-using WebApi.Models;
-using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,15 +18,15 @@ var services = builder.Services;
 
 var Configuration = builder.Configuration;
 
+services.AddApplication(Configuration);
+services.AddInfrastructure(Configuration);
+services.AddServices();
+
 services
     .AddControllers()
     .AddNewtonsoftJson();
 
 services.AddHttpContextAccessor();
-
-services.AddScoped<ICurrentUserService, CurrentUserService>();
-
-services.AddSqlServer<CatalogContext>(Configuration.GetConnectionString("mssql"));
 
 services.AddEndpointsApiExplorer(); 
 
@@ -59,10 +51,6 @@ services.AddAzureClients(builder =>
 });
 
 services.AddSignalR();
-
-services.AddMediatR(typeof(Program));
-
-services.AddScoped<WebApi.Application.IUrlHelper, UrlHelper>();
 
 services.AddMassTransit(x =>
 {
@@ -106,7 +94,7 @@ app.MapGet("/info", () =>
 .WithTags("Info")
 .Produces<string>();
 
-await app.SeedAsync();
+await app.Services.SeedAsync();
 
 app.UseEndpoints(endpoints =>
 {

@@ -1,4 +1,4 @@
-﻿namespace WebApi.Hubs;
+﻿namespace Catalog.Application.Common.Interfaces;
 
 public interface INotificationClient
 {

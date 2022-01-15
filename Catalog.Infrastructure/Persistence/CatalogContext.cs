@@ -2,10 +2,10 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using WebApi.Models;
-using WebApi.Services;
+using Catalog.Domain.Entities;
+using Catalog.Infrastructure;
 
-namespace WebApi.Data;
+namespace Catalog.Infrastructure.Persistence;
 
 public class CatalogContext : DbContext
 {

@@ -1,4 +1,4 @@
-﻿namespace WebApi.Models;
+﻿namespace Catalog.Domain.Entities;
 
 public abstract class AuditableEntity
 {

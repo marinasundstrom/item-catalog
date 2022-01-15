@@ -2,13 +2,12 @@
 
 using Azure.Storage.Blobs;
 
+using Catalog.Application;
+
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
-using WebApi.Application;
-using WebApi.Data;
 
 namespace WebApi.Controllers;
 

@@ -3,9 +3,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using WebApi.Models;
+using Catalog.Domain.Entities;
 
-namespace WebApi.Data.Configurations;
+namespace Catalog.Infrastructure.Persistence.Configurations;
 
 public class ItemConfiguration : IEntityTypeConfiguration<Item>
 {

@@ -1,5 +1,6 @@
 ﻿using System;
-namespace WebApi.Models;
+
+namespace Catalog.Domain.Entities;
 
 public class Item : AuditableEntity, ISoftDelete
 {

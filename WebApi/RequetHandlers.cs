@@ -2,15 +2,15 @@ using MediatR;
 
 using Microsoft.Extensions.Caching.Distributed;
 
-using WebApi.Application;
-using WebApi.Data;
+using Catalog.Application;
+using Catalog.Infrastructure.Persistence;
 
 namespace WebApi;
 
 static class RequestHandlers
 {
     static async Task<IResult> GetItems(IMediator mediator, CancellationToken cancellationToken, int page = 0, int pageSize = 10,
-        string? sortBy = null, Application.SortDirection sortDirection =  Application.SortDirection.Desc)
+        string? sortBy = null, Catalog.Application.SortDirection sortDirection = Catalog.Application.SortDirection.Desc)
     {
         var result = await mediator.Send(new GetItemsQuery(page, pageSize, sortBy, sortDirection), cancellationToken);
 

@@ -1,7 +1,4 @@
-using WebApi.Application;
-using WebApi.Data;
-
-namespace WebApi.Hubs;
+namespace Catalog.Application.Common.Interfaces;
 
 public interface IItemsClient
 {

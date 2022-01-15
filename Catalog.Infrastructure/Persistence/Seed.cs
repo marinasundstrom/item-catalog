@@ -1,11 +1,15 @@
-using WebApi.Data;
-using WebApi.Models;
+using Microsoft.Extensions.DependencyInjection;
 
-static class Seed 
+using Catalog.Infrastructure.Persistence;
+using Catalog.Domain.Entities;
+
+namespace Catalog.Infrastructure.Persistence;
+
+public static class Seed 
 {
-    public static async Task SeedAsync(this WebApplication app) 
+    public static async Task SeedAsync(this IServiceProvider services) 
     {
-        using var scope = app.Services.CreateScope();
+        using var scope = services.CreateScope();
         using var context = scope.ServiceProvider.GetRequiredService<CatalogContext>();
         
         //await context.Database.EnsureDeletedAsync();
