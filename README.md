@@ -8,9 +8,13 @@ There is also a Web version of the app.
 
 A "Worker" service demonstrates how to communicate with a microservice through asynchronous messaging.
 
-Watch video [here](https://youtu.be/wXaQB18FvRk).
+**For more info:**
 
-Read the [Docs](https://github.com/marinasundstrom/item-catalog/tree/main/docs)
+* Watch [demo video](https://youtu.be/wXaQB18FvRk).
+
+* Features explained [here](https://github.com/marinasundstrom/item-catalog/blob/main/docs/features.md).
+
+* Read the [documentation](https://github.com/marinasundstrom/item-catalog/tree/main/docs).
 
 ## Introduction
 
