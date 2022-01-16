@@ -7,19 +7,19 @@
 name: webapi
 services:
 - name: webapp
-  project: Catalog.Web/Catalog.Web.csproj
+  project: Client/Catalog.Web/Catalog.Web.csproj
   bindings:
   - protocol: https
     port: 5010
 
 - name: webapi
-  project: WebApi/WebApi.csproj
+  project: Server/AppService/WebApi/WebApi.csproj
   bindings:
   - protocol: https
     port: 5020
 
 - name: worker
-  project: Worker/Worker.csproj
+  project: Server/Worker/Worker.csproj
   bindings:
   - protocol: https
     port: 5030
