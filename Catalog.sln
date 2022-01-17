@@ -23,13 +23,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Worker", "Server\Worker\Wor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Server\Contracts\Contracts.csproj", "{6C545AF3-D120-42E1-9085-84304FC9365E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Application", "Server\AppService\Catalog.Application\Catalog.Application.csproj", "{5703C975-1DF2-4AC7-BD7D-133F2DAE2FB2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Server\AppService\Application\Application.csproj", "{5703C975-1DF2-4AC7-BD7D-133F2DAE2FB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Infrastructure", "Server\AppService\Catalog.Infrastructure\Catalog.Infrastructure.csproj", "{F4BC4E39-94AA-437D-BE25-EC7C9380858D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Server\AppService\Infrastructure\Infrastructure.csproj", "{F4BC4E39-94AA-437D-BE25-EC7C9380858D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Domain", "Server\AppService\Catalog.Domain\Catalog.Domain.csproj", "{EFA9EA78-99DB-4DF6-B359-4263E264B72B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Server\AppService\Domain\Domain.csproj", "{EFA9EA78-99DB-4DF6-B359-4263E264B72B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Application.Dtos", "Server\AppService\Catalog.Application.Dtos\Catalog.Application.Dtos.csproj", "{3BE6607E-0E41-493E-88D6-6A20E411F97C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Dtos", "Server\AppService\Application.Dtos\Application.Dtos.csproj", "{3BE6607E-0E41-493E-88D6-6A20E411F97C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{0835A9D5-FAED-4BE3-94E1-5D9E67ABD85C}"
 EndProject
