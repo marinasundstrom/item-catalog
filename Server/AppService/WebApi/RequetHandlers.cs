@@ -9,7 +9,7 @@ using Catalog.Application.Commands;
 
 namespace Catalog.WebApi;
 
-static class RequestHandlers
+static partial class RequestHandlers
 {
     static async Task<IResult> GetItems(IMediator mediator, CancellationToken cancellationToken, int page = 0, int pageSize = 10,
         string? sortBy = null, Catalog.Application.SortDirection sortDirection = Catalog.Application.SortDirection.Desc)
@@ -90,12 +90,5 @@ static class RequestHandlers
         .Produces(StatusCodes.Status404NotFound);
 
         return app;
-    }
-
-    public class AddItemDto
-    {
-        public string Name { get; set; } = null!;
-
-        public string Description { get; set; } = null!;
     }
 }
