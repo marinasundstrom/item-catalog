@@ -2,11 +2,11 @@
 
 using Microsoft.AspNetCore.SignalR;
 
-using WebApi.Hubs;
+using Catalog.WebApi.Hubs;
 
 using Catalog.Application.Common.Interfaces;
 
-namespace WebApi.Services;
+namespace Catalog.WebApi.Services;
 
 public class NotificationClient : INotificationClient
 {

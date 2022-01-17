@@ -7,7 +7,7 @@ using Catalog.Infrastructure.Persistence;
 using Catalog.Application.Queries;
 using Catalog.Application.Commands;
 
-namespace WebApi;
+namespace Catalog.WebApi;
 
 static class RequestHandlers
 {

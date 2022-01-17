@@ -4,7 +4,7 @@ using Catalog.Application.Common.Interfaces;
 
 using Microsoft.AspNetCore.SignalR;
 
-namespace WebApi.Hubs;
+namespace Catalog.WebApi.Hubs;
 
 public class ItemsHub : Hub<IItemsClient>
 {

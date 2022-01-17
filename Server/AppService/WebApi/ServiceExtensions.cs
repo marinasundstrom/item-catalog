@@ -4,10 +4,10 @@ using Catalog.Application;
 using Catalog.Application.Common.Interfaces;
 using Catalog.Infrastructure;
 
-using WebApi.Hubs;
-using WebApi.Services;
+using Catalog.WebApi.Hubs;
+using Catalog.WebApi.Services;
 
-namespace WebApi
+namespace Catalog.WebApi
 {
     public static class ServiceExtensions
     {

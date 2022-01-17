@@ -8,9 +8,9 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 
-using WebApi;
+using Catalog.WebApi;
 using Catalog.Application;
-using WebApi.Hubs;
+using Catalog.WebApi.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -2,7 +2,7 @@
 
 using Contracts;
 using Microsoft.AspNetCore.SignalR;
-using WebApi.Hubs;
+using Catalog.WebApi.Hubs;
 using Catalog.Application.Common.Interfaces;
 
 namespace Worker.Consumers;

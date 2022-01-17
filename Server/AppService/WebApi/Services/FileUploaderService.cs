@@ -2,7 +2,7 @@
 
 using Catalog.Application.Common.Interfaces;
 
-namespace WebApi.Services;
+namespace Catalog.WebApi.Services;
 
 public class FileUploaderService : IFileUploaderService
 {

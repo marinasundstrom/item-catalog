@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 using Catalog.Infrastructure;
 
-namespace WebApi.Services;
+namespace Catalog.WebApi.Services;
 
 public class CurrentUserService : ICurrentUserService
 {

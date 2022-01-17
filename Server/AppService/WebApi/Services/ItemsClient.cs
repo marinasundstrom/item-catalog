@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.SignalR;
 
 using Catalog.Application.Common.Interfaces;
 
-using WebApi.Hubs;
+using Catalog.WebApi.Hubs;
 
-namespace WebApi.Services;
+namespace Catalog.WebApi.Services;
 
 public class ItemsClient : IItemsClient
 {

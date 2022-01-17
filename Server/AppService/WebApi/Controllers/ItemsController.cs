@@ -10,7 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace WebApi.Controllers;
+namespace Catalog.WebApi.Controllers;
 
 [ApiController]
 [Route("/")]
