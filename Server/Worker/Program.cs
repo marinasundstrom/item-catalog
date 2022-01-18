@@ -7,6 +7,7 @@ using Hangfire;
 using Hangfire.SqlServer;
 
 using MassTransit;
+
 using MediatR;
 
 using Worker.Services;
@@ -68,11 +69,6 @@ using (var connection = new SqlConnection(configuration.GetConnectionString("Han
     }
 }
 
-var backgroundJobs = app.Services.GetRequiredService<IBackgroundJobClient>();
-backgroundJobs.Enqueue(() => Console.WriteLine("Hello world from Hangfire!"));
-
-var recurringJobs = app.Services.GetRequiredService<IRecurringJobManager>();
-recurringJobs.AddOrUpdate<INotifier>("test", (notifier) => notifier.Notify(), Cron.Minutely());
+app.Services.InitializeJobs();
 
 app.Run();
-
