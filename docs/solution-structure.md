@@ -4,9 +4,10 @@
 * Client - Blazor app
     * Mobile (iOS, Android, Windows, macOS)
     * Web
+    * Web API Client - Generated from Open API spec
 
 * Server
-    * AppService 
+    * App Service 
       * Domain - Entities and rules pertaining to them
       * Application - The application
         * Dtos
