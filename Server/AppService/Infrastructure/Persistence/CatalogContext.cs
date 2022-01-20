@@ -6,6 +6,7 @@ using Catalog.Domain.Entities;
 using Catalog.Infrastructure;
 using Catalog.Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore.Storage;
+using Catalog.Domain.Common;
 
 namespace Catalog.Infrastructure.Persistence;
 

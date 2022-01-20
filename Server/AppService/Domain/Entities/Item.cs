@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Catalog.Domain.Common;
+
 namespace Catalog.Domain.Entities;
 
 public class Item : AuditableEntity, IAggregateRoot<string>, ISoftDelete
