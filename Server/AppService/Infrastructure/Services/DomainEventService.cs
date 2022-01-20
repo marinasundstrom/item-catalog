@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Catalog.Infrastructure.Services;
 
-public class DomainEventService : IDomainEventService
+class DomainEventService : IDomainEventService
 {
     private readonly ILogger<DomainEventService> _logger;
     private readonly IPublisher _mediator;
