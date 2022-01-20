@@ -36,4 +36,3 @@ public class ItemCreatedEventHandlerHandler : INotificationHandler<DomainEventNo
         await _itemsClient.ItemAdded(itemDto);
     }
 }
-

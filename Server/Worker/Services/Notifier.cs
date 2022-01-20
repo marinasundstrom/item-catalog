@@ -20,4 +20,3 @@ public class Notifier : INotifier
         await _bus.Publish(new RandomNotification($"This message was sent at: {DateTime.Now}"));
     }
 }
-

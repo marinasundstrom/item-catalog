@@ -1,10 +1,9 @@
 ﻿using System;
 
-using Microsoft.AspNetCore.SignalR;
-
+using Catalog.Application.Common.Interfaces;
 using Catalog.WebApi.Hubs;
 
-using Catalog.Application.Common.Interfaces;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Catalog.WebApi.Services;
 
@@ -22,4 +21,3 @@ public class NotificationClient : INotificationClient
         await _notificationsHubContext.Clients.All.NotificationReceived(message);
     }
 }
-

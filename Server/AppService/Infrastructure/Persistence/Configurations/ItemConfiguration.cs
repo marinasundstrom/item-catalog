@@ -1,9 +1,9 @@
 ﻿using System;
 
+using Catalog.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using Catalog.Domain.Entities;
 
 namespace Catalog.Infrastructure.Persistence.Configurations;
 

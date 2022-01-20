@@ -1,8 +1,10 @@
 
-using MediatR;
 using Catalog.Application.Common.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Catalog.Domain.Events;
+
+using MediatR;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Items.Commands;
 

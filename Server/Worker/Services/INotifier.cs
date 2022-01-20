@@ -4,4 +4,3 @@ public interface INotifier
 {
     Task Notify();
 }
-

@@ -1,7 +1,8 @@
 ﻿using System;
-using MassTransit;
 
 using Contracts;
+
+using MassTransit;
 
 namespace Worker.Consumers;
 
@@ -18,4 +19,3 @@ public class DoSomethingConsumer : IConsumer<DoSomething>
         await context.Publish(new DoSomethingResponse($"The result is: {result}"));
     }
 }
-

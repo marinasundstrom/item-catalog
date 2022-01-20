@@ -31,4 +31,3 @@ public class ItemImageUploadedEventHandlerHandler : INotificationHandler<DomainE
         await _itemsClient.ImageUploaded(domainEvent.Id, _urlHelper.CreateImageUrl(item.Image)!);
     }
 }
-

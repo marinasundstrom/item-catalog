@@ -1,9 +1,10 @@
 
-using MediatR;
-using Catalog.Domain.Entities;
 using Catalog.Application.Common.Interfaces;
 using Catalog.Application.Models;
+using Catalog.Domain.Entities;
 using Catalog.Domain.Events;
+
+using MediatR;
 
 namespace Catalog.Application.Items.Commands;
 

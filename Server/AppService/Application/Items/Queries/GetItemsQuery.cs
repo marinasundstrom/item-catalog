@@ -1,10 +1,12 @@
 
-using MediatR;
-using Catalog.Domain;
-using Microsoft.EntityFrameworkCore;
 using Catalog.Application.Common.Interfaces;
-using Catalog.Application.Models;
 using Catalog.Application.Common.Models;
+using Catalog.Application.Models;
+using Catalog.Domain;
+
+using MediatR;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Items.Queries;
 

@@ -1,13 +1,13 @@
+using Catalog.Application;
+using Catalog.Application.Common.Models;
+using Catalog.Application.Items.Commands;
+using Catalog.Application.Items.Queries;
+using Catalog.Application.Models;
+using Catalog.Infrastructure.Persistence;
+
 using MediatR;
 
 using Microsoft.Extensions.Caching.Distributed;
-
-using Catalog.Application;
-using Catalog.Infrastructure.Persistence;
-using Catalog.Application.Items.Queries;
-using Catalog.Application.Items.Commands;
-using Catalog.Application.Models;
-using Catalog.Application.Common.Models;
 
 namespace Catalog.WebApi;
 
@@ -37,7 +37,7 @@ static partial class RequestHandlers
             }
 
             await cache.SetAsync(cacheKey, item,
-                new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow =  TimeSpan.FromMinutes(1) },
+                new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1) },
                 cancellationToken);
         }
 

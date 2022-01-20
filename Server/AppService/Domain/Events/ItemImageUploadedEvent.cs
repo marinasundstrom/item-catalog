@@ -13,4 +13,3 @@ public class ItemImageUploadedEvent : DomainEvent
 
     public string Id { get; }
 }
-

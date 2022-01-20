@@ -14,4 +14,3 @@ public class ItemDeletedEvent : DomainEvent
 
     public string Name { get; }
 }
-

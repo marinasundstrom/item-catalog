@@ -1,9 +1,11 @@
-﻿using MassTransit;
+﻿using Catalog.Application.Common.Interfaces;
+using Catalog.WebApi.Hubs;
 
 using Contracts;
+
+using MassTransit;
+
 using Microsoft.AspNetCore.SignalR;
-using Catalog.WebApi.Hubs;
-using Catalog.Application.Common.Interfaces;
 
 namespace Worker.Consumers;
 

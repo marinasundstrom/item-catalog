@@ -11,4 +11,3 @@ public class ItemCreatedEvent : DomainEvent
 
     public string Id { get; }
 }
-

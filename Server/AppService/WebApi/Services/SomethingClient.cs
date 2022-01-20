@@ -1,9 +1,8 @@
 ﻿
-using Microsoft.AspNetCore.SignalR;
-
 using Catalog.Application.Common.Interfaces;
-
 using Catalog.WebApi.Hubs;
+
+using Microsoft.AspNetCore.SignalR;
 
 namespace Catalog.WebApi.Services;
 
@@ -21,4 +20,3 @@ public class SomethingClient : ISomethingClient
         await _somethingHubContext.Clients.All.ResponseReceived(message);
     }
 }
-

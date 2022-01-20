@@ -1,16 +1,16 @@
 ﻿using Azure.Identity;
 using Azure.Storage.Blobs;
 
+using Catalog.Application;
 using Catalog.Infrastructure;
 using Catalog.Infrastructure.Persistence;
+using Catalog.WebApi;
+using Catalog.WebApi.Hubs;
 
 using MassTransit;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
-
-using Catalog.WebApi;
-using Catalog.Application;
-using Catalog.WebApi.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +28,7 @@ services
 
 services.AddHttpContextAccessor();
 
-services.AddEndpointsApiExplorer(); 
+services.AddEndpointsApiExplorer();
 
 // Register the Swagger services
 services.AddOpenApiDocument(config =>

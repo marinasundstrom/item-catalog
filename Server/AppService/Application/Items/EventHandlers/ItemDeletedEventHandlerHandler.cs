@@ -27,4 +27,3 @@ public class ItemDeletedEventHandlerHandler : INotificationHandler<DomainEventNo
         await _itemsClient.ItemDeleted(domainEvent.Id, domainEvent.Name);
     }
 }
-

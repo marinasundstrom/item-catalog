@@ -66,4 +66,3 @@ public class FilePickerService : IFilePickerService
         return stream;
     }
 }
-

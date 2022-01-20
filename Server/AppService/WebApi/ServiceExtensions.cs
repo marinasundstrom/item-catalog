@@ -7,30 +7,28 @@ using Catalog.Infrastructure;
 using Catalog.WebApi.Hubs;
 using Catalog.WebApi.Services;
 
-namespace Catalog.WebApi
+namespace Catalog.WebApi;
+
+public static class ServiceExtensions
 {
-    public static class ServiceExtensions
+    public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        public static IServiceCollection AddServices(this IServiceCollection services)
-        {
-            services.AddScoped<ICurrentUserService, CurrentUserService>();
-            services.AddScoped<IUrlHelper, UrlHelper>();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<IUrlHelper, UrlHelper>();
 
-            services.AddClients();
+        services.AddClients();
 
-            services.AddScoped<IFileUploaderService, FileUploaderService>();
+        services.AddScoped<IFileUploaderService, FileUploaderService>();
 
-            return services;
-        }
+        return services;
+    }
 
-        private static IServiceCollection AddClients(this IServiceCollection services)
-        {
-            services.AddScoped<IItemsClient, ItemsClient>();
-            services.AddScoped<INotificationClient, NotificationClient>();
-            services.AddScoped<ISomethingClient, SomethingClient>();
+    private static IServiceCollection AddClients(this IServiceCollection services)
+    {
+        services.AddScoped<IItemsClient, ItemsClient>();
+        services.AddScoped<INotificationClient, NotificationClient>();
+        services.AddScoped<ISomethingClient, SomethingClient>();
 
-            return services;
-        }
+        return services;
     }
 }
-

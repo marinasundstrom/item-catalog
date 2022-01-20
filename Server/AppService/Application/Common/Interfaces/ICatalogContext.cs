@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Catalog.Application.Common.Interfaces;
 
-public interface ICatalogContext 
+public interface ICatalogContext
 {
     DbSet<Item> Items { get; }
 
@@ -24,7 +24,7 @@ class UoWTransaction : ITransaction
 {
     private readonly IDbContextTransaction _transaction;
 
-    public UoWTransaction(IDbContextTransaction  transaction)
+    public UoWTransaction(IDbContextTransaction transaction)
     {
         _transaction = transaction;
     }
@@ -34,5 +34,5 @@ class UoWTransaction : ITransaction
 
     public void Dispose() => _transaction.Dispose();
 
-    public Task RollbackAsync() =>  _transaction.RollbackAsync();
+    public Task RollbackAsync() => _transaction.RollbackAsync();
 }

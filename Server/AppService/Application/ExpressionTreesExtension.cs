@@ -75,7 +75,7 @@ public static class ExpressionTreesExtension
             .MakeGenericMethod(typeof(Func<,>)
             .MakeGenericType(type, propertyAccess.Type));
 
-        return (LambdaExpression)method.Invoke(null, new object[] { propertyAccess, new ParameterExpression [] { parameterExpression } })!;
+        return (LambdaExpression)method.Invoke(null, new object[] { propertyAccess, new ParameterExpression[] { parameterExpression } })!;
     }
 
     static MemberExpression MakeAccessExpression(ParameterExpression parameterExpression, string p)
@@ -114,4 +114,3 @@ public class PropertyNotFoundException : Exception
     {
     }
 }
-

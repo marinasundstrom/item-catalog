@@ -1,12 +1,12 @@
 ﻿using System;
 
-using Microsoft.EntityFrameworkCore;
-
+using Catalog.Application.Common.Interfaces;
+using Catalog.Domain.Common;
 using Catalog.Domain.Entities;
 using Catalog.Infrastructure;
-using Catalog.Application.Common.Interfaces;
+
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using Catalog.Domain.Common;
 
 namespace Catalog.Infrastructure.Persistence;
 

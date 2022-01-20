@@ -3,9 +3,8 @@ namespace Catalog.Services;
 
 public class FilePickerService : IFilePickerService
 {
-    public async Task<Stream?> PickImage()
+    public Task<Stream?> PickImage()
     {
-        return null!;
+        return Task.FromResult(null!);
     }
 }
-
