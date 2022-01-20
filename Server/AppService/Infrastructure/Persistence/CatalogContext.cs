@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 
 using Catalog.Domain.Entities;
 using Catalog.Infrastructure;
-using Catalog.Infrastructure.Repositories;
+using Catalog.Application.Common.Interfaces;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Catalog.Infrastructure.Persistence;
 
-class CatalogContext : DbContext, IUnitOfWork
+class CatalogContext : DbContext, ICatalogContext
 {
     private readonly ICurrentUserService _currentUserService;
-    private ItemsRepository _items;
 
     public CatalogContext(DbContextOptions<CatalogContext> options, ICurrentUserService currentUserService) : base(options)
     {
@@ -24,8 +24,6 @@ class CatalogContext : DbContext, IUnitOfWork
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(Configurations.ItemConfiguration).Assembly);
     }
-
-    IItemsRepository IUnitOfWork.Items => _items ??= new ItemsRepository(this);
 
 #nullable disable
 

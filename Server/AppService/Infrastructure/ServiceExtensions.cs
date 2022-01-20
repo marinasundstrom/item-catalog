@@ -1,7 +1,6 @@
 ﻿using System;
 
 using Catalog.Infrastructure.Persistence;
-using Catalog.Infrastructure.Repositories;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +20,7 @@ public static class ServiceExtensions
     {
         services.AddSqlServer<CatalogContext>(configuration.GetConnectionString("mssql"));
 
-        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<CatalogContext>());
+        services.AddScoped<ICatalogContext>(sp => sp.GetRequiredService<CatalogContext>());
 
         return services;
     }

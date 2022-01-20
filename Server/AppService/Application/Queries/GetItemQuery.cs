@@ -1,7 +1,8 @@
 
 using MediatR;
 using Catalog.Infrastructure;
-using Catalog.Infrastructure.Repositories;
+using Catalog.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Queries;
 
@@ -16,10 +17,10 @@ public class GetItemQuery : IRequest<ItemDto?>
 
     public class GetItemQueryHandler : IRequestHandler<GetItemQuery, ItemDto?>
     {
-        private readonly IUnitOfWork context;
+        private readonly ICatalogContext context;
         private readonly IUrlHelper urlHelper;
 
-        public GetItemQueryHandler(IUnitOfWork context, IUrlHelper urlHelper)
+        public GetItemQueryHandler(ICatalogContext context, IUrlHelper urlHelper)
         {
             this.context = context;
             this.urlHelper = urlHelper;
@@ -27,7 +28,7 @@ public class GetItemQuery : IRequest<ItemDto?>
 
         public async Task<ItemDto?> Handle(GetItemQuery request, CancellationToken cancellationToken)
         {
-            var item = await context.Items.GetAsync(request.Id, cancellationToken);
+            var item = await context.Items.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
 
             if (item == null) return null;
 

@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Catalog.Infrastructure;
 
-static class ExpressionTreesExtension
+public static class ExpressionTreesExtension
 {
     static readonly MethodInfo orderByMethodInfo;
     static readonly MethodInfo orderByDescendingMethodInfo;

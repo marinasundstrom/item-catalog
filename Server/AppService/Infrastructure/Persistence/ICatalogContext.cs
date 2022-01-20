@@ -1,10 +1,13 @@
+using Catalog.Domain.Entities;
+
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Catalog.Infrastructure.Repositories;
+namespace Catalog.Infrastructure.Persistence;
 
-public interface IUnitOfWork 
+public interface ICatalogContext 
 {
-    IItemsRepository Items { get; }
+    DbSet<Item> Items { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
@@ -26,10 +29,10 @@ class UoWTransaction : ITransaction
         _transaction = transaction;
     }
 
-    public Task CommitAsync() =>  _transaction.CommitAsync();
+    public Task CommitAsync() => _transaction.CommitAsync();
 
 
-    public void Dispose()=>  _transaction.Dispose();
+    public void Dispose() => _transaction.Dispose();
 
-    public Task RollbackAsync()=>  _transaction.RollbackAsync();
+    public Task RollbackAsync() =>  _transaction.RollbackAsync();
 }

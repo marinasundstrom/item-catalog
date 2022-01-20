@@ -1,8 +1,9 @@
 
 using MediatR;
 using Catalog.Infrastructure;
-using Catalog.Infrastructure.Repositories;
 using Catalog.Domain;
+using Catalog.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Queries;
 
@@ -24,10 +25,10 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
 
     public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, Results<ItemDto>>
     {
-        private readonly IUnitOfWork context;
+        private readonly ICatalogContext context;
         private readonly IUrlHelper urlHelper;
 
-        public GetItemsQueryHandler(IUnitOfWork context, IUrlHelper urlHelper)
+        public GetItemsQueryHandler(ICatalogContext context, IUrlHelper urlHelper)
         {
             this.context = context;
             this.urlHelper = urlHelper;
@@ -35,24 +36,22 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
 
         public async Task<Results<ItemDto>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
         {
-            var specification = new PagedItemsSpecification(request.Page, request.PageSize);
+            var query = context.Items
+                .OrderBy(i => i.Created)
+                .Skip(request.Page * request.PageSize)
+                .Take(request.PageSize).AsQueryable();
 
-            if(request.SortBy is not null) 
+
+            var totalCount = await query.CountAsync();
+
+            if (request.SortBy is not null)
             {
-                if(request.SortDirection == Application.SortDirection.Asc) 
-                {
-                    specification.AddOrderBy(request.SortBy);
-                }
-                else if(request.SortDirection == Application.SortDirection.Desc) 
-                {
-                    specification.AddOrderByDescending(request.SortBy);
-                }
+                query = query.OrderBy(
+                    request.SortBy,
+                    request.SortDirection == Application.SortDirection.Desc ? Infrastructure.SortDirection.Descending : Infrastructure.SortDirection.Ascending);
             }
 
-            var items = await context.Items.GetAllAsync(specification, cancellationToken);
-
-            var totalCount = await context.Items.CountAsync(
-                new ItemsOrderByCreatedSpecification(), cancellationToken);
+            var items = await query.ToListAsync(cancellationToken);
 
             return new Results<ItemDto>(
                 items.Select(item => new ItemDto(item.Id, item.Name, item.Description, urlHelper.CreateImageUrl(item.Image), item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy)),

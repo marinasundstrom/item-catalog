@@ -2,7 +2,8 @@
 using MediatR;
 using Catalog.Infrastructure;
 using Catalog.Application.Common.Interfaces;
-using Catalog.Infrastructure.Repositories;
+using Catalog.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Commands;
 
@@ -20,12 +21,12 @@ public class UploadImageCommand : IRequest<UploadImageResult>
 
     public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, UploadImageResult>
     {
-        private readonly IUnitOfWork context;
+        private readonly ICatalogContext context;
         private readonly IUrlHelper urlHelper;
         private readonly IFileUploaderService _fileUploaderService;
         private readonly IItemsClient client;
 
-        public UploadImageCommandHandler(IUnitOfWork context, IUrlHelper urlHelper, IFileUploaderService fileUploaderService, IItemsClient client)
+        public UploadImageCommandHandler(ICatalogContext context, IUrlHelper urlHelper, IFileUploaderService fileUploaderService, IItemsClient client)
         {
             this.context = context;
             this.urlHelper = urlHelper;
@@ -35,7 +36,7 @@ public class UploadImageCommand : IRequest<UploadImageResult>
 
         public async Task<UploadImageResult> Handle(UploadImageCommand request, CancellationToken cancellationToken)
         {
-            var item = await context.Items.GetAsync(request.Id, cancellationToken);
+            var item = await context.Items.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
 
             if (item == null)
             {

@@ -3,7 +3,7 @@ using MediatR;
 using Catalog.Domain.Entities;
 using Catalog.Infrastructure;
 using Catalog.Application.Common.Interfaces;
-using Catalog.Infrastructure.Repositories;
+using Catalog.Infrastructure.Persistence;
 
 namespace Catalog.Application.Commands;
 
@@ -21,11 +21,11 @@ public class AddItemCommand : IRequest
 
     public class AddItemCommandHandler : IRequestHandler<AddItemCommand>
     {
-        private readonly IUnitOfWork context;
+        private readonly ICatalogContext context;
         private readonly IUrlHelper urlHelper;
         private readonly IItemsClient client;
 
-        public AddItemCommandHandler(IUnitOfWork context, IUrlHelper urlHelper, IItemsClient client)
+        public AddItemCommandHandler(ICatalogContext context, IUrlHelper urlHelper, IItemsClient client)
         {
             this.context = context;
             this.urlHelper = urlHelper;
