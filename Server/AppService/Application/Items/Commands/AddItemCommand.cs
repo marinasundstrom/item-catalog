@@ -3,6 +3,7 @@ using MediatR;
 using Catalog.Domain.Entities;
 using Catalog.Application.Common.Interfaces;
 using Catalog.Application.Models;
+using Catalog.Domain.Events;
 
 namespace Catalog.Application.Items.Commands;
 
@@ -35,12 +36,11 @@ public class AddItemCommand : IRequest
         {
             var item = new Item(Guid.NewGuid().ToString(), request.Name, request.Description);
 
+            item.DomainEvents.Add(new ItemCreatedEvent(item.Id));
+
             context.Items.Add(item);
+
             await context.SaveChangesAsync();
-
-            var itemDto = new ItemDto(item.Id, item.Name, item.Description, urlHelper.CreateImageUrl(item.Image), item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy);
-
-            await client.ItemAdded(itemDto);
 
             return Unit.Value;
         }

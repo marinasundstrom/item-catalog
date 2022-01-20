@@ -4,6 +4,7 @@ using Catalog.Domain;
 using Microsoft.EntityFrameworkCore;
 using Catalog.Application.Common.Interfaces;
 using Catalog.Application.Models;
+using Catalog.Application.Common.Models;
 
 namespace Catalog.Application.Items.Queries;
 

@@ -2,6 +2,7 @@
 using MediatR;
 using Catalog.Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Catalog.Domain.Events;
 
 namespace Catalog.Application.Items.Commands;
 
@@ -34,11 +35,11 @@ public class DeleteItemCommand : IRequest<DeletionResult>
                 return DeletionResult.NotFound;
             }
 
+            item.DomainEvents.Add(new ItemDeletedEvent(item.Id, item.Name));
+
             context.Items.Remove(item);
 
             await context.SaveChangesAsync();
-
-            await client.ItemDeleted(item.Id, item.Name);
 
             return DeletionResult.Successful;
         }

@@ -18,21 +18,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Remove="Microsoft.EntityFrameworkCore" />
-    <None Remove="Microsoft.Extensions.DependencyInjection.Abstractions" />
-    <None Remove="Microsoft.Extensions.Configuration.Abstractions" />
-    <None Remove="Models\" />
-    <None Remove="Common\" />
-    <None Remove="Items\" />
-    <None Remove="Items\Commands\" />
-    <None Remove="Items\Queries\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Common\" />
-    <Folder Include="Items\" />
-    <Folder Include="Items\Commands\" />
-    <Folder Include="Items\Queries\" />
-  </ItemGroup>
+
 </Project>

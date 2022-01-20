@@ -2,6 +2,7 @@
 using MediatR;
 using Catalog.Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Catalog.Domain.Events;
 
 namespace Catalog.Application.Items.Commands;
 
@@ -20,14 +21,12 @@ public class UploadImageCommand : IRequest<UploadImageResult>
     public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, UploadImageResult>
     {
         private readonly ICatalogContext context;
-        private readonly IUrlHelper urlHelper;
         private readonly IFileUploaderService _fileUploaderService;
         private readonly IItemsClient client;
 
-        public UploadImageCommandHandler(ICatalogContext context, IUrlHelper urlHelper, IFileUploaderService fileUploaderService, IItemsClient client)
+        public UploadImageCommandHandler(ICatalogContext context, IFileUploaderService fileUploaderService, IItemsClient client)
         {
             this.context = context;
-            this.urlHelper = urlHelper;
             this._fileUploaderService = fileUploaderService;
             this.client = client;
         }
@@ -45,10 +44,10 @@ public class UploadImageCommand : IRequest<UploadImageResult>
 
             await _fileUploaderService.UploadFileAsync(imageId, request.Stream, cancellationToken);
 
+            item.DomainEvents.Add(new ItemImageUploadedEvent(item.Id));
+
             item.Image = imageId;
             await context.SaveChangesAsync();
-
-            await client.ImageUploaded(item.Id, urlHelper.CreateImageUrl(item.Image)!);
 
             return UploadImageResult.Successful;
         }

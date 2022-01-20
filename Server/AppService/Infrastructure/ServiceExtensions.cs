@@ -2,6 +2,7 @@
 
 using Catalog.Application.Common.Interfaces;
 using Catalog.Infrastructure.Persistence;
+using Catalog.Infrastructure.Services;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +23,10 @@ public static class ServiceExtensions
         services.AddSqlServer<CatalogContext>(configuration.GetConnectionString("mssql"));
 
         services.AddScoped<ICatalogContext>(sp => sp.GetRequiredService<CatalogContext>());
+
+        services.AddScoped<IDomainEventService, DomainEventService>();
+
+        services.AddTransient<IDateTime, DateTimeService>();
 
         return services;
     }

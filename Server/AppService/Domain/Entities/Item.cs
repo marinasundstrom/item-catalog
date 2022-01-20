@@ -4,7 +4,7 @@ using Catalog.Domain.Common;
 
 namespace Catalog.Domain.Entities;
 
-public class Item : AuditableEntity, IAggregateRoot<string>, ISoftDelete
+public class Item : AuditableEntity, IAggregateRoot<string>, ISoftDelete, IHasDomainEvent
 {
     public Item()
     {
@@ -26,4 +26,6 @@ public class Item : AuditableEntity, IAggregateRoot<string>, ISoftDelete
 
     public DateTime? Deleted { get; set; }
     public string? DeletedBy { get; set; }
+
+    public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
 }

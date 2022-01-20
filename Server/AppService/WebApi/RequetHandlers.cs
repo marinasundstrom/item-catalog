@@ -7,6 +7,7 @@ using Catalog.Infrastructure.Persistence;
 using Catalog.Application.Items.Queries;
 using Catalog.Application.Items.Commands;
 using Catalog.Application.Models;
+using Catalog.Application.Common.Models;
 
 namespace Catalog.WebApi;
 

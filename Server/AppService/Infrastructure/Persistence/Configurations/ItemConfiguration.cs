@@ -13,5 +13,7 @@ class ItemConfiguration : IEntityTypeConfiguration<Item>
     {
         builder.ToTable("Items");
         builder.HasQueryFilter(i => i.Deleted == null);
+
+        builder.Ignore(i => i.DomainEvents);
     }
 }
