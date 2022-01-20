@@ -1,7 +1,6 @@
 
 using MediatR;
 using Catalog.Application.Common.Interfaces;
-using Catalog.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Commands;

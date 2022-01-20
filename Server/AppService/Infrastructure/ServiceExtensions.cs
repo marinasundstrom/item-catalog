@@ -1,5 +1,6 @@
 ﻿using System;
 
+using Catalog.Application.Common.Interfaces;
 using Catalog.Infrastructure.Persistence;
 
 using Microsoft.Extensions.Configuration;

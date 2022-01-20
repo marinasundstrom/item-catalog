@@ -1,7 +1,8 @@
 
+using Catalog.Application.Common.Interfaces;
+using Catalog.Application.Models;
+
 using MediatR;
-using Catalog.Infrastructure;
-using Catalog.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Queries;

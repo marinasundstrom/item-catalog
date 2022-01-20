@@ -3,7 +3,7 @@ using Catalog.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Catalog.Infrastructure.Persistence;
+namespace Catalog.Application.Common.Interfaces;
 
 public interface ICatalogContext 
 {

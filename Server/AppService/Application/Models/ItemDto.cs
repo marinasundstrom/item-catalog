@@ -1,4 +1,4 @@
-﻿namespace Catalog.Application;
+﻿namespace Catalog.Application.Models;
 
 public record ItemDto(
     string Id, string Name, string? Description, string? Image,

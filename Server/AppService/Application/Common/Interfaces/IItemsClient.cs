@@ -1,3 +1,5 @@
+using Catalog.Application.Models;
+
 namespace Catalog.Application.Common.Interfaces;
 
 public interface IItemsClient

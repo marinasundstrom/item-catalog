@@ -1,9 +1,9 @@
 
 using MediatR;
-using Catalog.Infrastructure;
 using Catalog.Domain;
-using Catalog.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Catalog.Application.Common.Interfaces;
+using Catalog.Application.Models;
 
 namespace Catalog.Application.Queries;
 
@@ -13,9 +13,9 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
 
     public int PageSize { get; set; }
     public string? SortBy { get; }
-    public SortDirection? SortDirection { get; }
+    public Models.SortDirection? SortDirection { get; }
 
-    public GetItemsQuery(int page, int pageSize, string? sortBy = null, SortDirection? sortDirection = null)
+    public GetItemsQuery(int page, int pageSize, string? sortBy = null, Models.SortDirection? sortDirection = null)
     {
         Page = page;
         PageSize = pageSize;
@@ -48,7 +48,7 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
             {
                 query = query.OrderBy(
                     request.SortBy,
-                    request.SortDirection == Application.SortDirection.Desc ? Infrastructure.SortDirection.Descending : Infrastructure.SortDirection.Ascending);
+                    request.SortDirection == Models.SortDirection.Desc ? Application.SortDirection.Descending : Application.SortDirection.Ascending);
             }
 
             var items = await query.ToListAsync(cancellationToken);

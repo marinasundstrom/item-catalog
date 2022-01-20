@@ -1,4 +1,4 @@
-﻿namespace Catalog.Application;
+﻿namespace Catalog.Application.Models;
 
 public class AddItemDto
 {

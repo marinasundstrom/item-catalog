@@ -6,13 +6,14 @@ using Catalog.Application;
 using Catalog.Infrastructure.Persistence;
 using Catalog.Application.Queries;
 using Catalog.Application.Commands;
+using Catalog.Application.Models;
 
 namespace Catalog.WebApi;
 
 static partial class RequestHandlers
 {
     static async Task<IResult> GetItems(IMediator mediator, CancellationToken cancellationToken, int page = 0, int pageSize = 10,
-        string? sortBy = null, Catalog.Application.SortDirection sortDirection = Catalog.Application.SortDirection.Desc)
+        string? sortBy = null, Catalog.Application.Models.SortDirection sortDirection = Catalog.Application.Models.SortDirection.Desc)
     {
         var result = await mediator.Send(new GetItemsQuery(page, pageSize, sortBy, sortDirection), cancellationToken);
 

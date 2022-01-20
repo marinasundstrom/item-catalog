@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.SignalR;
 using Catalog.Application.Common.Interfaces;
 
 using Catalog.WebApi.Hubs;
+using Catalog.Application.Models;
 
 namespace Catalog.WebApi.Services;
 

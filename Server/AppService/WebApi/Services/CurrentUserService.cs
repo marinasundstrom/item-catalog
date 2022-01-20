@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 
+using Catalog.Application.Common.Interfaces;
 using Catalog.Infrastructure;
 
 namespace Catalog.WebApi.Services;

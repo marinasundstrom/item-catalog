@@ -1,5 +1,6 @@
 ﻿using Catalog.Infrastructure;
 
+using Catalog.Application.Common.Interfaces;
 namespace Catalog.WebApi.Services;
 
 public class UrlHelper : IUrlHelper

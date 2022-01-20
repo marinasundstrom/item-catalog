@@ -1,9 +1,8 @@
 
 using MediatR;
 using Catalog.Domain.Entities;
-using Catalog.Infrastructure;
 using Catalog.Application.Common.Interfaces;
-using Catalog.Infrastructure.Persistence;
+using Catalog.Application.Models;
 
 namespace Catalog.Application.Commands;
 
