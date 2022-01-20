@@ -21,13 +21,4 @@
     </ProjectReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Hangfire.Core" />
-    <None Remove="Hangfire.AspNetCore" />
-    <None Remove="Hangfire.SqlServer" />
-    <None Remove="Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
 </Project>
