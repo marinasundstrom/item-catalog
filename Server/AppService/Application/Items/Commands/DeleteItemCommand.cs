@@ -3,7 +3,7 @@ using MediatR;
 using Catalog.Application.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Application.Commands;
+namespace Catalog.Application.Items.Commands;
 
 public class DeleteItemCommand : IRequest<DeletionResult>
 {

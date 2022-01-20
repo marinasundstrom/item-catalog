@@ -2,8 +2,8 @@
 
 using Azure.Storage.Blobs;
 
-using Catalog.Application.Commands;
-using Catalog.Application.Queries;
+using Catalog.Application.Items.Commands;
+using Catalog.Application.Items.Queries;
 
 using MediatR;
 

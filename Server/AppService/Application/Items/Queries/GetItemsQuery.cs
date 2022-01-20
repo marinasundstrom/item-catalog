@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Catalog.Application.Common.Interfaces;
 using Catalog.Application.Models;
 
-namespace Catalog.Application.Queries;
+namespace Catalog.Application.Items.Queries;
 
 public class GetItemsQuery : IRequest<Results<ItemDto>>
 {

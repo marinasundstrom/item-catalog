@@ -4,7 +4,7 @@ using Catalog.Domain.Entities;
 using Catalog.Application.Common.Interfaces;
 using Catalog.Application.Models;
 
-namespace Catalog.Application.Commands;
+namespace Catalog.Application.Items.Commands;
 
 public class AddItemCommand : IRequest
 {

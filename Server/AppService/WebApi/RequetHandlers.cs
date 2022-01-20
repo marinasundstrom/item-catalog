@@ -4,8 +4,8 @@ using Microsoft.Extensions.Caching.Distributed;
 
 using Catalog.Application;
 using Catalog.Infrastructure.Persistence;
-using Catalog.Application.Queries;
-using Catalog.Application.Commands;
+using Catalog.Application.Items.Queries;
+using Catalog.Application.Items.Commands;
 using Catalog.Application.Models;
 
 namespace Catalog.WebApi;

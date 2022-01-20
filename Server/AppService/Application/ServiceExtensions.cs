@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Catalog.Application.Queries;
+using Catalog.Application.Items.Queries;
 
 using MediatR;
 

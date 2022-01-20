@@ -5,7 +5,7 @@ using Catalog.Application.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Application.Queries;
+namespace Catalog.Application.Items.Queries;
 
 public class GetItemQuery : IRequest<ItemDto?>
 {
