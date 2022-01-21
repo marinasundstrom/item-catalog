@@ -9,13 +9,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Items.EventHandlers;
 
-public class ItemImageUploadedEventHandlerHandler : INotificationHandler<DomainEventNotification<ItemImageUploadedEvent>>
+public class ItemImageUploadedEventHandler : INotificationHandler<DomainEventNotification<ItemImageUploadedEvent>>
 {
     private readonly ICatalogContext _context;
     private readonly IUrlHelper _urlHelper;
     private readonly IItemsClient _itemsClient;
 
-    public ItemImageUploadedEventHandlerHandler(ICatalogContext context, IUrlHelper urlHelper, IItemsClient itemsClient)
+    public ItemImageUploadedEventHandler(ICatalogContext context, IUrlHelper urlHelper, IItemsClient itemsClient)
     {
         _context = context;
         _urlHelper = urlHelper;

@@ -9,12 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Items.EventHandlers;
 
-public class ItemDeletedEventHandlerHandler : INotificationHandler<DomainEventNotification<ItemDeletedEvent>>
+public class ItemDeletedEventHandler : INotificationHandler<DomainEventNotification<ItemDeletedEvent>>
 {
     private readonly ICatalogContext _context;
     private readonly IItemsClient _itemsClient;
 
-    public ItemDeletedEventHandlerHandler(ICatalogContext context, IItemsClient itemsClient)
+    public ItemDeletedEventHandler(ICatalogContext context, IItemsClient itemsClient)
     {
         _context = context;
         _itemsClient = itemsClient;

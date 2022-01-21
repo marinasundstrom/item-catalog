@@ -12,13 +12,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Catalog.Application.Items.EventHandlers;
 
-public class ItemCreatedEventHandlerHandler : INotificationHandler<DomainEventNotification<ItemCreatedEvent>>
+public class ItemCreatedEventHandler : INotificationHandler<DomainEventNotification<ItemCreatedEvent>>
 {
     private readonly ICatalogContext _context;
     private readonly IUrlHelper _urlHelper;
     private readonly IItemsClient _itemsClient;
 
-    public ItemCreatedEventHandlerHandler(ICatalogContext context, IUrlHelper urlHelper, IItemsClient itemsClient)
+    public ItemCreatedEventHandler(ICatalogContext context, IUrlHelper urlHelper, IItemsClient itemsClient)
     {
         _context = context;
         _urlHelper = urlHelper;
