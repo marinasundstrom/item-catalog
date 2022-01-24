@@ -41,7 +41,7 @@ public class AddItemCommand : IRequest
 
             context.Items.Add(item);
 
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;
         }

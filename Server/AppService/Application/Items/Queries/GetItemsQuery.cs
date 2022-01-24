@@ -45,7 +45,7 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
                 .Take(request.PageSize).AsQueryable();
 
 
-            var totalCount = await query.CountAsync();
+            var totalCount = await query.CountAsync(cancellationToken);
 
             if (request.SortBy is not null)
             {

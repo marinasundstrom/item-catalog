@@ -5,6 +5,6 @@ public class FilePickerService : IFilePickerService
 {
     public Task<Stream?> PickImage()
     {
-        return Task.FromResult(null!);
+        return Task.FromResult<Stream?>(null!);
     }
 }

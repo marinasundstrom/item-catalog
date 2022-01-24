@@ -41,7 +41,7 @@ public class DeleteItemCommand : IRequest<DeletionResult>
 
             context.Items.Remove(item);
 
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
 
             return DeletionResult.Successful;
         }

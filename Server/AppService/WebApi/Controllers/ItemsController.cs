@@ -22,7 +22,7 @@ public class ItemsController : ControllerBase
     public async Task<ActionResult> UploadImage([FromRoute] string id, IFormFile file,
         [FromServices] IMediator mediator, CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new UploadImageCommand(id, file.OpenReadStream()));
+        var result = await mediator.Send(new UploadImageCommand(id, file.OpenReadStream()), cancellationToken);
 
         if (result == UploadImageResult.NotFound)
         {

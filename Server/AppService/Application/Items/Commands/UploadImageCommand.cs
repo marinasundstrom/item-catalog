@@ -49,7 +49,7 @@ public class UploadImageCommand : IRequest<UploadImageResult>
             item.DomainEvents.Add(new ItemImageUploadedEvent(item.Id));
 
             item.Image = imageId;
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
 
             return UploadImageResult.Successful;
         }
