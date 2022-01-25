@@ -9,6 +9,8 @@ using MediatR;
 
 using Microsoft.Extensions.Caching.Distributed;
 
+using MiniValidation;
+
 namespace Catalog.WebApi;
 
 static partial class RequestHandlers
@@ -46,6 +48,11 @@ static partial class RequestHandlers
 
     static async Task<IResult> AddItem(AddItemDto dto, IMediator mediator, CancellationToken cancellationToken)
     {
+        if (!MiniValidator.TryValidate(dto, out var errors))
+        {
+            return Results.ValidationProblem(errors, statusCode: StatusCodes.Status400BadRequest);
+        }
+
         await mediator.Send(new AddItemCommand(dto.Name, dto.Description), cancellationToken);
 
         return Results.Ok(string.Empty);
@@ -83,7 +90,8 @@ static partial class RequestHandlers
         app.MapPost("/", AddItem)
         .WithName("Items_AddItem")
         .WithTags("Items")
-        .Produces<string>(StatusCodes.Status200OK);
+        .Produces<string>(StatusCodes.Status200OK)
+        .ProducesValidationProblem(StatusCodes.Status400BadRequest);
 
         app.MapDelete("/{id}", DeleteItem)
         .WithName("Items_DeleteItem")

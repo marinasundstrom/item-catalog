@@ -27,6 +27,7 @@
     <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="7.3.1" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
+    <PackageReference Include="MiniValidation" Version="0.4.1-pre.20220107.41" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,5 +40,8 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="MiniValidation" />
   </ItemGroup>
 </Project>
