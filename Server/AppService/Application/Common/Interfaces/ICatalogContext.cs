@@ -14,25 +14,8 @@ public interface ICatalogContext
     Task<ITransaction> BeginTransactionAsync();
 }
 
-public interface ITransaction : IDisposable
+public interface ITransaction : IDisposable, IAsyncDisposable
 {
     Task CommitAsync();
     Task RollbackAsync();
-}
-
-class UoWTransaction : ITransaction
-{
-    private readonly IDbContextTransaction _transaction;
-
-    public UoWTransaction(IDbContextTransaction transaction)
-    {
-        _transaction = transaction;
-    }
-
-    public Task CommitAsync() => _transaction.CommitAsync();
-
-
-    public void Dispose() => _transaction.Dispose();
-
-    public Task RollbackAsync() => _transaction.RollbackAsync();
 }

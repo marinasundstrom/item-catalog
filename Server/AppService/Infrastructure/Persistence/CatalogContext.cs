@@ -15,6 +15,7 @@ class CatalogContext : DbContext, ICatalogContext
     private readonly ICurrentUserService _currentUserService;
     private readonly IDomainEventService _domainEventService;
     private readonly IDateTime _dateTime;
+    private Transaction? _transaction;
 
     public CatalogContext(
         DbContextOptions<CatalogContext> options,
@@ -68,17 +69,27 @@ class CatalogContext : DbContext, ICatalogContext
             }
         }
 
-        var events = ChangeTracker.Entries<IHasDomainEvent>()
-            .Select(x => x.Entity.DomainEvents)
-            .SelectMany(x => x)
-            .Where(domainEvent => !domainEvent.IsPublished)
-            .ToArray();
+        if (_transaction is not null)
+        {
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+        DomainEvent[] events = GetDomainEvents();
 
         var result = await base.SaveChangesAsync(cancellationToken);
 
         await DispatchEvents(events);
 
         return result;
+    }
+
+    private DomainEvent[] GetDomainEvents()
+    {
+        return ChangeTracker.Entries<IHasDomainEvent>()
+            .Select(x => x.Entity.DomainEvents)
+            .SelectMany(x => x)
+            .Where(domainEvent => !domainEvent.IsPublished)
+            .ToArray();
     }
 
     private async Task DispatchEvents(DomainEvent[] events)
@@ -92,24 +103,52 @@ class CatalogContext : DbContext, ICatalogContext
 
     public async Task<ITransaction> BeginTransactionAsync()
     {
-        return new UoWTransaction(
-            await Database.BeginTransactionAsync());
+        var transaction = await Database.BeginTransactionAsync();
+
+        _transaction = new Transaction(
+            this,
+            transaction);
+
+        return _transaction;
     }
 
-    class UoWTransaction : ITransaction
+    class Transaction : ITransaction
     {
+        private readonly CatalogContext _context;
         private readonly IDbContextTransaction _transaction;
 
-        public UoWTransaction(IDbContextTransaction transaction)
+        public Transaction(CatalogContext context, IDbContextTransaction transaction)
         {
+            _context = context;
             _transaction = transaction;
         }
 
-        public Task CommitAsync() => _transaction.CommitAsync();
+        public async Task CommitAsync()
+        {
+            DomainEvent[] events = _context.GetDomainEvents();
 
+            await _transaction.CommitAsync();
 
-        public void Dispose() => _transaction.Dispose();
+            await _context.DispatchEvents(events);
+            _context._transaction = null;
+        }
 
-        public Task RollbackAsync() => _transaction.RollbackAsync();
+        public void Dispose()
+        {
+            _transaction.Dispose();
+            _context._transaction = null;
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            await _transaction.DisposeAsync();
+            _context._transaction = null;
+        }
+
+        public async Task RollbackAsync()
+        {
+            await _transaction.RollbackAsync();
+            _context._transaction = null;
+        }
     }
 }

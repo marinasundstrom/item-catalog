@@ -1,4 +1,6 @@
 
+using System.Data.Common;
+
 using Catalog.Application.Common.Interfaces;
 using Catalog.Application.Models;
 using Catalog.Domain.Entities;
@@ -35,13 +37,25 @@ public class AddItemCommand : IRequest
 
         public async Task<Unit> Handle(AddItemCommand request, CancellationToken cancellationToken)
         {
-            var item = new Item(Guid.NewGuid().ToString(), request.Name, request.Description);
+            try
+            {
+                using (var transaction = await context.BeginTransactionAsync())
+                {
+                    var item = new Item(Guid.NewGuid().ToString(), request.Name, request.Description);
 
-            item.DomainEvents.Add(new ItemCreatedEvent(item.Id));
+                    item.DomainEvents.Add(new ItemCreatedEvent(item.Id));
 
-            context.Items.Add(item);
+                    context.Items.Add(item);
 
-            await context.SaveChangesAsync(cancellationToken);
+                    await context.SaveChangesAsync(cancellationToken);
+
+                    await transaction.CommitAsync();
+                }
+            }
+            catch(DbException exc)
+            {
+
+            }
 
             return Unit.Value;
         }
