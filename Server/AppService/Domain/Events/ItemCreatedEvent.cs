@@ -4,10 +4,10 @@ namespace Catalog.Domain.Events;
 
 public class ItemCreatedEvent : DomainEvent
 {
-    public ItemCreatedEvent(string id)
+    public ItemCreatedEvent(string itemId)
     {
-        this.Id = id;
+        this.ItemId = itemId;
     }
 
-    public string Id { get; }
+    public string ItemId { get; }
 }

@@ -39,6 +39,8 @@ class CatalogContext : DbContext, ICatalogContext
 
     public DbSet<Item> Items { get; set; } = null!;
 
+    public DbSet<Comment> Comments { get; set; } = null!;
+
 #nullable restore
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

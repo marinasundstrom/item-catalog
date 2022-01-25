@@ -9,6 +9,8 @@ public interface ICatalogContext
 {
     DbSet<Item> Items { get; }
 
+    DbSet<Comment> Comments { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     Task<ITransaction> BeginTransactionAsync();

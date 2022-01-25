@@ -55,7 +55,7 @@ static partial class RequestHandlers
 
         await mediator.Send(new AddItemCommand(dto.Name, dto.Description), cancellationToken);
 
-        return Results.Ok(string.Empty);
+        return Results.Ok();
     }
 
     static async Task<IResult> DeleteItem(string id, IMediator mediator, IDistributedCache cache, CancellationToken cancellationToken)
@@ -70,6 +70,26 @@ static partial class RequestHandlers
         string cacheKey = $"item-{id}";
 
         await cache.RemoveAsync(cacheKey, cancellationToken);
+
+        return Results.Ok();
+    }
+
+    static async Task<IResult> GetComments(IMediator mediator, CancellationToken cancellationToken, string id, int page = 0, int pageSize = 10,
+        string? sortBy = null, Catalog.Application.Models.SortDirection sortDirection = Catalog.Application.Models.SortDirection.Desc)
+    {
+        var result = await mediator.Send(new GetCommentsQuery(id, page, pageSize, sortBy, sortDirection), cancellationToken);
+
+        return Results.Ok(result);
+    }
+
+    static async Task<IResult> PostComment(string id, PostCommentDto dto, IMediator mediator, CancellationToken cancellationToken)
+    {
+        if (!MiniValidator.TryValidate(dto, out var errors))
+        {
+            return Results.ValidationProblem(errors, statusCode: StatusCodes.Status400BadRequest);
+        }
+
+        await mediator.Send(new PostCommentCommand(id, dto.Text), cancellationToken);
 
         return Results.Ok();
     }
@@ -90,7 +110,7 @@ static partial class RequestHandlers
         app.MapPost("/", AddItem)
         .WithName("Items_AddItem")
         .WithTags("Items")
-        .Produces<string>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status200OK)
         .ProducesValidationProblem(StatusCodes.Status400BadRequest);
 
         app.MapDelete("/{id}", DeleteItem)
@@ -98,6 +118,16 @@ static partial class RequestHandlers
         .WithTags("Items")
         .Produces(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
+
+        app.MapGet("/{id}/Comments", GetComments)
+        .WithName("Items_GetComments")
+        .WithTags("Items")
+        .Produces<Results<CommentDto>>(StatusCodes.Status200OK);
+
+        app.MapPost("/{id}/Comments", PostComment)
+        .WithName("Items_PostComment")
+        .WithTags("Items")
+        .Produces(StatusCodes.Status200OK);
 
         return app;
     }

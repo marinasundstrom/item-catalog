@@ -32,7 +32,7 @@ public class DeleteItemCommand : IRequest<DeletionResult>
         {
             var item = await context.Items.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
 
-            if (item == null)
+            if (item is null)
             {
                 return DeletionResult.NotFound;
             }

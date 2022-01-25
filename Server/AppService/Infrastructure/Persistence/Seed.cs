@@ -18,7 +18,7 @@ public static class Seed
         if (!context.Items.Any())
         {
             context.Items.AddRange(new Item[] {
-                new Item(Guid.NewGuid().ToString(), "Hat", "Green hat")
+                new Item("Hat", "Green hat")
             });
 
             await context.SaveChangesAsync();

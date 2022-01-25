@@ -32,7 +32,7 @@ public class GetItemQuery : IRequest<ItemDto?>
         {
             var item = await context.Items.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
 
-            if (item == null) return null;
+            if (item is null) return null;
 
             return new ItemDto(item.Id, item.Name, item.Description, urlHelper.CreateImageUrl(item.Image!), item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy);
         }

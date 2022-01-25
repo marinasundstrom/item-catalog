@@ -29,7 +29,7 @@ public class ItemCreatedEventHandler : INotificationHandler<DomainEventNotificat
     {
         var domainEvent = notification.DomainEvent;
 
-        var item = await _context.Items.FirstAsync(i => i.Id == domainEvent.Id, cancellationToken);
+        var item = await _context.Items.FirstAsync(i => i.Id == domainEvent.ItemId, cancellationToken);
 
         var itemDto = new ItemDto(item.Id, item.Name, item.Description, _urlHelper.CreateImageUrl(item.Image), item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy);
 

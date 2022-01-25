@@ -41,7 +41,7 @@ public class AddItemCommand : IRequest
             {
                 using (var transaction = await context.BeginTransactionAsync())
                 {
-                    var item = new Item(Guid.NewGuid().ToString(), request.Name, request.Description);
+                    var item = new Item(request.Name, request.Description);
 
                     item.DomainEvents.Add(new ItemCreatedEvent(item.Id));
 

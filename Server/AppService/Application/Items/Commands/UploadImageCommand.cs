@@ -37,7 +37,7 @@ public class UploadImageCommand : IRequest<UploadImageResult>
         {
             var item = await context.Items.FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
 
-            if (item == null)
+            if (item is null)
             {
                 return UploadImageResult.Successful;
             }

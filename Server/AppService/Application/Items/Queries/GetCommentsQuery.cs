@@ -10,36 +10,38 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Items.Queries;
 
-public class GetItemsQuery : IRequest<Results<ItemDto>>
+public class GetCommentsQuery : IRequest<Results<CommentDto>>
 {
+    public string ItemId { get; set; }
+
     public int Page { get; set; }
     public int PageSize { get; set; }
     public string? SortBy { get; }
     public Models.SortDirection? SortDirection { get; }
 
-    public GetItemsQuery(int page, int pageSize, string? sortBy = null, Models.SortDirection? sortDirection = null)
+    public GetCommentsQuery(string itemId, int page, int pageSize, string? sortBy = null, Models.SortDirection? sortDirection = null)
     {
+        ItemId = itemId;
         Page = page;
         PageSize = pageSize;
         SortBy = sortBy;
         SortDirection = sortDirection;
     }
 
-    public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, Results<ItemDto>>
+    public class GetCommentsQueryHandler : IRequestHandler<GetCommentsQuery, Results<CommentDto>>
     {
         private readonly ICatalogContext context;
-        private readonly IUrlHelper urlHelper;
 
-        public GetItemsQueryHandler(ICatalogContext context, IUrlHelper urlHelper)
+        public GetCommentsQueryHandler(ICatalogContext context)
         {
             this.context = context;
-            this.urlHelper = urlHelper;
         }
 
-        public async Task<Results<ItemDto>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
+        public async Task<Results<CommentDto>> Handle(GetCommentsQuery request, CancellationToken cancellationToken)
         {
-            var query = context.Items
-                .OrderBy(i => i.Created)
+            var query = context.Comments
+                .Where(c => c.Item.Id == request.ItemId)
+                .OrderBy(c => c.Created)
                 .Skip(request.Page * request.PageSize)
                 .Take(request.PageSize).AsQueryable();
 
@@ -53,10 +55,10 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
                     request.SortDirection == Models.SortDirection.Desc ? Application.SortDirection.Descending : Application.SortDirection.Ascending);
             }
 
-            var items = await query.ToListAsync(cancellationToken);
+            var comments = await query.ToListAsync(cancellationToken);
 
-            return new Results<ItemDto>(
-                items.Select(item => new ItemDto(item.Id, item.Name, item.Description, urlHelper.CreateImageUrl(item.Image), item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy)),
+            return new Results<CommentDto>(
+                comments.Select(comment => new CommentDto(comment.Id, comment.Text, comment.Created, comment.CreatedBy, comment.LastModified, comment.LastModifiedBy)),
                 totalCount);
         }
     }
