@@ -27,7 +27,7 @@
 </EditForm>
 
 @code {
-    HubConnection hubConnection;
+    HubConnection hubConnection = null!;
 
     [Required]
     public double? Lhs { get; set; }
@@ -87,9 +87,11 @@
         await DoSomethingClient.DoSomethingAsync(Lhs, Rhs);
     }
 
-    async Task OnResponseReceived(string message)
+    Task OnResponseReceived(string message)
     {
         Snackbar.Add(message, Severity.Info);
+
+        return Task.CompletedTask;
     }
 
     public async ValueTask DisposeAsync()

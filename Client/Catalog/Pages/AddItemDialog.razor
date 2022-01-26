@@ -73,11 +73,11 @@
     {
         [Required]
         [StringLength(60, ErrorMessage = "Name length can't be more than 8.")]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
 
         [Required]
         [StringLength(240, ErrorMessage = "Description length can't be more than 240.")]
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
 
         public Stream? Stream { get; set; }
     }

@@ -19,7 +19,7 @@
 
 
 @code {
-    HubConnection hubConnection;
+    HubConnection hubConnection = null!;
     List<string> notifications = new List<string>();
 
     protected override async Task OnInitializedAsync()
@@ -69,11 +69,13 @@
         }
     }
 
-    async Task OnNotificationReceived(string message)
+    Task OnNotificationReceived(string message)
     {
         notifications.Add(message);
 
         StateHasChanged();
+
+        return Task.CompletedTask;
     }
 
     public async ValueTask DisposeAsync()
