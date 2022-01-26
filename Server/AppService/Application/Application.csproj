@@ -25,6 +25,7 @@
     <None Remove="Search\Commands\" />
     <None Remove="Notifications\Commands\" />
     <None Remove="Notifications\Queries\" />
+    <None Remove="Notifications\EventHandlers\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Notifications\" />
@@ -32,5 +33,6 @@
     <Folder Include="Search\Commands\" />
     <Folder Include="Notifications\Commands\" />
     <Folder Include="Notifications\Queries\" />
+    <Folder Include="Notifications\EventHandlers\" />
   </ItemGroup>
 </Project>

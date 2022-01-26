@@ -40,12 +40,11 @@ public class CreateNotificationCommand : IRequest
             notification.Text = request.Text;
             notification.Published = DateTime.Now;
 
+            notification.DomainEvents.Add(new NotificationCreatedEvent(notification.Id));
+
             context.Notifications.Add(notification);
 
             await context.SaveChangesAsync(cancellationToken);
-
-            await client.NotificationReceived2(
-                 new NotificationDto(notification.Id, notification.Published, notification.Title, notification.Text, notification.IsRead, notification.Created, notification.CreatedBy, notification.LastModified, notification.LastModifiedBy));
 
             return Unit.Value;
         }
