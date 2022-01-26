@@ -5,46 +5,34 @@
 @implements IAsyncDisposable
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
-@inject IDoSomethingClient DoSomethingClient
 
-<MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Worker</MudText>
+<PageTitle>Worker</PageTitle>
 
-<EditForm Model="@this" OnValidSubmit="OnSubmit">
+<MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Notifications</MudText>
 
-    <DataAnnotationsValidator />
+<MudText Typo="Typo.body1" GutterBottom="true">If þe servere will, þou schalt receiven a newe message every minute.</MudText>
 
-    <MudGrid>
-        <MudItem xs="12" sm="6">
-            <MudNumericField Label="LHS" @bind-Value="Lhs" For="() => Lhs"></MudNumericField>
-        </MudItem>
-        <MudItem xs="12" sm="6">
-            <MudNumericField Label="RHS" @bind-Value="Rhs" For="() => Rhs"></MudNumericField>
-        </MudItem>
-    </MudGrid>
-
-    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" StartIcon="@Icons.Filled.Send" Color="Color.Primary" Class="mb-2 mt-2">Send</MudButton>
-
-</EditForm>
+<ul class="mt-4">
+    @foreach (var notification in notifications)
+    {
+        <li>@notification</li>
+    }
+</ul>
 
 @code {
     HubConnection hubConnection = null!;
-
-    [Required]
-    public double? Lhs { get; set; }
-
-    [Required]
-    public double? Rhs { get; set; }
+    List<string> notifications = new List<string>();
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             hubConnection = new HubConnectionBuilder()
-                .WithUrl($"{NavigationManager.BaseUri}api/hubs/something")
+                .WithUrl($"{NavigationManager.BaseUri}api/hubs/worker")
                 .WithAutomaticReconnect()
                 .Build();
 
-            hubConnection.On<string>("ResponseReceived", OnResponseReceived);
+            hubConnection.On<string>("NotificationReceived", OnNotificationReceived);
 
             hubConnection.Closed += (error) =>
             {
@@ -82,14 +70,11 @@
         }
     }
 
-    async Task OnSubmit()
+    Task OnNotificationReceived(string message)
     {
-        await DoSomethingClient.DoSomethingAsync(Lhs, Rhs);
-    }
+        notifications.Add(message);
 
-    Task OnResponseReceived(string message)
-    {
-        Snackbar.Add(message, Severity.Info);
+        StateHasChanged();
 
         return Task.CompletedTask;
     }

@@ -55,7 +55,7 @@
             .WithAutomaticReconnect()
             .Build();
 
-            hubConnection.On<NotificationDto>("NotificationReceived2", OnNotificationReceived);
+            hubConnection.On<NotificationDto>("NotificationReceived", OnNotificationReceived);
 
             hubConnection.Closed += (error) =>
             {

@@ -11,17 +11,17 @@ namespace Worker.Consumers;
 
 public class RandomNotificationConsumer : IConsumer<RandomNotification>
 {
-    private readonly INotificationClient _notificationClient;
+    private readonly IWorkerlient _workerlient;
 
-    public RandomNotificationConsumer(INotificationClient notificationClient)
+    public RandomNotificationConsumer(IWorkerlient workerlient)
     {
-        _notificationClient = notificationClient;
+        _workerlient = workerlient;
     }
 
     public async Task Consume(ConsumeContext<RandomNotification> context)
     {
         var message = context.Message;
 
-        await _notificationClient.NotificationReceived(message.Message);
+        await _workerlient.NotificationReceived(message.Message);
     }
 }

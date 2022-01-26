@@ -17,13 +17,8 @@ public class NotificationClient : INotificationClient
         _notificationsHubContext = notificationsHubContext;
     }
 
-    public async Task NotificationReceived(string message)
+    public async Task NotificationReceived(NotificationDto notification)
     {
-        await _notificationsHubContext.Clients.All.NotificationReceived(message);
-    }
-
-    public async Task NotificationReceived2(NotificationDto notification)
-    {
-        await _notificationsHubContext.Clients.All.NotificationReceived2(notification);
+        await _notificationsHubContext.Clients.All.NotificationReceived(notification);
     }
 }

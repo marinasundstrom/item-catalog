@@ -28,6 +28,6 @@ public class NotificationCreatedEventHandler : INotificationHandler<DomainEventN
 
         var notifcationDot = new NotificationDto(notification.Id, notification.Published, notification.Title, notification.Text, notification.IsRead, notification.Created, notification.CreatedBy, notification.LastModified, notification.LastModifiedBy);
 
-        await _notficationClient.NotificationReceived2(notifcationDot);
+        await _notficationClient.NotificationReceived(notifcationDot);
     }
 }

@@ -101,6 +101,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
     endpoints.MapHub<ItemsHub>("/hubs/items");
     endpoints.MapHub<SomethingHub>("/hubs/something");
+    endpoints.MapHub<WorkerHub>("/hubs/worker");
     endpoints.MapHub<NotificationHub>("/hubs/notifications");
 });
 

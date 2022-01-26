@@ -26,6 +26,7 @@ public static class ServiceExtensions
     private static IServiceCollection AddClients(this IServiceCollection services)
     {
         services.AddScoped<IItemsClient, ItemsClient>();
+        services.AddScoped<IWorkerlient, WorkerClient>();
         services.AddScoped<INotificationClient, NotificationClient>();
         services.AddScoped<ISomethingClient, SomethingClient>();
 
