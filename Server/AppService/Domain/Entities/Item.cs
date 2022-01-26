@@ -28,6 +28,8 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent
 
     public string? Image { get; set; } = null!;
 
+    public int CommentCount { get; set; }
+
     public IReadOnlyList<Comment> Comments => _comments.AsReadOnly();
 
     public void AddComment(string text)

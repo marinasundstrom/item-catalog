@@ -12,7 +12,7 @@ public static class Seed
         using var scope = services.CreateScope();
         using var context = scope.ServiceProvider.GetRequiredService<CatalogContext>();
 
-        //await context.Database.EnsureDeletedAsync();
+        await context.Database.EnsureDeletedAsync();
         await context.Database.EnsureCreatedAsync();
 
         if (!context.Items.Any())

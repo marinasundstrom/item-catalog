@@ -94,7 +94,7 @@ app.MapGet("/info", () =>
 .WithTags("Info")
 .Produces<string>();
 
-await app.Services.SeedAsync();
+//await app.Services.SeedAsync();
 
 app.UseEndpoints(endpoints =>
 {

@@ -87,14 +87,7 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": ""
           },
           "400": {
             "description": "",
@@ -229,7 +222,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResultsOfItemDto"
+                  "$ref": "#/components/schemas/ResultsOfCommentDto"
                 }
               }
             }
@@ -414,6 +407,10 @@
             "type": "string",
             "nullable": true
           },
+          "commentCount": {
+            "type": "integer",
+            "format": "int32"
+          },
           "created": {
             "type": "string",
             "format": "date-time"
@@ -468,19 +465,6 @@
           }
         ]
       },
-      "PostCommentDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "text"
-        ],
-        "properties": {
-          "text": {
-            "type": "string",
-            "minLength": 1
-          }
-        }
-      },
       "ProblemDetails": {
         "type": "object",
         "additionalProperties": {
@@ -527,6 +511,64 @@
             "minLength": 1
           },
           "description": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "ResultsOfCommentDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommentDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CommentDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lastModifiedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "PostCommentDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
             "type": "string",
             "minLength": 1
           }
