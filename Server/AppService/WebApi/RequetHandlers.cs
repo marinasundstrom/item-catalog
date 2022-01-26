@@ -1,9 +1,10 @@
 using Catalog.Application;
 using Catalog.Application.Common.Models;
+using Catalog.Application.Items;
 using Catalog.Application.Items.Commands;
 using Catalog.Application.Items.Queries;
-using Catalog.Application.Models;
 using Catalog.Infrastructure.Persistence;
+using Catalog.WebApi.Controllers;
 
 using MediatR;
 
@@ -16,7 +17,7 @@ namespace Catalog.WebApi;
 static partial class RequestHandlers
 {
     static async Task<IResult> GetItems(IMediator mediator, CancellationToken cancellationToken, int page = 0, int pageSize = 10,
-        string? sortBy = null, Catalog.Application.Models.SortDirection sortDirection = Catalog.Application.Models.SortDirection.Desc)
+        string? sortBy = null, Application.Common.Models.SortDirection sortDirection = Application.Common.Models.SortDirection.Desc)
     {
         var result = await mediator.Send(new GetItemsQuery(page, pageSize, sortBy, sortDirection), cancellationToken);
 
@@ -75,7 +76,7 @@ static partial class RequestHandlers
     }
 
     static async Task<IResult> GetComments(IMediator mediator, CancellationToken cancellationToken, string id, int page = 0, int pageSize = 10,
-        string? sortBy = null, Catalog.Application.Models.SortDirection sortDirection = Catalog.Application.Models.SortDirection.Desc)
+        string? sortBy = null, Application.Common.Models.SortDirection sortDirection = Application.Common.Models.SortDirection.Desc)
     {
         var result = await mediator.Send(new GetCommentsQuery(id, page, pageSize, sortBy, sortDirection), cancellationToken);
 

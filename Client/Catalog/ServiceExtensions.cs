@@ -41,6 +41,20 @@ public static class ServiceExtensions
         })
         .AddTypedClient<Catalog.Client.IDoSomethingClient>((http, sp) => new Catalog.Client.DoSomethingClient(http));
 
+        services.AddHttpClient(nameof(Catalog.Client.ISearchClient), (sp, http) =>
+        {
+            var navigationManager = sp.GetRequiredService<NavigationManager>();
+            http.BaseAddress = new Uri($"{navigationManager.BaseUri}/api/");
+        })
+        .AddTypedClient<Catalog.Client.ISearchClient>((http, sp) => new Catalog.Client.SearchClient(http));
+
+        services.AddHttpClient(nameof(Catalog.Client.INotificationsClient), (sp, http) =>
+        {
+            var navigationManager = sp.GetRequiredService<NavigationManager>();
+            http.BaseAddress = new Uri($"{navigationManager.BaseUri}/api/");
+        })
+        .AddTypedClient<Catalog.Client.INotificationsClient>((http, sp) => new Catalog.Client.NotificationsClient(http));
+
         return services;
     }
 }

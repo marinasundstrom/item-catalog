@@ -8,13 +8,15 @@
 @inject IItemsClient ItemsClient
 @inject IDialogService DialogService
 
+<PageTitle>Items</PageTitle>
+
 <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Items</MudText>
 
-<MudButton @onclick="OpenDialog" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2">
+<MudButton @onclick="OpenDialog" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Default" Class="mb-2 mt-2">
     New item
 </MudButton>
 
-<MudTable T="ItemDto" @ref="table" SortLabel="Sort By" ServerData="@(new Func<TableState, Task<TableData<ItemDto>>>(ServerReload))" OnRowClick="RowClickEvent" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+<MudTable T="ItemDto" Dense="true" @ref="table" SortLabel="Sort By" ServerData="@(new Func<TableState, Task<TableData<ItemDto>>>(ServerReload))" OnRowClick="RowClickEvent" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
     <HeaderContent>
         <MudTh></MudTh>
         <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Name">Name</MudTableSortLabel></MudTh>
@@ -24,7 +26,7 @@
     </HeaderContent>
     <RowTemplate>
         <MudTd>
-            <img src="@context.Image" style="height: 150px" />
+           <MudIcon Icon="@Icons.Material.Filled.InsertDriveFile" />
         </MudTd>
         <MudTd DataLabel="Name">@context.Name</MudTd>
         <MudTd DataLabel="Description">@context.Description</MudTd>

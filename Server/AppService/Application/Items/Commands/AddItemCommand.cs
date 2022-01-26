@@ -2,7 +2,6 @@
 using System.Data.Common;
 
 using Catalog.Application.Common.Interfaces;
-using Catalog.Application.Models;
 using Catalog.Domain.Entities;
 using Catalog.Domain.Events;
 

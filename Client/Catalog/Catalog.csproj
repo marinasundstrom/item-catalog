@@ -20,25 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Microsoft.AspNetCore.Components" />
-    <None Remove="MudBlazor" />
-    <None Remove="Microsoft.Extensions.Http" />
-    <None Remove="Shared\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\WebApi.Client\WebApi.Client.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Remove="wwwroot\" />
-    <Content Remove="Shared\MainLayout.razor" />
-    <Content Remove="Shared\NavMenu.razor" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-    <Folder Include="Shared\" />
-  </ItemGroup>
-  <ItemGroup>
-    <RazorComponent Include="Shared\MainLayout.razor" />
-    <RazorComponent Include="Shared\NavMenu.razor" />
-  </ItemGroup>
+
 </Project>

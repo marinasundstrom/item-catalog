@@ -1,0 +1,50 @@
+﻿@using Catalog.Client
+@inject NavigationManager NavigationManager
+@inject ISearchClient SearchClient
+
+<MudAutocomplete T="SearchResultItem" Dense="false" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Immediate="true" DebounceInterval="300" Placeholder="Please type something..." Variant="Variant.Outlined" Style="background-color: white; color: white !important;" Value="value1" ValueChanged="OnSearchItemChanged" SearchFunc="@Search1" ToStringFunc="@(e=> e is null ? null : e.Title)">
+    <ItemTemplate Context="e">
+        @if (e.ResultType == SearchResultItemType.Item)
+        {
+            <MudText><MudIcon Icon="@Icons.Material.Filled.InsertDriveFile" Class="mb-n1 mr-3" />@e.Title</MudText>
+        }
+    </ItemTemplate>
+    <ItemSelectedTemplate Context="e">
+        @if (e.ResultType == SearchResultItemType.Item)
+        {
+            <MudText><MudIcon Icon="@Icons.Material.Filled.InsertDriveFile" Class="mb-n1 mr-3" />@e.Title</MudText>
+        }
+    </ItemSelectedTemplate>
+</MudAutocomplete>
+
+@code {
+
+    private SearchResultItem value1;
+
+    private async Task<IEnumerable<SearchResultItem>> Search1(string searchText)
+    {
+        if (string.IsNullOrEmpty(searchText))
+            return Array.Empty<SearchResultItem>();
+
+        try
+        {
+            var results = await SearchClient.SearchAsync(searchText);
+            return results;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private async Task OnSearchItemChanged(SearchResultItem searchResultItem)
+    {
+        NavigationManager.NavigateTo($"/items/{searchResultItem.ItemId}");
+
+        value1 = searchResultItem;
+
+        StateHasChanged();
+    }
+}
+

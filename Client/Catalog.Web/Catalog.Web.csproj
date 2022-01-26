@@ -18,11 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="MudBlazor" />
-    <None Remove="Microsoft.Extensions.Http" />
-    <None Remove="Pages\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\WebApi.Client\WebApi.Client.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
@@ -30,13 +25,5 @@
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Pages\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="Pages\Index.razor" />
-  </ItemGroup>
-  <ItemGroup>
-    <RazorComponent Include="Pages\Index.razor" />
-  </ItemGroup>
+
 </Project>

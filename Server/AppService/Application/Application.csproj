@@ -19,4 +19,18 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Notifications\" />
+    <None Remove="Search\" />
+    <None Remove="Search\Commands\" />
+    <None Remove="Notifications\Commands\" />
+    <None Remove="Notifications\Queries\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Notifications\" />
+    <Folder Include="Search\" />
+    <Folder Include="Search\Commands\" />
+    <Folder Include="Notifications\Commands\" />
+    <Folder Include="Notifications\Queries\" />
+  </ItemGroup>
 </Project>

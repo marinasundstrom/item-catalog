@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Catalog.Application.Models;
+namespace Catalog.WebApi.Controllers;
 
 public class PostCommentDto
 {

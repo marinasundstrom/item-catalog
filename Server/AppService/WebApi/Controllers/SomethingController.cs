@@ -1,11 +1,9 @@
-﻿using System;
-
+﻿
 using Contracts;
 
 using MassTransit;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.WebApi.Controllers;
 

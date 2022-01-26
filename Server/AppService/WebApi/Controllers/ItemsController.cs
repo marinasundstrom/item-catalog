@@ -1,14 +1,9 @@
-﻿using System;
-
-using Azure.Storage.Blobs;
-
+﻿
 using Catalog.Application.Items.Commands;
-using Catalog.Application.Items.Queries;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.WebApi.Controllers;
 

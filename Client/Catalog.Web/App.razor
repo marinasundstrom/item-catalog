@@ -1,4 +1,6 @@
-﻿<MudThemeProvider />
+﻿@inject ISnackbar Snackbar 
+
+<MudThemeProvider Theme="currentTheme" />
 <MudDialogProvider MaxWidth="MaxWidth.Medium" />
 <MudSnackbarProvider />
 
@@ -15,3 +17,18 @@
     </NotFound>
 </Router>
 
+
+@code {
+
+    MudTheme currentTheme = new MudTheme()
+    {
+        Palette = new Palette {
+            AppbarBackground = "#c92b8a"
+        }
+    };
+
+    protected override void OnInitialized()
+    {
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomRight;
+    }
+}

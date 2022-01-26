@@ -1,0 +1,138 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client
+@using Catalog.Client
+@implements IAsyncDisposable
+@inject INotificationsClient NotificationsClient
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+
+<MudBadge Color="Color.Secondary" Dot="true" Overlap="true" Visible="@_newNotificationsAvailable" Class="mr-16">
+    <MudMenu Icon="@Icons.Outlined.Notifications" Color="Color.Inherit" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter" PopoverClass="docs-layout-menu-shadow" ListClass="pa-2 docs-menu-list" LockScroll="true">
+        <div class="d-flex justify-space-between align-center px-2">
+            <MudText Typo="Typo.subtitle2">Notifications</MudText>
+            <MudButton Disabled="@(_newNotificationsAvailable == false)" OnClick="MarkAllNotificationsAsRead" StartIcon="@Icons.Filled.DoneAll" Variant="Variant.Text" Color="Color.Primary" Class="ml-16 mr-n2">Mark as read</MudButton>
+        </div>
+
+        <div>
+            @if (notifications.Any())
+            {
+                @foreach (var notification in notifications)
+                {
+                    <MudMenuItem Class="px-2 py-0 rounded" Link="@($"/mud/announcements/{notification.Id}")">
+                        <MudText Typo="Typo.subtitle2">@notification.Title</MudText>
+                        @*<MudText Typo="Typo.body2">@notification.Text</MudText>*@
+                        <MudText Typo="Typo.body2">@($"{notification.CreatedBy} • {(notification.Published.Date == DateTime.Now.Date ? notification.Published.ToString("HH:mm") : notification.Published.ToString("yyyy-MM-dd HH:mm"))}")</MudText>
+                    </MudMenuItem>
+                    <MudDivider Class="my-2" />
+                }
+            }
+            else
+            {
+                <div class="d-flex justify-center align-center px-2 py-8 relative">
+                    <MudText Class="mud-text-secondary my-12">Nothing new :(</MudText>
+                </div>
+            }
+        </div>
+    </MudMenu>
+</MudBadge>
+
+@code {
+    HubConnection hubConnection = null!;
+    List<NotificationDto> notifications = new List<NotificationDto>();
+    bool _newNotificationsAvailable;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var result = await NotificationsClient.GetNotificationsAsync(1, 5, null, null);
+
+            notifications.AddRange(result.Items);
+
+            _newNotificationsAvailable = notifications.Any(x => !x.IsRead);
+
+            hubConnection = new HubConnectionBuilder()
+            .WithUrl($"{NavigationManager.BaseUri}api/hubs/notifications")
+            .WithAutomaticReconnect()
+            .Build();
+
+            hubConnection.On<NotificationDto>("NotificationReceived2", OnNotificationReceived);
+
+            hubConnection.Closed += (error) =>
+            {
+                if (error is not null)
+                {
+                    Snackbar.Add($"{error.Message}", Severity.Error);
+                }
+
+                Snackbar.Add("Connection closed");
+
+                return Task.CompletedTask;
+            };
+
+            hubConnection.Reconnected += (error) =>
+            {
+                Snackbar.Add("Reconnected");
+
+                return Task.CompletedTask;
+            };
+
+            hubConnection.Reconnecting += (error) =>
+            {
+                Snackbar.Add("Reconnecting");
+
+                return Task.CompletedTask;
+            };
+
+            await hubConnection.StartAsync();
+
+            Snackbar.Add("Connected");
+        }
+        catch (Exception exc)
+        {
+            Snackbar.Add(exc.Message.ToString(), Severity.Error);
+        }
+    }
+
+    async Task MarkAllNotificationsAsRead()
+    {
+        await NotificationsClient.MarkAllNotificationsAsReadAsync();
+
+        foreach(var notification in notifications)
+        {
+            notification.IsRead = true;
+        }
+
+        _newNotificationsAvailable = false;
+    }
+
+    async Task MarkNotificationAsRead(NotificationDto notification)
+    {
+        await NotificationsClient.MarkNotificationAsReadAsync(notification.Id);
+
+        notification.IsRead = true;
+
+        _newNotificationsAvailable = notifications.Any(x => !x.IsRead);
+    }
+
+    Task OnNotificationReceived(NotificationDto notification)
+    {
+        notifications.Insert(0, notification);
+
+        if(notifications.Count > 5)
+        {
+            notifications.Remove(notifications.Last());
+        }
+
+        _newNotificationsAvailable = true;
+
+        StateHasChanged();
+
+        return Task.CompletedTask;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await hubConnection.DisposeAsync();
+    }
+}
+

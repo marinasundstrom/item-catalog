@@ -7,16 +7,16 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Application.Items.Queries;
+namespace Catalog.Application.Notifications.Queries;
 
-public class GetItemsQuery : IRequest<Results<ItemDto>>
+public class GetNotificationsQuery : IRequest<Results<NotificationDto>>
 {
     public int Page { get; set; }
     public int PageSize { get; set; }
     public string? SortBy { get; }
     public Application.Common.Models.SortDirection? SortDirection { get; }
 
-    public GetItemsQuery(int page, int pageSize, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null)
+    public GetNotificationsQuery(int page, int pageSize, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null)
     {
         Page = page;
         PageSize = pageSize;
@@ -24,24 +24,21 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
         SortDirection = sortDirection;
     }
 
-    public class GetItemsQueryHandler : IRequestHandler<GetItemsQuery, Results<ItemDto>>
+    public class GetNotificationsQueryHandler : IRequestHandler<GetNotificationsQuery, Results<NotificationDto>>
     {
         private readonly ICatalogContext context;
-        private readonly IUrlHelper urlHelper;
 
-        public GetItemsQueryHandler(ICatalogContext context, IUrlHelper urlHelper)
+        public GetNotificationsQueryHandler(ICatalogContext context)
         {
             this.context = context;
-            this.urlHelper = urlHelper;
         }
 
-        public async Task<Results<ItemDto>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
+        public async Task<Results<NotificationDto>> Handle(GetNotificationsQuery request, CancellationToken cancellationToken)
         {
-            var query = context.Items
-                .OrderBy(i => i.Created)
+            var query = context.Notifications
+                .OrderByDescending(i => i.Published)
                 .Skip(request.Page * request.PageSize)
                 .Take(request.PageSize).AsQueryable();
-
 
             var totalCount = await query.CountAsync(cancellationToken);
 
@@ -52,10 +49,10 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
                     request.SortDirection == Application.Common.Models.SortDirection.Desc ? Application.SortDirection.Descending : Application.SortDirection.Ascending);
             }
 
-            var items = await query.ToListAsync(cancellationToken);
+            var notifications = await query.ToListAsync(cancellationToken);
 
-            return new Results<ItemDto>(
-                items.Select(item => new ItemDto(item.Id, item.Name, item.Description, urlHelper.CreateImageUrl(item.Image), item.CommentCount, item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy)),
+            return new Results<NotificationDto>(
+                notifications.Select(notification => new NotificationDto(notification.Id, notification.Published, notification.Title, notification.Text, notification.IsRead, notification.Created, notification.CreatedBy, notification.LastModified, notification.LastModifiedBy)),
                 totalCount);
         }
     }

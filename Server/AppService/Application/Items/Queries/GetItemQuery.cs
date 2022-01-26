@@ -1,6 +1,5 @@
 
 using Catalog.Application.Common.Interfaces;
-using Catalog.Application.Models;
 
 using MediatR;
 

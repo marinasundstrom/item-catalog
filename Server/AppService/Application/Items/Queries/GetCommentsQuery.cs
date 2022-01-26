@@ -1,7 +1,6 @@
 
 using Catalog.Application.Common.Interfaces;
 using Catalog.Application.Common.Models;
-using Catalog.Application.Models;
 using Catalog.Domain;
 
 using MediatR;
@@ -17,9 +16,9 @@ public class GetCommentsQuery : IRequest<Results<CommentDto>>
     public int Page { get; set; }
     public int PageSize { get; set; }
     public string? SortBy { get; }
-    public Models.SortDirection? SortDirection { get; }
+    public Application.Common.Models.SortDirection? SortDirection { get; }
 
-    public GetCommentsQuery(string itemId, int page, int pageSize, string? sortBy = null, Models.SortDirection? sortDirection = null)
+    public GetCommentsQuery(string itemId, int page, int pageSize, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null)
     {
         ItemId = itemId;
         Page = page;
@@ -52,7 +51,7 @@ public class GetCommentsQuery : IRequest<Results<CommentDto>>
             {
                 query = query.OrderBy(
                     request.SortBy,
-                    request.SortDirection == Models.SortDirection.Desc ? Application.SortDirection.Descending : Application.SortDirection.Ascending);
+                    request.SortDirection == Application.Common.Models.SortDirection.Desc ? Application.SortDirection.Descending : Application.SortDirection.Ascending);
             }
 
             var comments = await query.ToListAsync(cancellationToken);

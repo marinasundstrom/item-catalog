@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Catalog.Application.Common.Interfaces;
+using Catalog.Application.Notifications;
 using Catalog.WebApi.Hubs;
 
 using Microsoft.AspNetCore.SignalR;
@@ -19,5 +20,10 @@ public class NotificationClient : INotificationClient
     public async Task NotificationReceived(string message)
     {
         await _notificationsHubContext.Clients.All.NotificationReceived(message);
+    }
+
+    public async Task NotificationReceived2(NotificationDto notification)
+    {
+        await _notificationsHubContext.Clients.All.NotificationReceived2(notification);
     }
 }

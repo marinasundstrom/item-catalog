@@ -1,7 +1,7 @@
 ﻿
 using Catalog.Application;
 using Catalog.Application.Common.Interfaces;
-using Catalog.Application.Models;
+using Catalog.Application.Items;
 using Catalog.WebApi.Hubs;
 
 using Microsoft.AspNetCore.SignalR;

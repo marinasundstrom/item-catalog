@@ -1,4 +1,4 @@
-using Catalog.Application.Models;
+using Catalog.Application.Items;
 
 namespace Catalog.Application.Common.Interfaces;
 

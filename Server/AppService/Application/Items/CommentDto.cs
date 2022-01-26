@@ -1,4 +1,4 @@
-﻿namespace Catalog.Application.Models;
+﻿namespace Catalog.Application.Items;
 
 public record CommentDto(
     string Id, string? Text,

@@ -2,7 +2,6 @@
 
 using Catalog.Application.Common.Interfaces;
 using Catalog.Application.Common.Models;
-using Catalog.Application.Models;
 using Catalog.Domain.Events;
 
 using MediatR;
