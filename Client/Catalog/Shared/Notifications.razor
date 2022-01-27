@@ -26,6 +26,13 @@
                     </MudMenuItem>
                     <MudDivider Class="my-2" />
                 }
+
+                @if(totalNotificationsCount > 5)
+                { 
+                    <div class="d-flex justify-center align-center px-2 py-2 relative">
+                        <MudLink Class="mud-text-secondary my-2" Href="/notifications">More notifications</MudLink>
+                    </div>
+                }
             }
             else
             {
@@ -40,6 +47,7 @@
 @code {
     HubConnection hubConnection = null!;
     List<NotificationDto> notifications = new List<NotificationDto>();
+    int totalNotificationsCount = 0;
     int unreadNotificationsCount = 0;
     int limit = 100;
 
@@ -70,7 +78,11 @@
         try
         {
             unreadNotificationsCount = await NotificationsClient.GetUnreadNotificationsCountAsync();
+
             var result = await NotificationsClient.GetNotificationsAsync(1, 5, null, null);
+            totalNotificationsCount = result.TotalCount;
+
+            Console.WriteLine(totalNotificationsCount);
 
             notifications.AddRange(result.Items);
 
@@ -147,6 +159,7 @@
             notifications.Remove(notifications.Last());
         }
 
+        totalNotificationsCount++;
         unreadNotificationsCount++;
 
         Snackbar.Add($"<h6>{notification.Title}</h6><p>{notification.Text}</p>", Severity.Info, options =>

@@ -39,9 +39,7 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
         {
             var query = context.Items
                 .OrderBy(i => i.Created)
-                .Skip(request.Page * request.PageSize)
-                .Take(request.PageSize).AsQueryable();
-
+                .AsQueryable();
 
             var totalCount = await query.CountAsync(cancellationToken);
 
@@ -51,6 +49,9 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
                     request.SortBy,
                     request.SortDirection == Application.Common.Models.SortDirection.Desc ? Application.SortDirection.Descending : Application.SortDirection.Ascending);
             }
+
+            query = query.Skip(request.Page * request.PageSize)
+                    .Take(request.PageSize).AsQueryable();
 
             var items = await query.ToListAsync(cancellationToken);
 

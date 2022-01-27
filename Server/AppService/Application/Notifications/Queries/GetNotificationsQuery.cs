@@ -37,8 +37,7 @@ public class GetNotificationsQuery : IRequest<Results<NotificationDto>>
         {
             var query = context.Notifications
                 .OrderByDescending(n => n.Published)
-                .Skip(request.Page * request.PageSize)
-                .Take(request.PageSize).AsQueryable();
+                .AsQueryable();
 
             var totalCount = await query.CountAsync(cancellationToken);
 
@@ -48,6 +47,9 @@ public class GetNotificationsQuery : IRequest<Results<NotificationDto>>
                     request.SortBy,
                     request.SortDirection == Application.Common.Models.SortDirection.Desc ? Application.SortDirection.Descending : Application.SortDirection.Ascending);
             }
+
+            query = query.Skip(request.Page * request.PageSize)
+                .Take(request.PageSize).AsQueryable();
 
             var notifications = await query.ToListAsync(cancellationToken);
 

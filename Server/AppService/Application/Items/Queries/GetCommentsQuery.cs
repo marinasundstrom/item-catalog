@@ -41,9 +41,7 @@ public class GetCommentsQuery : IRequest<Results<CommentDto>>
             var query = context.Comments
                 .Where(c => c.Item.Id == request.ItemId)
                 .OrderBy(c => c.Created)
-                .Skip(request.Page * request.PageSize)
-                .Take(request.PageSize).AsQueryable();
-
+                .AsQueryable();
 
             var totalCount = await query.CountAsync(cancellationToken);
 
@@ -53,6 +51,9 @@ public class GetCommentsQuery : IRequest<Results<CommentDto>>
                     request.SortBy,
                     request.SortDirection == Application.Common.Models.SortDirection.Desc ? Application.SortDirection.Descending : Application.SortDirection.Ascending);
             }
+
+            query = query.Skip(request.Page * request.PageSize)
+                .Take(request.PageSize).AsQueryable();
 
             var comments = await query.ToListAsync(cancellationToken);
 
