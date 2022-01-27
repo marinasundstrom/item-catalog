@@ -2,6 +2,8 @@
 @using Catalog.Client
 @inject ISnackbar Snackbar
 @inject IItemsClient ItemsClient
+@inject NavigationManager NavigationManager
+@implements IDisposable
 
 @if (item is not null)
 {
@@ -23,6 +25,13 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadAsync();
+
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    async Task LoadAsync()
+    {
         try
         {
             item = await ItemsClient.GetItemAsync(Id);
@@ -35,5 +44,17 @@
         {
             Snackbar.Add(exc.Message, Severity.Error);
         }
+    }
+
+    async void OnLocationChanged(object sender, LocationChangedEventArgs ev)
+    {
+        await LoadAsync();
+
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
     }
 }
