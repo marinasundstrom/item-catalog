@@ -33,7 +33,7 @@ public class SearchCommand : IRequest<IEnumerable<SearchResultItem>>
         {
             return await context.Items.Where(i =>
                 i.Name.Trim().ToLower().Contains(request.SearchText.Trim().ToLower())
-                && i.Description.Trim().ToLower().Contains(request.SearchText.Trim().ToLower()))
+                || i.Description.Trim().ToLower().Contains(request.SearchText.Trim().ToLower()))
                 .Select(i => new SearchResultItem() {
                     Title = i.Name,
                     ResultType = SearchResultItemType.Item,

@@ -56,7 +56,8 @@ app.MapGet("/", () => "Hello World!");
 
 var configuration = app.Services.GetService<IConfiguration>();
 
-using (var connection = new SqlConnection(configuration.GetConnectionString("HangfireConnection")))
+using (var connection = new SqlConnection(configuration.GetConnectionString("HangfireConnection")
+    .Replace("Database=HangfireDB;", string.Empty)))
 {
     connection.Open();
 
