@@ -40,9 +40,11 @@
 
     private async Task OnSearchItemChanged(SearchResultItem searchResultItem)
     {
+        if (searchResultItem is null) return;
+
         NavigationManager.NavigateTo($"/items/{searchResultItem.ItemId}");
 
-        value1 = searchResultItem;
+        value1 = null;
 
         StateHasChanged();
     }
