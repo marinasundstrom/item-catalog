@@ -345,6 +345,15 @@
         "operationId": "Notifications_GetNotifications",
         "parameters": [
           {
+            "name": "includeUnreadNotificationsCount",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "x-position": 1
+          },
+          {
             "name": "page",
             "in": "query",
             "schema": {
@@ -352,7 +361,7 @@
               "format": "int32",
               "default": 1
             },
-            "x-position": 1
+            "x-position": 2
           },
           {
             "name": "pageSize",
@@ -362,7 +371,7 @@
               "format": "int32",
               "default": 5
             },
-            "x-position": 2
+            "x-position": 3
           },
           {
             "name": "sortBy",
@@ -371,7 +380,7 @@
               "type": "string",
               "nullable": true
             },
-            "x-position": 3
+            "x-position": 4
           },
           {
             "name": "sortDirection",
@@ -388,7 +397,7 @@
                 }
               ]
             },
-            "x-position": 4
+            "x-position": 5
           }
         ],
         "responses": {
@@ -397,7 +406,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResultsOfNotificationDto"
+                  "$ref": "#/components/schemas/NotificationsResults"
                 }
               }
             }
@@ -782,6 +791,24 @@
           }
         }
       },
+      "NotificationsResults": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ResultsOfNotificationDto"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "unreadNotificationsCount": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
       "ResultsOfNotificationDto": {
         "type": "object",
         "additionalProperties": false,
@@ -813,6 +840,10 @@
             "type": "string"
           },
           "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "link": {
             "type": "string",
             "nullable": true
           },
@@ -849,6 +880,10 @@
             "minLength": 1
           },
           "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "link": {
             "type": "string",
             "nullable": true
           }

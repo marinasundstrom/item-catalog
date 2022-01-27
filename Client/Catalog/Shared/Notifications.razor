@@ -27,8 +27,8 @@
                     <MudDivider Class="my-2" />
                 }
 
-                @if(totalNotificationsCount > 5)
-                { 
+                @if (totalNotificationsCount > 5)
+                {
                     <div class="d-flex justify-center align-center px-2 py-2 relative">
                         <MudLink Class="mud-text-secondary my-2" Href="/notifications">More notifications</MudLink>
                     </div>
@@ -57,7 +57,7 @@
         {
             if (unreadNotificationsCount == 0) return null;
 
-            if(unreadNotificationsCount > limit)
+            if (unreadNotificationsCount > limit)
             {
                 return $"{limit}+";
             }
@@ -68,21 +68,21 @@
 
     async Task OnNotificationClicked(NotificationDto notification)
     {
-        await MarkNotificationAsRead(notification);
+        MarkNotificationAsRead(notification);
 
-        //NavigationManager.NavigateTo($"/notifications/{notification.Id}");
+        if(notification.Link is not null)
+        {
+            NavigationManager.NavigateTo(notification.Link);
+        }
     }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            unreadNotificationsCount = await NotificationsClient.GetUnreadNotificationsCountAsync();
-
-            var result = await NotificationsClient.GetNotificationsAsync(1, 5, null, null);
+            var result = await NotificationsClient.GetNotificationsAsync(true, 1, 5, null, null);
             totalNotificationsCount = result.TotalCount;
-
-            Console.WriteLine(totalNotificationsCount);
+            unreadNotificationsCount = result.UnreadNotificationsCount.GetValueOrDefault();
 
             notifications.AddRange(result.Items);
 
@@ -143,11 +143,12 @@
 
     async Task MarkNotificationAsRead(NotificationDto notification)
     {
-
         await NotificationsClient.MarkNotificationAsReadAsync(notification.Id);
 
         notification.IsRead = true;
         unreadNotificationsCount--;
+
+        StateHasChanged();
     }
 
     Task OnNotificationReceived(NotificationDto notification)
@@ -165,6 +166,7 @@
         Snackbar.Add($"<h6>{notification.Title}</h6><p>{notification.Text}</p>", Severity.Info, options =>
         {
             options.VisibleStateDuration = 5000;
+            options.Onclick = async (snackbar) => await OnNotificationClicked(notification);
         });
 
         StateHasChanged();

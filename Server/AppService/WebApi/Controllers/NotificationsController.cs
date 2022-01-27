@@ -25,15 +25,17 @@ public class NotificationsController : Controller
     }
 
     [HttpGet]
-    public async Task<ActionResult<Results<NotificationDto>>> GetNotifications(int page = 1, int pageSize = 5, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<NotificationsResults>> GetNotifications(
+        bool includeUnreadNotificationsCount = false,
+        int page = 1, int pageSize = 5, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null, CancellationToken cancellationToken = default)
     {
-        return Ok(await _mediator.Send(new GetNotificationsQuery(page - 1, pageSize, sortBy, sortDirection), cancellationToken));
+        return Ok(await _mediator.Send(new GetNotificationsQuery(includeUnreadNotificationsCount, page - 1, pageSize, sortBy, sortDirection), cancellationToken));
     }
 
     [HttpPost]
     public async Task<ActionResult> CreateNotification(CreateNotificationDto dto, CancellationToken cancellationToken)
     {
-        await _mediator.Send(new CreateNotificationCommand(dto.Title, dto.Text), cancellationToken);
+        await _mediator.Send(new CreateNotificationCommand(dto.Title, dto.Text, dto.Link), cancellationToken);
 
         return Ok();
     }
@@ -64,7 +66,9 @@ public class NotificationsController : Controller
 public class CreateNotificationDto
 {
     [Required]
-    public string Title { get; set; }
+    public string Title { get; set; } = null!;
 
     public string? Text { get; set; }
+
+    public string? Link { get; set; }
 }

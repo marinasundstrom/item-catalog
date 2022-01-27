@@ -9,22 +9,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Notifications.Queries;
 
-public class GetNotificationsQuery : IRequest<Results<NotificationDto>>
+public class GetNotificationsQuery : IRequest<NotificationsResults>
 {
     public int Page { get; set; }
     public int PageSize { get; set; }
     public string? SortBy { get; }
     public Application.Common.Models.SortDirection? SortDirection { get; }
+    public bool IncludeUnreadNotificationsCount { get; }
 
-    public GetNotificationsQuery(int page, int pageSize, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null)
+    public GetNotificationsQuery(
+        bool includeUnreadNotificationsCount,
+        int page, int pageSize, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null)
     {
+        IncludeUnreadNotificationsCount = includeUnreadNotificationsCount;
         Page = page;
         PageSize = pageSize;
         SortBy = sortBy;
         SortDirection = sortDirection;
     }
 
-    public class GetNotificationsQueryHandler : IRequestHandler<GetNotificationsQuery, Results<NotificationDto>>
+    public class GetNotificationsQueryHandler : IRequestHandler<GetNotificationsQuery, NotificationsResults>
     {
         private readonly ICatalogContext context;
 
@@ -33,7 +37,7 @@ public class GetNotificationsQuery : IRequest<Results<NotificationDto>>
             this.context = context;
         }
 
-        public async Task<Results<NotificationDto>> Handle(GetNotificationsQuery request, CancellationToken cancellationToken)
+        public async Task<NotificationsResults> Handle(GetNotificationsQuery request, CancellationToken cancellationToken)
         {
             var query = context.Notifications
                 .OrderByDescending(n => n.Published)
@@ -51,10 +55,21 @@ public class GetNotificationsQuery : IRequest<Results<NotificationDto>>
             query = query.Skip(request.Page * request.PageSize)
                 .Take(request.PageSize).AsQueryable();
 
+            int? unreadNotificationsCount = null;
+
+            if (request.IncludeUnreadNotificationsCount)
+            {
+                unreadNotificationsCount = await context.Notifications
+                    .OrderByDescending(n => n.Published)
+                    .Where(n => !n.IsRead)
+                    .CountAsync(cancellationToken);
+            }
+
             var notifications = await query.ToListAsync(cancellationToken);
 
-            return new Results<NotificationDto>(
-                notifications.Select(notification => new NotificationDto(notification.Id, notification.Published, notification.Title, notification.Text, notification.IsRead, notification.Created, notification.CreatedBy, notification.LastModified, notification.LastModifiedBy)),
+            return new NotificationsResults(
+                notifications.Select(notification => new NotificationDto(notification.Id, notification.Published, notification.Title, notification.Text, notification.Link, notification.IsRead, notification.Created, notification.CreatedBy, notification.LastModified, notification.LastModifiedBy)),
+                unreadNotificationsCount,
                 totalCount);
         }
     }
