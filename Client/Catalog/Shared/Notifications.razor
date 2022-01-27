@@ -5,11 +5,11 @@
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
 
-<MudBadge Color="Color.Secondary" Dot="true" Overlap="true" Visible="@_newNotificationsAvailable" Class="mr-16">
+<MudBadge Color="Color.Secondary" Content="BadgeText" Overlap="true" Visible="@(unreadNotificationsCount > 0)" Class="mx-5">
     <MudMenu Icon="@Icons.Outlined.Notifications" Color="Color.Inherit" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter" PopoverClass="docs-layout-menu-shadow" ListClass="pa-2 docs-menu-list" LockScroll="true">
         <div class="d-flex justify-space-between align-center px-2">
             <MudText Typo="Typo.subtitle2">Notifications</MudText>
-            <MudButton Disabled="@(_newNotificationsAvailable == false)" OnClick="MarkAllNotificationsAsRead" StartIcon="@Icons.Filled.DoneAll" Variant="Variant.Text" Color="Color.Primary" Class="ml-16 mr-n2">Mark as read</MudButton>
+            <MudButton Disabled="@(unreadNotificationsCount == 0)" OnClick="MarkAllNotificationsAsRead" StartIcon="@Icons.Filled.DoneAll" Variant="Variant.Text" Color="Color.Primary" Class="ml-16 mr-n2">Mark as read</MudButton>
         </div>
 
         <div>
@@ -17,7 +17,9 @@
             {
                 @foreach (var notification in notifications)
                 {
-                    <MudMenuItem Class="px-2 py-0 rounded" Link="@($"/mud/announcements/{notification.Id}")">
+                    var cls = $"px-2 py-0 rounded {(!notification.IsRead ? "notification-unread" : string.Empty)}";
+
+                    <MudMenuItem Class="@cls" OnClick="async () => await OnNotificationClicked(notification)">
                         <MudText Typo="Typo.subtitle2">@notification.Title</MudText>
                         @*<MudText Typo="Typo.body2">@notification.Text</MudText>*@
                         <MudText Typo="Typo.body2">@($"{notification.CreatedBy} • {(notification.Published.Date == DateTime.Now.Date ? notification.Published.ToString("HH:mm") : notification.Published.ToString("yyyy-MM-dd HH:mm"))}")</MudText>
@@ -38,22 +40,44 @@
 @code {
     HubConnection hubConnection = null!;
     List<NotificationDto> notifications = new List<NotificationDto>();
-    bool _newNotificationsAvailable;
+    int unreadNotificationsCount = 0;
+    int limit = 100;
+
+    public string BadgeText
+    {
+        get
+        {
+            if (unreadNotificationsCount == 0) return null;
+
+            if(unreadNotificationsCount > limit)
+            {
+                return $"{limit}+";
+            }
+
+            return unreadNotificationsCount.ToString();
+        }
+    }
+
+    async Task OnNotificationClicked(NotificationDto notification)
+    {
+        await MarkNotificationAsRead(notification);
+
+        //NavigationManager.NavigateTo($"/notifications/{notification.Id}");
+    }
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
+            unreadNotificationsCount = await NotificationsClient.GetUnreadNotificationsCountAsync();
             var result = await NotificationsClient.GetNotificationsAsync(1, 5, null, null);
 
             notifications.AddRange(result.Items);
 
-            _newNotificationsAvailable = notifications.Any(x => !x.IsRead);
-
             hubConnection = new HubConnectionBuilder()
-            .WithUrl($"{NavigationManager.BaseUri}api/hubs/notifications")
-            .WithAutomaticReconnect()
-            .Build();
+                .WithUrl($"{NavigationManager.BaseUri}api/hubs/notifications")
+                .WithAutomaticReconnect()
+                .Build();
 
             hubConnection.On<NotificationDto>("NotificationReceived", OnNotificationReceived);
 
@@ -97,33 +121,38 @@
     {
         await NotificationsClient.MarkAllNotificationsAsReadAsync();
 
-        foreach(var notification in notifications)
+        foreach (var notification in notifications)
         {
             notification.IsRead = true;
         }
 
-        _newNotificationsAvailable = false;
+        unreadNotificationsCount = 0;
     }
 
     async Task MarkNotificationAsRead(NotificationDto notification)
     {
+
         await NotificationsClient.MarkNotificationAsReadAsync(notification.Id);
 
         notification.IsRead = true;
-
-        _newNotificationsAvailable = notifications.Any(x => !x.IsRead);
+        unreadNotificationsCount--;
     }
 
     Task OnNotificationReceived(NotificationDto notification)
     {
         notifications.Insert(0, notification);
 
-        if(notifications.Count > 5)
+        if (notifications.Count > 5)
         {
             notifications.Remove(notifications.Last());
         }
 
-        _newNotificationsAvailable = true;
+        unreadNotificationsCount++;
+
+        Snackbar.Add($"<h6>{notification.Title}</h6><p>{notification.Text}</p>", Severity.Info, options =>
+        {
+            options.VisibleStateDuration = 5000;
+        });
 
         StateHasChanged();
 

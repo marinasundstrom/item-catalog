@@ -53,3 +53,7 @@ h1:focus {
 .mud-drawer-header {
     /* background-color: var(--mud-palette-appbar-background); */
 }
+
+.notification-unread {
+    background-color: #f1f1f1 !important;
+}

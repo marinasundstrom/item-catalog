@@ -490,6 +490,27 @@
         }
       }
     },
+    "/Notifications/UnreadCount": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "operationId": "Notifications_GetUnreadNotificationsCount",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/Search": {
       "post": {
         "tags": [

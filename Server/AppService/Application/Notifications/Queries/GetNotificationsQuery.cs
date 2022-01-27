@@ -36,7 +36,7 @@ public class GetNotificationsQuery : IRequest<Results<NotificationDto>>
         public async Task<Results<NotificationDto>> Handle(GetNotificationsQuery request, CancellationToken cancellationToken)
         {
             var query = context.Notifications
-                .OrderByDescending(i => i.Published)
+                .OrderByDescending(n => n.Published)
                 .Skip(request.Page * request.PageSize)
                 .Take(request.PageSize).AsQueryable();
 

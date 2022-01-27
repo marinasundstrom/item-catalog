@@ -53,6 +53,12 @@ public class NotificationsController : Controller
 
         return Ok();
     }
+
+    [HttpGet("UnreadCount")]
+    public async Task<ActionResult<int>> GetUnreadNotificationsCount(CancellationToken cancellationToken = default)
+    {
+        return Ok(await _mediator.Send(new GetUnreadNotificationsCountQuery(), cancellationToken));
+    }
 }
 
 public class CreateNotificationDto
