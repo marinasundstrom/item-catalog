@@ -1,0 +1,30 @@
+﻿<MudAppBar Elevation="1" Dense="false">
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(async (e) => await DrawerToggleCallback.InvokeAsync())" />
+    <MudSpacer />
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <SearchBox />
+    </MudHidden>
+    <MudSpacer />
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+        <MudIconButton Icon="@Icons.Material.Filled.Search" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => OpenSearchDialog())" />
+    </MudHidden>
+    <Notifications />
+    @*<MudAvatar Size="Size.Medium">MS</MudAvatar>*@
+    <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+</MudAppBar>
+
+<MudDialog @bind-IsVisible="_searchDialogOpen" Options="_dialogOptions" Class="docs-gray-bg" ClassContent="docs-mobile-dialog-search">
+    <DialogContent>
+        <SearchBox></SearchBox>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private bool _searchDialogOpen;
+    private void OpenSearchDialog() => _searchDialogOpen = true;
+    private DialogOptions _dialogOptions = new() { Position = DialogPosition.TopCenter, MaxWidth = MaxWidth.Medium, NoHeader = true };
+
+    [Parameter]
+    public EventCallback DrawerToggleCallback { get; set; }
+}
+
