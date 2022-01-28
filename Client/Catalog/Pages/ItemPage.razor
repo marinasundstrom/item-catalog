@@ -13,7 +13,20 @@
     <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">@item.Name</MudText>
 
     <MudPaper Class="px-8 py-8">
-        <MudText Typo="Typo.body1">@item.Description</MudText>
+
+        <MudGrid>
+            @if (item.Image is not null)
+            {
+                <MudItem xl="12" md="4">
+                    <img style="max-height: 100px" src="@item.Image" />
+                </MudItem>
+            }
+
+            <MudItem xl="12" md="8">
+                <MudText Typo="Typo.body1">@item.Description</MudText>
+            </MudItem>
+        </MudGrid>
+
     </MudPaper>
 
     <MudPaper Class="mt-4 px-4 py-4">
