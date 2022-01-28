@@ -98,6 +98,8 @@
     {
         await LoadAsync();
 
+        await table.ReloadServerData();
+
         StateHasChanged();
     }
 
