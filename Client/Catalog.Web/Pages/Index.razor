@@ -5,7 +5,9 @@
 
 <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">Dashboard</MudText>
 
-<MudButton OnClick="async () => await OnClick()" Variant="Variant.Filled" Color="Color.Primary">@buttonText</MudButton>
+<MudPaper Class="p-4">
+    <MudButton OnClick="async () => await OnClick()" Variant="Variant.Filled" Color="Color.Primary">@buttonText</MudButton>
+</MudPaper>
 
 @code {
     string buttonText = "Click me!";
