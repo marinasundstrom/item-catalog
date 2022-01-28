@@ -1,33 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@layout BaseLayout
 
-<MudLayout>
-    <MudAppBar Elevation="1" Dense="false">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudSpacer />
-        <SearchBox />
-        <MudSpacer />
-        <Notifications />
-        @*<MudAvatar Size="Size.Medium">MS</MudAvatar>*@
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
-    </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
-        <MudDrawerHeader>
-            <MudText Typo="Typo.h5" Class="mt-1">Catalog</MudText>
-        </MudDrawerHeader>
-        <NavMenu />
-    </MudDrawer>
-    <MudMainContent>
-        <MudContainer Class="mt-16" MaxWidth="MaxWidth.ExtraExtraLarge">
-            @Body
-        </MudContainer>
-    </MudMainContent>
-</MudLayout>
-
-@code {
-    bool _drawerOpen = true;
-
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-}
+<MudContainer Class="mt-16" MaxWidth="MaxWidth.Medium">
+    @Body
+</MudContainer>
