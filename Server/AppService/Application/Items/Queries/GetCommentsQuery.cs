@@ -40,7 +40,7 @@ public class GetCommentsQuery : IRequest<Results<CommentDto>>
         {
             var query = context.Comments
                 .Where(c => c.Item.Id == request.ItemId)
-                .OrderBy(c => c.Created)
+                .OrderByDescending(c => c.Created)
                 .AsQueryable();
 
             var totalCount = await query.CountAsync(cancellationToken);
