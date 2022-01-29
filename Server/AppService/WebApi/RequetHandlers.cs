@@ -16,6 +16,50 @@ namespace Catalog.WebApi;
 
 static partial class RequestHandlers
 {
+    public static WebApplication MapApplicationRequests(this WebApplication app)
+    {
+        app.MapGet("/", GetItems)
+        .WithName("Items_GetItems")
+        .WithTags("Items")
+        .RequireAuthorization()
+        .Produces<Results<ItemDto>>(StatusCodes.Status200OK);
+
+        app.MapGet("/{id}", GetItem)
+        .WithName("Items_GetItem")
+        .WithTags("Items")
+        .RequireAuthorization()
+        .Produces<ItemDto>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
+
+        app.MapPost("/", AddItem)
+        .WithName("Items_AddItem")
+        .WithTags("Items")
+        .RequireAuthorization()
+        .Produces(StatusCodes.Status200OK)
+        .ProducesValidationProblem(StatusCodes.Status400BadRequest);
+
+        app.MapDelete("/{id}", DeleteItem)
+        .WithName("Items_DeleteItem")
+        .WithTags("Items")
+        .RequireAuthorization()
+        .Produces(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
+
+        app.MapGet("/{id}/Comments", GetComments)
+        .WithName("Items_GetComments")
+        .WithTags("Items")
+        .RequireAuthorization()
+        .Produces<Results<CommentDto>>(StatusCodes.Status200OK);
+
+        app.MapPost("/{id}/Comments", PostComment)
+        .WithName("Items_PostComment")
+        .WithTags("Items")
+        .RequireAuthorization()
+        .Produces(StatusCodes.Status200OK);
+
+        return app;
+    }
+
     static async Task<IResult> GetItems(IMediator mediator, CancellationToken cancellationToken, int page = 0, int pageSize = 10,
         string? sortBy = null, Application.Common.Models.SortDirection sortDirection = Application.Common.Models.SortDirection.Desc)
     {
@@ -93,43 +137,5 @@ static partial class RequestHandlers
         await mediator.Send(new PostCommentCommand(id, dto.Text), cancellationToken);
 
         return Results.Ok();
-    }
-
-    public static WebApplication MapApplicationRequests(this WebApplication app)
-    {
-        app.MapGet("/", GetItems)
-        .WithName("Items_GetItems")
-        .WithTags("Items")
-        .Produces<Results<ItemDto>>(StatusCodes.Status200OK);
-
-        app.MapGet("/{id}", GetItem)
-        .WithName("Items_GetItem")
-        .WithTags("Items")
-        .Produces<ItemDto>(StatusCodes.Status200OK)
-        .Produces(StatusCodes.Status404NotFound);
-
-        app.MapPost("/", AddItem)
-        .WithName("Items_AddItem")
-        .WithTags("Items")
-        .Produces(StatusCodes.Status200OK)
-        .ProducesValidationProblem(StatusCodes.Status400BadRequest);
-
-        app.MapDelete("/{id}", DeleteItem)
-        .WithName("Items_DeleteItem")
-        .WithTags("Items")
-        .Produces(StatusCodes.Status200OK)
-        .Produces(StatusCodes.Status404NotFound);
-
-        app.MapGet("/{id}/Comments", GetComments)
-        .WithName("Items_GetComments")
-        .WithTags("Items")
-        .Produces<Results<CommentDto>>(StatusCodes.Status200OK);
-
-        app.MapPost("/{id}/Comments", PostComment)
-        .WithName("Items_PostComment")
-        .WithTags("Items")
-        .Produces(StatusCodes.Status200OK);
-
-        return app;
     }
 }

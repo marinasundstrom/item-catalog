@@ -1,8 +1,10 @@
 ﻿<MudNavMenu>
     <MudNavLink Icon="@Icons.Material.Filled.Dashboard" Href="/" Match="NavLinkMatch.All" Class="mb-4">Dashboard</MudNavLink>
 
-    <MudText Typo="Typo.caption" Class="ms-4"><b>General</b></MudText> 
-    <MudNavLink Icon="@Icons.Material.Filled.List" Href="/items">Items</MudNavLink>
+    <MudText Typo="Typo.caption" Class="ms-4"><b>General</b></MudText>
+    <AuthorizeView>
+        <MudNavLink Icon="@Icons.Material.Filled.List" Href="/items">Items</MudNavLink>
+    </AuthorizeView>
     <MudNavLink Icon="@Icons.Material.Filled.List" Href="/worker">Worker</MudNavLink>
     @*
         <MudNavGroup Title="Settings" Expanded="true">

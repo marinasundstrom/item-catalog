@@ -9,8 +9,13 @@ using Catalog.WebApi.Hubs;
 
 using MassTransit;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
+using Microsoft.IdentityModel.Tokens;
+
+using NSwag;
+using NSwag.Generation.Processors.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,10 +36,20 @@ services.AddHttpContextAccessor();
 services.AddEndpointsApiExplorer();
 
 // Register the Swagger services
-services.AddOpenApiDocument(config =>
+services.AddOpenApiDocument(document =>
 {
-    config.Title = "Web API";
-    config.Version = "v1";
+    document.Title = "Web API";
+    document.Version = "v1";
+
+    document.AddSecurity("JWT", new OpenApiSecurityScheme
+    {
+        Type = OpenApiSecuritySchemeType.ApiKey,
+        Name = "Authorization",
+        In = OpenApiSecurityApiKeyLocation.Header,
+        Description = "Type into the textbox: Bearer {your JWT token}."
+    });
+
+    document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
 });
 
 services.AddAzureClients(builder =>
@@ -69,6 +84,24 @@ services.AddStackExchangeRedisCache(o =>
     o.Configuration = Configuration.GetConnectionString("redis");
 });
 
+services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.Authority = "https://localhost:5040";
+                options.Audience = "myapi";
+
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    NameClaimType = "name"
+                };
+
+                //options.TokenValidationParameters.ValidateAudience = false;
+
+                //options.Audience = "openid";
+
+                //options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+            });
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -76,12 +109,18 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 
     app.UseOpenApi();
-    app.UseSwaggerUi3(c => c.DocumentTitle = "Web API v1");
+    app.UseSwaggerUi3(c =>
+    {
+        c.DocumentTitle = "Web API v1";
+    });
 }
 
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapApplicationRequests();
 

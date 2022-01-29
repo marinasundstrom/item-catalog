@@ -1,7 +1,9 @@
 ﻿@page "/items"
 @using Microsoft.AspNetCore.SignalR.Client
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using Catalog.Client
 @implements IAsyncDisposable
+@attribute [Authorize]
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
 @inject INotificationService NotificationService
@@ -140,10 +142,17 @@
 
     private async Task<TableData<ItemDto>> ServerReload(TableState state)
     {
-        var results = await ItemsClient.GetItemsAsync(state.Page, state.PageSize, state.SortLabel,
-            state.SortDirection == MudBlazor.SortDirection.Ascending ? Catalog.Client.SortDirection.Asc : Catalog.Client.SortDirection.Desc);
+        try
+        {
+            var results = await ItemsClient.GetItemsAsync(state.Page, state.PageSize, state.SortLabel,
+                state.SortDirection == MudBlazor.SortDirection.Ascending ? Catalog.Client.SortDirection.Asc : Catalog.Client.SortDirection.Desc);
 
-        return new TableData<ItemDto>() { TotalItems = results.TotalCount, Items = results.Items };
+            return new TableData<ItemDto>() { TotalItems = results.TotalCount, Items = results.Items };
+        }
+        catch (AccessTokenNotAvailableException exc)
+        {
+            return null!;
+        }
     }
 
     private void RowClickEvent(TableRowClickEventArgs<ItemDto> args)

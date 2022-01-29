@@ -1,10 +1,11 @@
 ﻿@page "/items/{id}"
 @using Catalog.Client
+@implements IDisposable
+@attribute [Authorize]
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 @inject IItemsClient ItemsClient
 @inject NavigationManager NavigationManager
-@implements IDisposable
 
 @if (item is not null)
 {

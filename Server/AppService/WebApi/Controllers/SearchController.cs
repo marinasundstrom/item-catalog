@@ -4,12 +4,14 @@ using Catalog.Application.Search.Commands;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.WebApi.Controllers;
 
 [Route("[controller]")]
 [ApiController]
+[Authorize]
 public class SearchController : Controller
 {
     private readonly IMediator _mediator;

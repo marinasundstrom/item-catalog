@@ -24,6 +24,12 @@ services:
   - protocol: https
     port: 5030
 
+- name: identity-service
+  project: Server/IdentityService/IdentityService.csproj
+  bindings:
+  - protocol: https
+    port: 5040
+
 - name: azurite
   image: mcr.microsoft.com/azure-storage/azurite
   args: "azurite-blob --loose --blobHost 0.0.0.0 -l /data"

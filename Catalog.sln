@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 		tye.yaml = tye.yaml
+		nginx.conf = nginx.conf
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Web", "Client\Catalog.Web\Catalog.Web.csproj", "{477A0CC5-4676-461D-B440-98AE44366007}"
@@ -34,6 +35,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{0CD6BE3D-ABFE-4626-AB50-D0264076737A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppService", "AppService", "{A127FB06-772A-4F77-A65E-6EDA88A9622F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService", "Server\IdentityService\IdentityService.csproj", "{65AF1439-F79F-4AF6-BD32-0777FC97F7A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +84,10 @@ Global
 		{EFA9EA78-99DB-4DF6-B359-4263E264B72B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFA9EA78-99DB-4DF6-B359-4263E264B72B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFA9EA78-99DB-4DF6-B359-4263E264B72B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65AF1439-F79F-4AF6-BD32-0777FC97F7A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65AF1439-F79F-4AF6-BD32-0777FC97F7A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65AF1439-F79F-4AF6-BD32-0777FC97F7A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65AF1439-F79F-4AF6-BD32-0777FC97F7A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,5 +107,6 @@ Global
 		{B1340B6E-DFEF-474F-AF38-E3785E87580C} = {0835A9D5-FAED-4BE3-94E1-5D9E67ABD85C}
 		{6C545AF3-D120-42E1-9085-84304FC9365E} = {0835A9D5-FAED-4BE3-94E1-5D9E67ABD85C}
 		{A127FB06-772A-4F77-A65E-6EDA88A9622F} = {0835A9D5-FAED-4BE3-94E1-5D9E67ABD85C}
+		{65AF1439-F79F-4AF6-BD32-0777FC97F7A4} = {0835A9D5-FAED-4BE3-94E1-5D9E67ABD85C}
 	EndGlobalSection
 EndGlobal
