@@ -9,6 +9,7 @@
 @inject INotificationService NotificationService
 @inject IItemsClient ItemsClient
 @inject IDialogService DialogService
+@inject IAccessTokenProvider AccessTokenProvider
 
 <PageTitle>Items</PageTitle>
 
@@ -59,7 +60,18 @@
         try
         {
             hubConnection = new HubConnectionBuilder()
-                .WithUrl($"{NavigationManager.BaseUri}api/hubs/items")
+                .WithUrl($"{NavigationManager.BaseUri}api/hubs/items", options =>
+                {
+                    options.AccessTokenProvider = async () =>
+                    {
+                        var results = await AccessTokenProvider.RequestAccessToken(new AccessTokenRequestOptions() { Scopes = new[] { "myapi" } });
+                        if(results.TryGetToken(out var accessToken))
+                        {
+                            return accessToken.Value;
+                        }
+                        return null!;
+                    };
+                })
                 .WithAutomaticReconnect()
                 .Build();
 
