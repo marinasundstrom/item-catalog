@@ -19,6 +19,13 @@ public class NotificationClient : INotificationClient
 
     public async Task NotificationReceived(NotificationDto notification)
     {
-        await _notificationsHubContext.Clients.All.NotificationReceived(notification);
+        if (notification.UserId is not null)
+        {
+            await _notificationsHubContext.Clients.User(notification.UserId).NotificationReceived(notification);
+        }
+        else
+        {
+            await _notificationsHubContext.Clients.All.NotificationReceived(notification);
+        }
     }
 }

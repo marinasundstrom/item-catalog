@@ -1,14 +1,16 @@
 ﻿<MudAppBar Elevation="1" Dense="false">
     <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(async (e) => await DrawerToggleCallback.InvokeAsync())" />
     <MudSpacer />
-    <MudHidden Breakpoint="Breakpoint.SmAndDown">
-        <SearchBox />
-    </MudHidden>
-    <MudSpacer />
-    <MudHidden Breakpoint="Breakpoint.MdAndUp">
-        <MudIconButton Icon="@Icons.Material.Filled.Search" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => OpenSearchDialog())" />
-    </MudHidden>
-    <Notifications />
+    <AuthorizeView>
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <SearchBox />
+        </MudHidden>
+        <MudSpacer />
+        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+            <MudIconButton Icon="@Icons.Material.Filled.Search" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => OpenSearchDialog())" />
+        </MudHidden>
+        <Notifications />
+    </AuthorizeView>
     <LoginDisplay />
     <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
 </MudAppBar>

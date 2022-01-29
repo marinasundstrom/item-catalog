@@ -20,7 +20,7 @@ public static class Config
         new ApiResource[]
         {
                 // the api requires the role claim
-                new ApiResource("myapi", "The Web Api", new[] { JwtClaimTypes.Role })
+                new ApiResource("myapi", "The Web Api", new[] { JwtClaimTypes.Name, JwtClaimTypes.PreferredUserName, JwtClaimTypes.Email, JwtClaimTypes.Role })
                 {
                     Scopes = new string[] { "myapi" }
                 }
@@ -30,7 +30,7 @@ public static class Config
         new ApiScope[]
         {
                     // the api requires the role claim
-                    new ApiScope("myapi", "Access the api", new[] { JwtClaimTypes.Role })
+                    new ApiScope("myapi", "Access the api")
         };
 
     public static IEnumerable<Client> Clients =>

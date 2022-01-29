@@ -1,9 +1,11 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client
 @using Catalog.Client
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @implements IAsyncDisposable
 @inject INotificationsClient NotificationsClient
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
+@inject IAccessTokenProvider AccessTokenProvider
 
 <MudBadge Color="Color.Secondary" Content="BadgeText" Overlap="true" Visible="@(unreadNotificationsCount > 0)" Class="mx-5">
     <MudMenu Icon="@(unreadNotificationsCount > 0 ? Icons.Filled.Notifications : Icons.Outlined.Notifications)" Color="Color.Inherit" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter" PopoverClass="docs-layout-menu-shadow" ListClass="pa-2 docs-menu-list" LockScroll="true">
@@ -70,7 +72,7 @@
     {
         await MarkNotificationAsRead(notification);
 
-        if(notification.Link is not null)
+        if (notification.Link is not null)
         {
             NavigationManager.NavigateTo(notification.Link);
         }
@@ -87,7 +89,18 @@
             notifications.AddRange(result.Items);
 
             hubConnection = new HubConnectionBuilder()
-                .WithUrl($"{NavigationManager.BaseUri}api/hubs/notifications")
+                .WithUrl($"{NavigationManager.BaseUri}api/hubs/notifications", options =>
+                {
+                    options.AccessTokenProvider = async () =>
+                    {
+                        var results = await AccessTokenProvider.RequestAccessToken(new AccessTokenRequestOptions() { Scopes = new[] { "myapi" } });
+                        if (results.TryGetToken(out var accessToken))
+                        {
+                            return accessToken.Value;
+                        }
+                        return null!;
+                    };
+                })
                 .WithAutomaticReconnect()
                 .Build();
 

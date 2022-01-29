@@ -26,7 +26,7 @@ public class NotificationCreatedEventHandler : INotificationHandler<DomainEventN
 
         var notification = await _context.Notifications.FirstAsync(i => i.Id == domainEvent.NotificationId, cancellationToken);
 
-        var notifcationDto = new NotificationDto(notification.Id, notification.Published, notification.Title, notification.Text, notification.Link, notification.IsRead, notification.Created, notification.CreatedBy, notification.LastModified, notification.LastModifiedBy);
+        var notifcationDto = new NotificationDto(notification.Id, notification.Published, notification.Title, notification.Text, notification.Link, notification.UserId, notification.IsRead, notification.Created, notification.CreatedBy, notification.LastModified, notification.LastModifiedBy);
 
         await _notficationClient.NotificationReceived(notifcationDto);
     }

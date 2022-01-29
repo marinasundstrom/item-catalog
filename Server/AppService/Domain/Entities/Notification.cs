@@ -29,6 +29,8 @@ public class Notification : AuditableEntity, ISoftDelete, IHasDomainEvent
 
     public string? ItemId { get; set; }
 
+    public string? UserId { get; set; }
+
     public DateTime Published { get; set; }
 
     public DateTime? Deleted { get; set; }

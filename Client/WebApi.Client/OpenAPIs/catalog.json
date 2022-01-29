@@ -65,7 +65,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "post": {
         "tags": [
@@ -99,7 +104,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/{id}": {
@@ -134,7 +144,12 @@
           "404": {
             "description": ""
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -160,7 +175,12 @@
           "404": {
             "description": ""
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/{id}/Comments": {
@@ -227,7 +247,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "post": {
         "tags": [
@@ -263,7 +288,12 @@
           "200": {
             "description": ""
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/info": {
@@ -551,7 +581,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/DoSomething": {
@@ -847,6 +882,10 @@
             "type": "string",
             "nullable": true
           },
+          "userId": {
+            "type": "string",
+            "nullable": true
+          },
           "isRead": {
             "type": "boolean"
           },
@@ -886,6 +925,10 @@
           "link": {
             "type": "string",
             "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -918,6 +961,14 @@
         "enum": [
           "Item"
         ]
+      }
+    },
+    "securitySchemes": {
+      "JWT": {
+        "type": "apiKey",
+        "description": "Type into the textbox: Bearer {your JWT token}.",
+        "name": "Authorization",
+        "in": "header"
       }
     }
   }

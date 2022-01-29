@@ -31,17 +31,28 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
     public class GetNotificationsQueryHandler : IRequestHandler<GetNotificationsQuery, NotificationsResults>
     {
         private readonly ICatalogContext context;
+        private readonly ICurrentUserService _currentUserService;
 
-        public GetNotificationsQueryHandler(ICatalogContext context)
+        public GetNotificationsQueryHandler(ICatalogContext context, ICurrentUserService currentUserService)
         {
             this.context = context;
+            _currentUserService = currentUserService;
         }
 
         public async Task<NotificationsResults> Handle(GetNotificationsQuery request, CancellationToken cancellationToken)
         {
-            var query = context.Notifications
-                .OrderByDescending(n => n.Published)
-                .AsQueryable();
+            var query = context.Notifications.AsQueryable();
+
+            if (_currentUserService.UserId is not null)
+            {
+                query = query.Where(n => n.UserId == _currentUserService.UserId || n.UserId == null);
+            }
+            else
+            {
+                query = query.Where(n => n.UserId == null);
+            }
+
+            query = query.OrderByDescending(n => n.Published);
 
             var totalCount = await query.CountAsync(cancellationToken);
 
@@ -68,7 +79,7 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
             var notifications = await query.ToListAsync(cancellationToken);
 
             return new NotificationsResults(
-                notifications.Select(notification => new NotificationDto(notification.Id, notification.Published, notification.Title, notification.Text, notification.Link, notification.IsRead, notification.Created, notification.CreatedBy, notification.LastModified, notification.LastModifiedBy)),
+                notifications.Select(notification => new NotificationDto(notification.Id, notification.Published, notification.Title, notification.Text, notification.Link, notification.UserId, notification.IsRead, notification.Created, notification.CreatedBy, notification.LastModified, notification.LastModifiedBy)),
                 unreadNotificationsCount,
                 totalCount);
         }

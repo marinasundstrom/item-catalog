@@ -17,11 +17,14 @@ public class CreateNotificationCommand : IRequest
 
     public string? Link { get; set; }
 
-    public CreateNotificationCommand(string title, string? text, string? link)
+    public string? UserId { get; set; }
+
+    public CreateNotificationCommand(string title, string? text, string? link, string? userId)
     {
         Title = title;
         Text = text;
         Link = link;
+        UserId = userId;
     }
 
     public class CreateNotificationCommandHandler : IRequestHandler<CreateNotificationCommand>
@@ -42,6 +45,7 @@ public class CreateNotificationCommand : IRequest
             notification.Title = request.Title;
             notification.Text = request.Text;
             notification.Link = request.Link;
+            notification.UserId = request.UserId;
             notification.Published = DateTime.Now;
 
             notification.DomainEvents.Add(new NotificationCreatedEvent(notification.Id));

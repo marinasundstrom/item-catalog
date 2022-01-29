@@ -9,6 +9,7 @@ using Catalog.Application.Notifications.Queries;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.WebApi.Controllers;
@@ -25,6 +26,7 @@ public class NotificationsController : Controller
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<NotificationsResults>> GetNotifications(
         bool includeUnreadNotificationsCount = false,
         int page = 1, int pageSize = 5, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null, CancellationToken cancellationToken = default)
@@ -33,9 +35,10 @@ public class NotificationsController : Controller
     }
 
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult> CreateNotification(CreateNotificationDto dto, CancellationToken cancellationToken)
     {
-        await _mediator.Send(new CreateNotificationCommand(dto.Title, dto.Text, dto.Link), cancellationToken);
+        await _mediator.Send(new CreateNotificationCommand(dto.Title, dto.Text, dto.Link, dto.UserId), cancellationToken);
 
         return Ok();
     }
@@ -71,4 +74,6 @@ public class CreateNotificationDto
     public string? Text { get; set; }
 
     public string? Link { get; set; }
+
+    public string? UserId { get; set; }
 }

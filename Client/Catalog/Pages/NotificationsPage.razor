@@ -1,5 +1,6 @@
 ﻿@page "/notifications"
 @using Catalog.Client
+@attribute [Authorize]
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
 @inject INotificationsClient NotificationsClient
