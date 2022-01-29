@@ -23,15 +23,19 @@ public class MarkNotificationAsReadCommand : IRequest
     public class MarkNotificationAsReadCommandHandler : IRequestHandler<MarkNotificationAsReadCommand>
     {
         private readonly ICatalogContext context;
+        private readonly ICurrentUserService _currentUserService;
 
-        public MarkNotificationAsReadCommandHandler(ICatalogContext context)
+        public MarkNotificationAsReadCommandHandler(ICatalogContext context, ICurrentUserService currentUserService)
         {
             this.context = context;
+            _currentUserService = currentUserService;
         }
 
         public async Task<Unit> Handle(MarkNotificationAsReadCommand request, CancellationToken cancellationToken)
         {
-            var notification = await context.Notifications.FirstOrDefaultAsync(i => i.Id == request.NotificationId, cancellationToken);
+            var notification = await context.Notifications
+                .Where(n => n.UserId == _currentUserService.UserId)
+                .FirstOrDefaultAsync(i => i.Id == request.NotificationId, cancellationToken);
 
             if (notification is null)
             {

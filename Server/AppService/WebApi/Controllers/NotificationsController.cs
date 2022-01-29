@@ -16,6 +16,7 @@ namespace Catalog.WebApi.Controllers;
 
 [Route("[controller]")]
 [ApiController]
+ [Authorize]
 public class NotificationsController : Controller
 {
     private readonly IMediator _mediator;
@@ -26,7 +27,6 @@ public class NotificationsController : Controller
     }
 
     [HttpGet]
-    [Authorize]
     public async Task<ActionResult<NotificationsResults>> GetNotifications(
         bool includeUnreadNotificationsCount = false,
         int page = 1, int pageSize = 5, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null, CancellationToken cancellationToken = default)
@@ -35,7 +35,6 @@ public class NotificationsController : Controller
     }
 
     [HttpPost]
-    [Authorize]
     public async Task<ActionResult> CreateNotification(CreateNotificationDto dto, CancellationToken cancellationToken)
     {
         await _mediator.Send(new CreateNotificationCommand(dto.Title, dto.Text, dto.Link, dto.UserId), cancellationToken);

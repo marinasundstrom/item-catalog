@@ -12,15 +12,19 @@ public class MarkAllNotificationsAsReadCommand : IRequest
     public class MarkAllNotificationsAsReadCommandHandler : IRequestHandler<MarkAllNotificationsAsReadCommand>
     {
         private readonly ICatalogContext context;
+        private readonly ICurrentUserService _currentUserService;
 
-        public MarkAllNotificationsAsReadCommandHandler(ICatalogContext context)
+        public MarkAllNotificationsAsReadCommandHandler(ICatalogContext context, ICurrentUserService currentUserService)
         {
             this.context = context;
+            _currentUserService = currentUserService;
         }
 
         public async Task<Unit> Handle(MarkAllNotificationsAsReadCommand request, CancellationToken cancellationToken)
         {
-            var notifications = await context.Notifications.ToListAsync(cancellationToken);
+            var notifications = await context.Notifications
+                .Where(n => n.UserId == _currentUserService.UserId)
+                .ToListAsync(cancellationToken);
 
             foreach(var notification in notifications)
             {
