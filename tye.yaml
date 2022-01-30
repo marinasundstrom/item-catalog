@@ -24,7 +24,7 @@ services:
   - protocol: https
     port: 5030
 
-- name: identity-service
+- name: identity
   project: Server/IdentityService/IdentityService.csproj
   bindings:
   - protocol: https
@@ -89,7 +89,7 @@ services:
   image: nginx
   bindings:
     - protocol: https
-      port: 8080
+      port: 443
   volumes:
     - source: nginx.conf
       target: /etc/nginx/templates/default.conf.template

@@ -26,8 +26,6 @@ public class UrlHelper : IUrlHelper
 
         var host = GetHostUrl();
 
-        int port = 8080;
-
-        return $"{host}:{port}/content/images/{id}";
+        return $"{host}/content/images/{id}";
     }
 }

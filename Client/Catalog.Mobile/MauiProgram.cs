@@ -15,7 +15,7 @@ namespace Catalog;
 
 public static class MauiProgram
 {
-    public const string UriString = $"https://localhost:8080/api/";
+    public const string UriString = $"https://localhost/api/";
 
     public static MauiApp CreateMauiApp()
     {

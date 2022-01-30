@@ -12,6 +12,7 @@ using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 using NSwag;
@@ -84,15 +85,21 @@ services.AddStackExchangeRedisCache(o =>
     o.Configuration = Configuration.GetConnectionString("redis");
 });
 
+#if DEBUG
+    IdentityModelEventSource.ShowPII = true;
+#endif
+
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
             {
-                options.Authority = "https://localhost:5040";
+                options.Authority = "https://identity.local";
                 options.Audience = "myapi";
 
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    NameClaimType = "name"
+                    NameClaimType = "name",
+                    //NameClaimType = "email",
+                    //RoleClaimType = "role"
                 };
 
                 //options.TokenValidationParameters.ValidateAudience = false;
