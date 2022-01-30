@@ -28,6 +28,8 @@ The "Worker" service is used to demonstrate how to off-load tasks to a micro ser
 
 SignalR is used for real-time communication between server and client.
 
+Duende Identity Server is used for handling user identities and authentication.
+
 Nginx is used as a reverse-proxy.
 
 Dev environment is based around projects and containers orchestrated by .NET Tye. Enabling you to launch all backend services with one simple command.

@@ -4,32 +4,29 @@ This guide is intended to be run from top-down.
 
 All the necessary services have been configured in the ```tye.yaml``` file.
 
-## Install the .NET 6 SDK
+## Prerequisites
+
+### Install the .NET 6 SDK
 
 Download and run the [installer](https://dotnet.microsoft.com/en-us/download/dotnet/6.0).
 
-## Install Docker Desktop
+### Install Docker Desktop
 
 Download it from [here](https://www.docker.com/products/docker-desktop).
 
-## Install Tye CLI tools
+### Install Tye CLI tools
 
 Check the [instructions](https://github.com/dotnet/tye/blob/main/docs/getting_started.md) to install the tools.
 
 ## Create SSL certificates
 
-For MacOS:
+This will require you to have OpenSSL installed.
 
 Certificates should be placed in a folder called ```certs```, situated in the root folder. They are used by Nginx.
 
-Requested file names:
+### For Web Client & App Service
 
-```
-localhost.crt
-localhost.key
-```
-
-This is how you generate self-signed certificates (also used by ASP.NET Core) on macOS:
+We will extract and use the ASP.NET Core Dev certificate.
 
 ```
 dotnet dev-certs https -ep aspnetapp.pfx -p crypticpassword
@@ -55,6 +52,63 @@ Remove passphrase from key
 cp localhost.key localhost.key.bak
 openssl rsa -in localhost.key.bak -out localhost.key
 ```
+
+### For IdentityService
+
+Let's create a self-signed certificate from scratch for identity.local!
+
+Generate the public private keypair:
+
+```sh
+openssl genrsa -aes256 -passout pass:Abc123! -out server.pass.key 4096
+openssl rsa -passin pass:Abc123! -in server.pass.key -out server.key
+rm server.pass.key
+openssl req -new -key server.key -out server.csr -config <(cat ../server.cnf)
+```
+
+Sign the SSL certificate:
+
+```sh
+openssl x509 -req -extensions v3_req -sha256 -days 365 -in server.csr -signkey server.key -out server.crt -extfile ../server.cnf
+```
+
+On macOS, trust the cert:
+
+```sh
+sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain <<certificate>>
+```
+
+## Update ```hosts``` file
+
+In order for the host to recognize the ```ìdentity.local``` domain, to map it to the right IP address, you have to add it to the ```hosts``` file:
+
+### On macOS:
+
+Edit the ```/etc/hosts``` file using your favorite editor. Sudo required on macOS.
+
+Add this line to the end of the file:
+```
+127.0.0.1   identity.local
+```
+
+Save the changes.
+
+Then restart the DNS:
+
+```sh
+sudo killall -HUP mDNSResponder 
+```
+
+### Other platforms
+
+Read this [guide](https://www.howtogeek.com/howto/27350/beginner-geek-how-to-edit-your-hosts-file/) for configuring on Windows and Linux.
+
+### Conclusion
+
+You should now be able to reach the identity server site in your browser by navigating to [```https://identity.local```](https://identity.local).
+
+Please be aware that you have to configure the certs.
+
 
 ## Run the projects
 
@@ -152,6 +206,6 @@ Just restart the whole system. Exit Tye, and restart it.
 
 ## Launch the web app
 
-In your browser, navigate to: ```https://localhost:8080/```
+In your browser, navigate to: ```https://localhost/```
 
 You are now ready.
