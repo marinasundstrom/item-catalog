@@ -20,7 +20,7 @@ The request arrives at the Web API that emits a message on the message bus. The 
 
 The Web API consumes the response message, and emits it to the Web Socket, using SignalR. The client receives and displays the response.
 
-## Notifications
+## Worker
 
 The Worker runs a recurring task every minute that emits a message that is handled similar to the feature above. 
 
