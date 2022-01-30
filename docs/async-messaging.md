@@ -2,7 +2,7 @@
 
 The Web API communicates with the Worker by sending messages using asynchronous messaging, facilitated by the MassTransit framework, with RabbitMQ as transport.
 
-Messages get handled by RabbitMQ, a message-broker software. Each message is sent to an exchange and then delivered to one or many queues. A consumer subscribes to a queue that acts similar to how a postbox works. 
+Messages get handled by RabbitMQ, a message-broker software. Each message is sent to an exchange and then delivered to one or many queues. A consumer subscribes to a queue that acts as a postbox to pull messages from. 
 
 Since messaging is handled out-of-process, it does not affect the performance of any of the the consuming services.
 
