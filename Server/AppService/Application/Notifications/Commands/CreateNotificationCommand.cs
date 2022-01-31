@@ -40,21 +40,48 @@ public class CreateNotificationCommand : IRequest
 
         public async Task<Unit> Handle(CreateNotificationCommand request, CancellationToken cancellationToken)
         {
+            if(request.UserId is null)
+            {
+                var users = await GetUsers();
+
+                foreach (var user in users)
+                {
+                    var userId = request.UserId;
+
+                    Notification notification = CreateNotification(request, userId);
+
+                    context.Notifications.Add(notification);
+                }
+            }
+            else 
+            {
+                Notification notification = CreateNotification(request, null);
+
+                context.Notifications.Add(notification);         
+            }
+
+            await context.SaveChangesAsync(cancellationToken);
+
+            return Unit.Value;
+        }
+
+        private static Task<IEnumerable<string>> GetUsers()
+        {
+            return Task.FromResult<IEnumerable<string>>(new string[] { "AliceSmith@email.com", "BobSmith@email.com" });
+        }
+
+        private static Notification CreateNotification(CreateNotificationCommand request, string? userId)
+        {
             var notification = new Notification();
             notification.Id = Guid.NewGuid().ToString();
             notification.Title = request.Title;
             notification.Text = request.Text;
             notification.Link = request.Link;
-            notification.UserId = request.UserId;
+            notification.UserId = userId ?? request.UserId;
             notification.Published = DateTime.Now;
 
             notification.DomainEvents.Add(new NotificationCreatedEvent(notification.Id));
-
-            context.Notifications.Add(notification);
-
-            await context.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
+            return notification;
         }
     }
 }
