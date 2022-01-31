@@ -88,7 +88,11 @@ services:
 - name: nginx
   image: nginx
   bindings:
-    - protocol: https
+    - name: http
+      protocol: http
+      port: 80
+    - name: https
+      protocol: https
       port: 443
   volumes:
     - source: nginx.conf
