@@ -23,7 +23,7 @@ public class MarkAllNotificationsAsReadCommand : IRequest
         public async Task<Unit> Handle(MarkAllNotificationsAsReadCommand request, CancellationToken cancellationToken)
         {
             var notifications = await context.Notifications
-                .Where(n => n.UserId == _currentUserService.UserId)
+                .Where(n => n.UserId == _currentUserService.UserId || n.UserId == null)
                 .ToListAsync(cancellationToken);
 
             foreach(var notification in notifications)

@@ -72,6 +72,7 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
             {
                 unreadNotificationsCount = await context.Notifications
                     .OrderByDescending(n => n.Published)
+                    .Where(n => n.UserId == _currentUserService.UserId || n.UserId == null)
                     .Where(n => !n.IsRead)
                     .CountAsync(cancellationToken);
             }
