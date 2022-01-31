@@ -1,4 +1,5 @@
 ﻿@page "/items"
+@layout MainLayout2
 @using Microsoft.AspNetCore.SignalR.Client
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using Catalog.Client
@@ -27,6 +28,9 @@
             <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Description">Description</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel T="ItemDto" SortLabel="CommentCount">Comments</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Created">Created</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel T="ItemDto" SortLabel="CreatedBy">Created by</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel T="ItemDto" SortLabel="LastModified">Last Modified</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel T="ItemDto" SortLabel="LastModifiedBy">Last Modified By</MudTableSortLabel></MudTh>
             <MudTh></MudTh>
         </HeaderContent>
         <RowTemplate>
@@ -37,6 +41,9 @@
             <MudTd DataLabel="Description">@context.Description</MudTd>
             <MudTd DataLabel="Comments">@context.CommentCount</MudTd>
             <MudTd DataLabel="Created">@context.Created.ToString("g")</MudTd>
+            <MudTd DataLabel="CreatedBy">@context.CreatedBy</MudTd>
+            <MudTd DataLabel="LastModified">@context.LastModified?.ToString("g")</MudTd>
+            <MudTd DataLabel="LastModifiedBy">@context.LastModifiedBy</MudTd>
             <MudTd><MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="async () => await DeleteItem(context)" /></MudTd>
         </RowTemplate>
         <NoRecordsContent>
