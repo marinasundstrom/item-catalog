@@ -25,6 +25,7 @@
             <MudTh></MudTh>
             <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Name">Name</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Description">Description</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel T="ItemDto" SortLabel="CommentCount">Comments</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Created">Created</MudTableSortLabel></MudTh>
             <MudTh></MudTh>
         </HeaderContent>
@@ -34,6 +35,7 @@
             </MudTd>
             <MudTd DataLabel="Name">@context.Name</MudTd>
             <MudTd DataLabel="Description">@context.Description</MudTd>
+            <MudTd DataLabel="Comments">@context.CommentCount</MudTd>
             <MudTd DataLabel="Created">@context.Created.ToString("g")</MudTd>
             <MudTd><MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="async () => await DeleteItem(context)" /></MudTd>
         </RowTemplate>
