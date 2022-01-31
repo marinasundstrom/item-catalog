@@ -10,6 +10,7 @@ using Catalog.WebApi.Hubs;
 using MassTransit;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 using Microsoft.IdentityModel.Logging;
@@ -67,6 +68,8 @@ services.AddAzureClients(builder =>
 });
 
 services.AddSignalR();
+
+services.AddSingleton<IUserIdProvider, EmailBasedUserIdProvider>();
 
 services.AddMassTransit(x =>
 {
