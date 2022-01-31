@@ -30,7 +30,7 @@
             <MudTh><MudTableSortLabel T="ItemDto" SortLabel="Created">Created</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel T="ItemDto" SortLabel="CreatedBy">Created by</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel T="ItemDto" SortLabel="LastModified">Last Modified</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel T="ItemDto" SortLabel="LastModifiedBy">Last Modified By</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel T="ItemDto" SortLabel="LastModifiedBy">Last Modified by</MudTableSortLabel></MudTh>
             <MudTh></MudTh>
         </HeaderContent>
         <RowTemplate>
@@ -42,8 +42,8 @@
             <MudTd DataLabel="Comments">@context.CommentCount</MudTd>
             <MudTd DataLabel="Created">@context.Created.ToString("g")</MudTd>
             <MudTd DataLabel="CreatedBy">@context.CreatedBy</MudTd>
-            <MudTd DataLabel="LastModified">@context.LastModified?.ToString("g")</MudTd>
-            <MudTd DataLabel="LastModifiedBy">@context.LastModifiedBy</MudTd>
+            <MudTd DataLabel="Last Modified">@context.LastModified?.ToString("g")</MudTd>
+            <MudTd DataLabel="Last Modified by">@context.LastModifiedBy</MudTd>
             <MudTd><MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="async () => await DeleteItem(context)" /></MudTd>
         </RowTemplate>
         <NoRecordsContent>

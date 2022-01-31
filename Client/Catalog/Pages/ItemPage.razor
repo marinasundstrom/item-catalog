@@ -42,7 +42,7 @@
                 <MudTh></MudTh>
                 <MudTh>Text</MudTh>
                 <MudTh><MudTableSortLabel T="CommentDto" SortLabel="Created">Created</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel T="CommentDto" SortLabel="Created by">Created by</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel T="CommentDto" SortLabel="CreatedBy">Created by</MudTableSortLabel></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd>
@@ -50,7 +50,7 @@
                 </MudTd>
                 <MudTd DataLabel="Name">@context.Text</MudTd>
                 <MudTd DataLabel="Created">@context.Created.ToString("g")</MudTd>
-                <MudTd DataLabel="CreatedBy">@context.CreatedBy</MudTd>
+                <MudTd DataLabel="Created by">@context.CreatedBy</MudTd>
             </RowTemplate>
             <NoRecordsContent>
                 <MudText>No matching records found</MudText>
