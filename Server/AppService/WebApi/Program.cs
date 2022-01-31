@@ -98,8 +98,7 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     NameClaimType = "name",
-                    //NameClaimType = "email",
-                    //RoleClaimType = "role"
+                    RoleClaimType = "role"
                 };
 
                 //options.TokenValidationParameters.ValidateAudience = false;

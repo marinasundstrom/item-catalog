@@ -8,6 +8,8 @@ namespace Catalog.WebApi.Services;
 
 public class CurrentUserService : ICurrentUserService
 {
+    private const string UserIdClaimType = "preferred_username";
+
     private readonly IHttpContextAccessor _httpContextAccessor;
 
     public CurrentUserService(IHttpContextAccessor httpContextAccessor)
@@ -15,5 +17,5 @@ public class CurrentUserService : ICurrentUserService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public string? UserId => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+    public string? UserId => _httpContextAccessor.HttpContext?.User?.FindFirstValue(UserIdClaimType);
 }

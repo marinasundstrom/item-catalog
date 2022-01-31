@@ -14,6 +14,7 @@ builder.Services.AddOidcAuthentication(options =>
 {
     builder.Configuration.Bind("Local", options.ProviderOptions);
 
+    options.UserOptions.NameClaim = "name";
     options.UserOptions.RoleClaim = "role";
 });
 
