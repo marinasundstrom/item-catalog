@@ -31,9 +31,11 @@ public class SearchCommand : IRequest<IEnumerable<SearchResultItem>>
 
         public async Task<IEnumerable<SearchResultItem>> Handle(SearchCommand request, CancellationToken cancellationToken)
         {
+            var searchText = request.SearchText.Trim().ToLower();
+
             return await context.Items.Where(i =>
-                i.Name.Trim().ToLower().Contains(request.SearchText.Trim().ToLower())
-                || i.Description.Trim().ToLower().Contains(request.SearchText.Trim().ToLower()))
+                i.Name.Trim().ToLower().Contains(searchText)
+                || i.Description.Trim().ToLower().Contains(searchText))
                 .Select(i => new SearchResultItem() {
                     Title = i.Name,
                     ResultType = SearchResultItemType.Item,
