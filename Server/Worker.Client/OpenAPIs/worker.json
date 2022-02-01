@@ -36,13 +36,22 @@
         "operationId": "Notifications_GetNotifications",
         "parameters": [
           {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
             "name": "includeUnreadNotificationsCount",
             "in": "query",
             "schema": {
               "type": "boolean",
               "default": false
             },
-            "x-position": 1
+            "x-position": 2
           },
           {
             "name": "page",
@@ -52,7 +61,7 @@
               "format": "int32",
               "default": 1
             },
-            "x-position": 2
+            "x-position": 3
           },
           {
             "name": "pageSize",
@@ -62,7 +71,7 @@
               "format": "int32",
               "default": 5
             },
-            "x-position": 3
+            "x-position": 4
           },
           {
             "name": "sortBy",
@@ -71,7 +80,7 @@
               "type": "string",
               "nullable": true
             },
-            "x-position": 4
+            "x-position": 5
           },
           {
             "name": "sortDirection",
@@ -88,7 +97,7 @@
                 }
               ]
             },
-            "x-position": 5
+            "x-position": 6
           }
         ],
         "responses": {
@@ -254,6 +263,17 @@
           "Notifications"
         ],
         "operationId": "Notifications_GetUnreadNotificationsCount",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -325,6 +345,10 @@
             "type": "string",
             "nullable": true
           },
+          "tag": {
+            "type": "string",
+            "nullable": true
+          },
           "link": {
             "type": "string",
             "nullable": true
@@ -335,6 +359,11 @@
           },
           "isRead": {
             "type": "boolean"
+          },
+          "read": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           },
           "published": {
             "type": "string",

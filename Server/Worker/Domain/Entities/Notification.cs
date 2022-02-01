@@ -21,11 +21,16 @@ public class Notification : AuditableEntity, ISoftDelete, IHasDomainEvent
     public string Id { get; set; } = null!;
 
     public string Title { get; set; } = null!;
+
     public string? Text { get; set; }
+
+    public string? Tag { get; set; }
 
     public string? Link { get; set; }
 
     public bool IsRead { get; set; }
+
+    public DateTime? Read { get; set; }
 
     public string? ItemId { get; set; }
 

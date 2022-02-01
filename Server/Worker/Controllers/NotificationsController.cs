@@ -28,10 +28,11 @@ public class NotificationsController : Controller
 
     [HttpGet]
     public async Task<ActionResult<NotificationsResults>> GetNotifications(
+        string? userId,
         bool includeUnreadNotificationsCount = false,
         int page = 1, int pageSize = 5, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null, CancellationToken cancellationToken = default)
     {
-        return Ok(await _mediator.Send(new GetNotificationsQuery(includeUnreadNotificationsCount, page - 1, pageSize, sortBy, sortDirection), cancellationToken));
+        return Ok(await _mediator.Send(new GetNotificationsQuery(userId, includeUnreadNotificationsCount, page - 1, pageSize, sortBy, sortDirection), cancellationToken));
     }
 
     [HttpPost]
@@ -67,9 +68,9 @@ public class NotificationsController : Controller
     }
 
     [HttpGet("UnreadCount")]
-    public async Task<ActionResult<int>> GetUnreadNotificationsCount(CancellationToken cancellationToken = default)
+    public async Task<ActionResult<int>> GetUnreadNotificationsCount(string? userId, CancellationToken cancellationToken = default)
     {
-        return Ok(await _mediator.Send(new GetUnreadNotificationsCountQuery(), cancellationToken));
+        return Ok(await _mediator.Send(new GetUnreadNotificationsCountQuery(userId), cancellationToken));
     }
 }
 

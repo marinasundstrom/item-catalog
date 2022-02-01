@@ -31,15 +31,19 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
     public class GetNotificationsQueryHandler : IRequestHandler<GetNotificationsQuery, NotificationsResults>
     {
         private readonly Worker.Client.INotificationsClient _notificationsClient;
+        private readonly ICurrentUserService _currentUserService;
 
-        public GetNotificationsQueryHandler(Worker.Client.INotificationsClient notificationsClient)
+        public GetNotificationsQueryHandler(Worker.Client.INotificationsClient notificationsClient, ICurrentUserService currentUserService)
         {
             _notificationsClient = notificationsClient;
+            _currentUserService = currentUserService;
         }
 
         public async Task<NotificationsResults> Handle(GetNotificationsQuery request, CancellationToken cancellationToken)
         {
-            var results = await _notificationsClient.GetNotificationsAsync(request.IncludeUnreadNotificationsCount, request.Page, request.PageSize, request.SortBy, (Worker.Client.SortDirection?)request.SortDirection);
+            var userId = _currentUserService.UserId;
+
+            var results = await _notificationsClient.GetNotificationsAsync(userId, request.IncludeUnreadNotificationsCount, request.Page, request.PageSize, request.SortBy, (Worker.Client.SortDirection?)request.SortDirection);
             var notifications = results.Items;
 
             return new NotificationsResults(

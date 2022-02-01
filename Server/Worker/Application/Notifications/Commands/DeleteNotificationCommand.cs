@@ -20,20 +20,18 @@ public class DeleteNotificationCommand : IRequest
     public class DeleteNotificationCommandHandler : IRequestHandler<DeleteNotificationCommand>
     {
         private readonly IWorkerContext context;
-        private readonly ICurrentUserService _currentUserService;
         private readonly IBackgroundJobClient _backgroundJobClient;
 
-        public DeleteNotificationCommandHandler(IWorkerContext context, ICurrentUserService currentUserService, IBackgroundJobClient backgroundJobClient)
+        public DeleteNotificationCommandHandler(IWorkerContext context, IBackgroundJobClient backgroundJobClient)
         {
             this.context = context;
-            _currentUserService = currentUserService;
             _backgroundJobClient = backgroundJobClient;
         }
 
         public async Task<Unit> Handle(DeleteNotificationCommand request, CancellationToken cancellationToken)
         {
             var notification = await context.Notifications
-                .Where(n => n.UserId == _currentUserService.UserId || n.UserId == null)
+                //.Where(n => n.UserId == _currentUserService.UserId || n.UserId == null)
                 .FirstOrDefaultAsync(i => i.Id == request.NotificationId, cancellationToken);
 
             if (notification is null)

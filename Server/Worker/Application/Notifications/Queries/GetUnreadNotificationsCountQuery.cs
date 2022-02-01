@@ -9,15 +9,20 @@ namespace Worker.Application.Notifications.Queries;
 
 public class GetUnreadNotificationsCountQuery : IRequest<int>
 {
+    public GetUnreadNotificationsCountQuery(string? userId)
+    {
+        UserId = userId;
+    }
+
+    public string? UserId { get; }
+
     public class GetUnreadNotificationsCountQueryHandler : IRequestHandler<GetUnreadNotificationsCountQuery, int>
     {
         private readonly IWorkerContext context;
-        private readonly ICurrentUserService _currentUserService;
 
         public GetUnreadNotificationsCountQueryHandler(IWorkerContext context, ICurrentUserService currentUserService)
         {
             this.context = context;
-            _currentUserService = currentUserService;
         }
 
         public async Task<int> Handle(GetUnreadNotificationsCountQuery request, CancellationToken cancellationToken)
@@ -26,9 +31,9 @@ public class GetUnreadNotificationsCountQuery : IRequest<int>
                 .Where(n => n.Published != null)
                 .AsQueryable();
 
-            if (_currentUserService.UserId is not null)
+            if (request.UserId is not null)
             {
-                query = query.Where(n => n.UserId == _currentUserService.UserId);
+                query = query.Where(n => n.UserId == request.UserId);
             }
             else
             {
