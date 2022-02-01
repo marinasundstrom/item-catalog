@@ -1,6 +1,6 @@
 ﻿namespace Catalog.Application.Common.Interfaces;
 
-public interface IWorkerlient
+public interface IWorkerClient
 {
     Task NotificationReceived(string message);
 }

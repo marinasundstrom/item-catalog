@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Catalog.WebApi.Hubs;
 
-public class WorkerHub : Hub<IWorkerlient>
+public class WorkerHub : Hub<IWorkerClient>
 {
 
 }

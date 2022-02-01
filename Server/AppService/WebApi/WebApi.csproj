@@ -41,9 +41,9 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\..\Worker.Client\Worker.Client.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Remove="MiniValidation" />
-    <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
-  </ItemGroup>
+
 </Project>

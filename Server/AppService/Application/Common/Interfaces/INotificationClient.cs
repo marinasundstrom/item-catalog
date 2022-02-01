@@ -1,4 +1,4 @@
-﻿using Catalog.Application.Notifications;
+﻿using Worker.Client;
 
 namespace Catalog.Application.Common.Interfaces;
 

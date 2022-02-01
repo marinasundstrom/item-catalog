@@ -20,7 +20,7 @@ public static class ServiceExtensions
 
     private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSqlServer<CatalogContext>(configuration.GetConnectionString("mssql"));
+        services.AddSqlServer<CatalogContext>(configuration.GetConnectionString("mssql", "Catalog"));
 
         services.AddScoped<ICatalogContext>(sp => sp.GetRequiredService<CatalogContext>());
 

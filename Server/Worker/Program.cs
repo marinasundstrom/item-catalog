@@ -10,15 +10,71 @@ using MassTransit;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+
+using NSwag;
+using NSwag.Generation.Processors.Security;
+
+using Worker;
+using Worker.Application;
+using Worker.Infrastructure;
+using Worker.Infrastructure.Persistence;
 using Worker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var Configuration = builder.Configuration;
 
-builder.Services.AddMediatR(typeof(Program));
+var services = builder.Services;
 
-builder.Services.AddScoped<INotifier, Notifier>();
+services.AddApplication(Configuration);
+services.AddInfrastructure(Configuration);
+services.AddServices();
+
+services
+    .AddControllers()
+    .AddNewtonsoftJson();
+
+builder.Services.AddHttpContextAccessor();
+
+services.AddEndpointsApiExplorer();
+
+// Register the Swagger services
+services.AddOpenApiDocument(document =>
+{
+    document.Title = "Worker API";
+    document.Version = "v1";
+
+    document.AddSecurity("JWT", new OpenApiSecurityScheme
+    {
+        Type = OpenApiSecuritySchemeType.ApiKey,
+        Name = "Authorization",
+        In = OpenApiSecurityApiKeyLocation.Header,
+        Description = "Type into the textbox: Bearer {your JWT token}."
+    });
+
+    document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+});
+
+services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.Authority = "https://identity.local";
+                options.Audience = "myapi";
+
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    NameClaimType = "name",
+                    RoleClaimType = "role"
+                };
+
+                //options.TokenValidationParameters.ValidateAudience = false;
+
+                //options.Audience = "openid";
+
+                //options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+            });
 
 builder.Services.AddMassTransit(x =>
 {
@@ -50,14 +106,35 @@ builder.Services.AddHangfireServer();
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+
+    app.UseOpenApi();
+    app.UseSwaggerUi3(c =>
+    {
+        c.DocumentTitle = "Worker API v1";
+    });
+}
+
+//await app.Services.SeedAsync();
+
+app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapHangfireDashboard();
 
 app.MapGet("/", () => "Hello World!");
 
+app.MapControllers();
+
 var configuration = app.Services.GetService<IConfiguration>();
 
-using (var connection = new SqlConnection(configuration.GetConnectionString("HangfireConnection")
-    .Replace("Database=HangfireDB;", string.Empty)))
+using (var connection = new SqlConnection(configuration.GetConnectionString("HangfireConnection", "HangfireDB")))
 {
     connection.Open();
 

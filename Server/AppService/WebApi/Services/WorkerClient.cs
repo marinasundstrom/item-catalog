@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Catalog.WebApi.Services;
 
-public class WorkerClient : IWorkerlient
+public class WorkerClient : IWorkerClient
 {
-    private readonly IHubContext<WorkerHub, IWorkerlient> _workerHubContext;
+    private readonly IHubContext<WorkerHub, IWorkerClient> _workerHubContext;
 
-    public WorkerClient(IHubContext<WorkerHub, IWorkerlient> workerHubContext)
+    public WorkerClient(IHubContext<WorkerHub, IWorkerClient> workerHubContext)
     {
         _workerHubContext = workerHubContext;
     }

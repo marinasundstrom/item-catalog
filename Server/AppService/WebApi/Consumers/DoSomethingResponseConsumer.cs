@@ -9,7 +9,7 @@ using MassTransit;
 
 using Microsoft.AspNetCore.SignalR;
 
-namespace Worker.Consumers;
+namespace Catalog.Consumers;
 
 public class DoSomethingResponseConsumer : IConsumer<DoSomethingResponse>
 {

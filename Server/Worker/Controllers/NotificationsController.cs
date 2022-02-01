@@ -1,27 +1,27 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 
-using Catalog.Application.Common.Interfaces;
-using Catalog.Application.Common.Models;
-using Catalog.Application.Notifications;
-using Catalog.Application.Notifications.Commands;
-using Catalog.Application.Notifications.Queries;
+using Worker.Application.Common.Interfaces;
+using Worker.Application.Common.Models;
+using Worker.Application.Notifications;
+using Worker.Application.Notifications.Commands;
+using Worker.Application.Notifications.Queries;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Catalog.WebApi.Controllers;
+namespace Worker.WebApi.Controllers;
 
 [Route("[controller]")]
 [ApiController]
- [Authorize]
+[Authorize]
 public class NotificationsController : Controller
 {
     private readonly IMediator _mediator;
 
-    public NotificationsController(IMediator mediator, INotificationClient notificationClient)
+    public NotificationsController(IMediator mediator)
     {
         _mediator = mediator;
     }

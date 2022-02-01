@@ -1,10 +1,10 @@
 ﻿
-using Catalog.Domain.Entities;
+using Worker.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Catalog.Infrastructure.Persistence.Configurations;
+namespace Worker.Infrastructure.Persistence.Configurations;
 
 class NotificationConfiguration : IEntityTypeConfiguration<Notification>
 {

@@ -13,7 +13,7 @@ public class CustomAuthorizationMessageHandler : AuthorizationMessageHandler
         : base(provider, navigation)
     {
         ConfigureHandler(
-            authorizedUrls: new[] { "https://localhost/api" },
+            authorizedUrls: new[] { "https://localhost/api", "https://localhost/worker" },
             scopes: new[] { "myapi" });
     }
 }

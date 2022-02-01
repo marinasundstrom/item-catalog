@@ -53,12 +53,12 @@ public static class ServiceExtensions
         .AddTypedClient<Catalog.Client.ISearchClient>((http, sp) => new Catalog.Client.SearchClient(http))
         .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
-        services.AddHttpClient(nameof(Catalog.Client.INotificationsClient), (sp, http) =>
+        services.AddHttpClient(nameof(Worker.Client.INotificationsClient), (sp, http) =>
         {
             var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"{navigationManager.BaseUri}api/");
+            http.BaseAddress = new Uri($"{navigationManager.BaseUri}worker/");
         })
-        .AddTypedClient<Catalog.Client.INotificationsClient>((http, sp) => new Catalog.Client.NotificationsClient(http))
+        .AddTypedClient<Worker.Client.INotificationsClient>((http, sp) => new Worker.Client.NotificationsClient(http))
         .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
         return services;

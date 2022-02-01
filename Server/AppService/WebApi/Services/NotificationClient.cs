@@ -1,10 +1,11 @@
 ﻿using System;
 
 using Catalog.Application.Common.Interfaces;
-using Catalog.Application.Notifications;
 using Catalog.WebApi.Hubs;
 
 using Microsoft.AspNetCore.SignalR;
+
+using Worker.Client;
 
 namespace Catalog.WebApi.Services;
 

@@ -19,6 +19,8 @@ using Microsoft.IdentityModel.Tokens;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 
+using Catalog.Application;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;

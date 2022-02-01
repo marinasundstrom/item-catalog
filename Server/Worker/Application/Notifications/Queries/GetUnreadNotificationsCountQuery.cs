@@ -1,20 +1,20 @@
 ﻿
-using Catalog.Application.Common.Interfaces;
+using Worker.Application.Common.Interfaces;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Application.Notifications.Queries;
+namespace Worker.Application.Notifications.Queries;
 
 public class GetUnreadNotificationsCountQuery : IRequest<int>
 {
     public class GetUnreadNotificationsCountQueryHandler : IRequestHandler<GetUnreadNotificationsCountQuery, int>
     {
-        private readonly ICatalogContext context;
+        private readonly IWorkerContext context;
         private readonly ICurrentUserService _currentUserService;
 
-        public GetUnreadNotificationsCountQueryHandler(ICatalogContext context, ICurrentUserService currentUserService)
+        public GetUnreadNotificationsCountQueryHandler(IWorkerContext context, ICurrentUserService currentUserService)
         {
             this.context = context;
             _currentUserService = currentUserService;

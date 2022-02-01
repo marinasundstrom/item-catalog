@@ -1,13 +1,13 @@
 
-using Catalog.Application.Common.Interfaces;
-using Catalog.Application.Common.Models;
-using Catalog.Domain;
+using Worker.Application.Common.Interfaces;
+using Worker.Application.Common.Models;
+using Worker.Domain;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Application.Notifications.Queries;
+namespace Worker.Application.Notifications.Queries;
 
 public class GetNotificationsQuery : IRequest<NotificationsResults>
 {
@@ -30,10 +30,10 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
 
     public class GetNotificationsQueryHandler : IRequestHandler<GetNotificationsQuery, NotificationsResults>
     {
-        private readonly ICatalogContext context;
+        private readonly IWorkerContext context;
         private readonly ICurrentUserService _currentUserService;
 
-        public GetNotificationsQueryHandler(ICatalogContext context, ICurrentUserService currentUserService)
+        public GetNotificationsQueryHandler(IWorkerContext context, ICurrentUserService currentUserService)
         {
             this.context = context;
             _currentUserService = currentUserService;

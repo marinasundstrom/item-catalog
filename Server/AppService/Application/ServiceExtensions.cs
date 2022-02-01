@@ -1,11 +1,9 @@
 ﻿using System;
-
-using Catalog.Application.Items.Queries;
-
 using MediatR;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Catalog.Application.Items.Queries;
 
 namespace Catalog.Application;
 

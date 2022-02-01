@@ -1,20 +1,20 @@
 ﻿
-using Catalog.Application.Common.Interfaces;
+using Worker.Application.Common.Interfaces;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Application.Notifications.Commands;
+namespace Worker.Application.Notifications.Commands;
 
 public class MarkAllNotificationsAsReadCommand : IRequest
 {
     public class MarkAllNotificationsAsReadCommandHandler : IRequestHandler<MarkAllNotificationsAsReadCommand>
     {
-        private readonly ICatalogContext context;
+        private readonly IWorkerContext context;
         private readonly ICurrentUserService _currentUserService;
 
-        public MarkAllNotificationsAsReadCommandHandler(ICatalogContext context, ICurrentUserService currentUserService)
+        public MarkAllNotificationsAsReadCommandHandler(IWorkerContext context, ICurrentUserService currentUserService)
         {
             this.context = context;
             _currentUserService = currentUserService;

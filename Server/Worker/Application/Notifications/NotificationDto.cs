@@ -1,4 +1,4 @@
-﻿namespace Catalog.Application.Notifications;
+﻿namespace Worker.Application.Notifications;
 
 public record NotificationDto(
     string Id, DateTime Published, string Title, string? Text, string? Link, string? UserId, bool IsRead,

@@ -22,9 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WebApi.Client\WebApi.Client.csproj" />
+    <ProjectReference Include="..\..\Server\Worker.Client\Worker.Client.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Microsoft.AspNetCore.Components.WebAssembly.Authentication" />
-  </ItemGroup>
 </Project>

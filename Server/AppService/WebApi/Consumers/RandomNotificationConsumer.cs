@@ -7,21 +7,21 @@ using MassTransit;
 
 using Microsoft.AspNetCore.SignalR;
 
-namespace Worker.Consumers;
+namespace Catalog.Consumers;
 
 public class RandomNotificationConsumer : IConsumer<RandomNotification>
 {
-    private readonly IWorkerlient _workerlient;
+    private readonly IWorkerClient _workerClient;
 
-    public RandomNotificationConsumer(IWorkerlient workerlient)
+    public RandomNotificationConsumer(IWorkerClient workerClient)
     {
-        _workerlient = workerlient;
+        _workerClient = workerClient;
     }
 
     public async Task Consume(ConsumeContext<RandomNotification> context)
     {
         var message = context.Message;
 
-        await _workerlient.NotificationReceived(message.Message);
+        await _workerClient.NotificationReceived(message.Message);
     }
 }

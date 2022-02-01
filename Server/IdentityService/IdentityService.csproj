@@ -17,11 +17,8 @@
 	<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.1" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.1"><IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-<PrivateAssets>all</PrivateAssets>
-</PackageReference>
-	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
+  <PrivateAssets>all</PrivateAssets>
+  </PackageReference>
+  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
   </ItemGroup>
 </Project>

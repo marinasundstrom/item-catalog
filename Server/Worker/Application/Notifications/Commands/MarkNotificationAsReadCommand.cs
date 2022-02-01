@@ -1,15 +1,15 @@
 
 using System.Data.Common;
 
-using Catalog.Application.Common.Interfaces;
-using Catalog.Domain.Entities;
-using Catalog.Domain.Events;
+using Worker.Application.Common.Interfaces;
+using Worker.Domain.Entities;
+using Worker.Domain.Events;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Application.Notifications.Commands;
+namespace Worker.Application.Notifications.Commands;
 
 public class MarkNotificationAsReadCommand : IRequest
 {
@@ -22,10 +22,10 @@ public class MarkNotificationAsReadCommand : IRequest
 
     public class MarkNotificationAsReadCommandHandler : IRequestHandler<MarkNotificationAsReadCommand>
     {
-        private readonly ICatalogContext context;
+        private readonly IWorkerContext context;
         private readonly ICurrentUserService _currentUserService;
 
-        public MarkNotificationAsReadCommandHandler(ICatalogContext context, ICurrentUserService currentUserService)
+        public MarkNotificationAsReadCommandHandler(IWorkerContext context, ICurrentUserService currentUserService)
         {
             this.context = context;
             _currentUserService = currentUserService;

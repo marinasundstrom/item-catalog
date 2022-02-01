@@ -1,13 +1,13 @@
 
 using System.Data.Common;
 
-using Catalog.Application.Common.Interfaces;
-using Catalog.Domain.Entities;
-using Catalog.Domain.Events;
+using Worker.Application.Common.Interfaces;
+using Worker.Domain.Entities;
+using Worker.Domain.Events;
 
 using MediatR;
 
-namespace Catalog.Application.Notifications.Commands;
+namespace Worker.Application.Notifications.Commands;
 
 public class CreateNotificationCommand : IRequest
 {
@@ -29,13 +29,11 @@ public class CreateNotificationCommand : IRequest
 
     public class CreateNotificationCommandHandler : IRequestHandler<CreateNotificationCommand>
     {
-        private readonly ICatalogContext context;
-        private readonly INotificationClient client;
-
-        public CreateNotificationCommandHandler(ICatalogContext context, INotificationClient client)
+        private readonly IWorkerContext context;
+        
+        public CreateNotificationCommandHandler(IWorkerContext context)
         {
             this.context = context;
-            this.client = client;
         }
 
         public async Task<Unit> Handle(CreateNotificationCommand request, CancellationToken cancellationToken)

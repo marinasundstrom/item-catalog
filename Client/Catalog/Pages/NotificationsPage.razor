@@ -1,5 +1,6 @@
 ﻿@page "/notifications"
 @using Catalog.Client
+@using Worker.Client
 @attribute [Authorize]
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
@@ -44,7 +45,7 @@
     private async Task<TableData<NotificationDto>> ServerReload(TableState state)
     {
         var results = await NotificationsClient.GetNotificationsAsync(false, state.Page + 1, state.PageSize, state.SortLabel,
-            state.SortDirection == MudBlazor.SortDirection.Ascending ? Catalog.Client.SortDirection.Asc : Catalog.Client.SortDirection.Desc);
+            state.SortDirection == MudBlazor.SortDirection.Ascending ? Worker.Client.SortDirection.Asc : Worker.Client.SortDirection.Desc);
 
         return new TableData<NotificationDto>() { TotalItems = results.TotalCount, Items = results.Items };
     }
