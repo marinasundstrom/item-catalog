@@ -13,20 +13,20 @@ using Worker.Domain.Entities;
 
 namespace Worker.Services;
 
-public class NotificationSender : INotificationSender
+public class NotificationPublisher : INotificationPublisher
 {
     private readonly IBus _bus;
     private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<NotificationSender> _logger;
+    private readonly ILogger<NotificationPublisher> _logger;
 
-    public NotificationSender(IBus bus, IServiceProvider serviceProvider, ILogger<NotificationSender> logger)
+    public NotificationPublisher(IBus bus, IServiceProvider serviceProvider, ILogger<NotificationPublisher> logger)
     {
         _bus = bus;
         _serviceProvider = serviceProvider;
         _logger = logger;
     }
 
-    public async Task SendNotification(Notification n1)
+    public async Task PublishNotification(Notification n1)
     {
         _logger.LogInformation("Sending notification");
 

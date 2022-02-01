@@ -3,7 +3,7 @@ using Worker.Domain.Entities;
 
 namespace Catalog.Application.Common.Interfaces;
 
-public interface INotificationSender
+public interface INotificationPublisher
 {
-    Task SendNotification(Notification notification);
+    Task PublishNotification(Notification notification);
 }

@@ -14,13 +14,13 @@ namespace Worker.Application.Notifications.EventHandlers;
 public class NotificationCreatedEventHandler : INotificationHandler<DomainEventNotification<NotificationCreatedEvent>>
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly INotificationSender _notficationSender;
+    private readonly INotificationPublisher _notficationPublisher;
     private readonly IBackgroundJobClient _recurringJobManager;
 
-    public NotificationCreatedEventHandler(IServiceProvider serviceProvider, INotificationSender notficationSender, IBackgroundJobClient recurringJobManager)
+    public NotificationCreatedEventHandler(IServiceProvider serviceProvider, INotificationPublisher notficationSender, IBackgroundJobClient recurringJobManager)
     {
         _serviceProvider = serviceProvider;
-        _notficationSender = notficationSender;
+        _notficationPublisher = notficationSender;
         _recurringJobManager = recurringJobManager;
     }
 
@@ -31,28 +31,39 @@ public class NotificationCreatedEventHandler : INotificationHandler<DomainEventN
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<IWorkerContext>();
 
-        var notification = await context.Notifications.FirstAsync(i => i.Id == domainEvent.NotificationId, cancellationToken);
+        var notification = await context.Notifications
+            .FirstAsync(i => i.Id == domainEvent.NotificationId, cancellationToken);
 
         if (notification.ScheduledFor is not null)
         {
-            if(notification.ScheduledFor < DateTime.UtcNow)
+            if (notification.ScheduledFor < DateTime.UtcNow)
             {
-                throw new Exception();
+                throw new InvalidOperationException("Cannot send notification back in time!");
             }
 
-            var offset = notification.ScheduledFor.GetValueOrDefault() - DateTime.UtcNow;
-
-            var jobId = _recurringJobManager.Schedule<INotificationSender>(
-                (sender) => sender.SendNotification(notification),
-                    offset);
-
-            notification.ScheduledJobId = jobId;
-
-            await context.SaveChangesAsync();
+            await ScheduleNotification(context, notification);
         }
         else
         {
-            await _notficationSender.SendNotification(notification);
+            await PublishNotification(notification);
         }
+    }
+
+    private async Task PublishNotification(Domain.Entities.Notification notification)
+    {
+        await _notficationPublisher.PublishNotification(notification);
+    }
+
+    private async Task ScheduleNotification(IWorkerContext context, Domain.Entities.Notification notification)
+    {
+        var delay = notification.ScheduledFor.GetValueOrDefault() - DateTime.UtcNow;
+
+        var jobId = _recurringJobManager.Schedule<INotificationPublisher>(
+            (sender) => sender.PublishNotification(notification),
+                delay);
+
+        notification.ScheduledJobId = jobId;
+
+        await context.SaveChangesAsync();
     }
 }

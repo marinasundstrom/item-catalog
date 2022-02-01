@@ -18,7 +18,7 @@ public static class ServiceExtensions
 
         services.AddScoped<INotifier, Notifier>();
 
-        services.AddScoped<INotificationSender, NotificationSender>();
+        services.AddScoped<INotificationPublisher, NotificationPublisher>();
 
         return services;
     }

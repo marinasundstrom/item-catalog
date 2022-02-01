@@ -41,24 +41,13 @@ public class CreateNotificationCommand : IRequest
 
         public async Task<Unit> Handle(CreateNotificationCommand request, CancellationToken cancellationToken)
         {
-            if(request.UserId is null)
+            if(request.UserId is not null)
             {
-                var users = await GetUsers();
-
-                foreach (var user in users)
-                {
-                    var userId = user;
-
-                    Notification notification = CreateNotification(request, userId);
-
-                    context.Notifications.Add(notification);
-                }
+                CreateNotification(request);
             }
-            else 
+            else
             {
-                Notification notification = CreateNotification(request, null);
-
-                context.Notifications.Add(notification);         
+                await CreateMultipleNotifications(request);
             }
 
             await context.SaveChangesAsync(cancellationToken);
@@ -66,12 +55,33 @@ public class CreateNotificationCommand : IRequest
             return Unit.Value;
         }
 
+        private void CreateNotification(CreateNotificationCommand request)
+        {
+            Notification notification = CreateNotificationDO(request, null);
+
+            context.Notifications.Add(notification);
+        }
+
+        private async Task CreateMultipleNotifications(CreateNotificationCommand request)
+        {
+            var users = await GetUsers();
+
+            foreach (var user in users)
+            {
+                var userId = user;
+
+                Notification notification = CreateNotificationDO(request, userId);
+
+                context.Notifications.Add(notification);
+            }
+        }
+
         private static Task<IEnumerable<string>> GetUsers()
         {
             return Task.FromResult<IEnumerable<string>>(new string[] { "AliceSmith@email.com", "BobSmith@email.com" });
         }
 
-        private static Notification CreateNotification(CreateNotificationCommand request, string? userId)
+        private static Notification CreateNotificationDO(CreateNotificationCommand request, string? userId)
         {
             var notification = new Notification();
             notification.Id = Guid.NewGuid().ToString();
