@@ -20,10 +20,22 @@ public class NotificationConsumer : IConsumer<NotificationDto>
 
     public async Task Consume(ConsumeContext<NotificationDto> context)
     {
-        var message = context.Message;
+        var notification = context.Message;
 
-        var dto = new Worker.Client.NotificationDto();
-
+        var dto = new Worker.Client.NotificationDto() {
+            Id = notification.Id, 
+            Published = notification.Published, 
+            Title = notification.Title, 
+            Text = notification.Text, 
+            Link = notification.Link, 
+            UserId = notification.UserId, 
+            IsRead = notification.IsRead,
+            Created = notification.Created, 
+            CreatedBy = notification.CreatedBy, 
+            LastModified = notification.LastModified, 
+            LastModifiedBy = notification.LastModifiedBy
+        };
+        
         await _notificationClient.NotificationReceived(dto);
     }
 }

@@ -44,7 +44,7 @@ public class CreateNotificationCommand : IRequest
 
                 foreach (var user in users)
                 {
-                    var userId = request.UserId;
+                    var userId = user;
 
                     Notification notification = CreateNotification(request, userId);
 
