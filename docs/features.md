@@ -10,6 +10,12 @@ The user can view, add, and deleted items. As an option the user can upload a pi
 
 Changes to the items list will instantly reflect in all clients thanks to notifications being sent from the server.
 
+## Notifications
+
+The app may receive notifications that are published by the Worker.
+
+The Worker manages notifications and publishes them to either all users or a specific user. Also does scheduled notifications.
+
 ## Async operation
 
 The user sends two numbers and get a response back.
@@ -20,7 +26,7 @@ The request arrives at the Web API that emits a message on the message bus. The 
 
 The Web API consumes the response message, and emits it to the Web Socket, using SignalR. The client receives and displays the response.
 
-## Worker
+## Worker (Ping)
 
 The Worker runs a recurring task every minute that emits a message that is handled similar to the feature above. 
 
