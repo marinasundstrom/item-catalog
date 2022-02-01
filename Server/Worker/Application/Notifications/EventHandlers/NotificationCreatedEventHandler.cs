@@ -13,13 +13,13 @@ namespace Worker.Application.Notifications.EventHandlers;
 
 public class NotificationCreatedEventHandler : INotificationHandler<DomainEventNotification<NotificationCreatedEvent>>
 {
-    private readonly IWorkerContext _context;
+    private readonly IServiceProvider _serviceProvider;
     private readonly INotificationSender _notficationSender;
     private readonly IBackgroundJobClient _recurringJobManager;
 
-    public NotificationCreatedEventHandler(IWorkerContext context, INotificationSender notficationSender, IBackgroundJobClient recurringJobManager)
+    public NotificationCreatedEventHandler(IServiceProvider serviceProvider, INotificationSender notficationSender, IBackgroundJobClient recurringJobManager)
     {
-        _context = context;
+        _serviceProvider = serviceProvider;
         _notficationSender = notficationSender;
         _recurringJobManager = recurringJobManager;
     }
@@ -28,7 +28,10 @@ public class NotificationCreatedEventHandler : INotificationHandler<DomainEventN
     {
         var domainEvent = notification2.DomainEvent;
 
-        var notification = await _context.Notifications.FirstAsync(i => i.Id == domainEvent.NotificationId, cancellationToken);
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<IWorkerContext>();
+
+        var notification = await context.Notifications.FirstAsync(i => i.Id == domainEvent.NotificationId, cancellationToken);
 
         if (notification.ScheduledFor is not null)
         {
@@ -45,7 +48,7 @@ public class NotificationCreatedEventHandler : INotificationHandler<DomainEventN
 
             notification.ScheduledJobId = jobId;
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         else
         {

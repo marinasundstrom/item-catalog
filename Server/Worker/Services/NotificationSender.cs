@@ -16,23 +16,26 @@ namespace Worker.Services;
 public class NotificationSender : INotificationSender
 {
     private readonly IBus _bus;
-    private readonly IWorkerContext _workerContext;
+    private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<NotificationSender> _logger;
 
-    public NotificationSender(IBus bus, IWorkerContext workerContext, ILogger<NotificationSender> logger)
+    public NotificationSender(IBus bus, IServiceProvider serviceProvider, ILogger<NotificationSender> logger)
     {
         _bus = bus;
-        _workerContext = workerContext;
+        _serviceProvider = serviceProvider;
         _logger = logger;
     }
 
     public async Task SendNotification(Notification n1)
     {
-        _logger.LogInformation("IN SENDER");
+        _logger.LogInformation("Sending notification");
 
-        var notification = await _workerContext.Notifications.FirstAsync(n => n.Id == n1.Id);
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<IWorkerContext>();
+
+        var notification = await context.Notifications.FirstAsync(n => n.Id == n1.Id);
         notification.Published = DateTime.Now;
-        await _workerContext.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         var notifcationDto = new NotificationDto(notification.Id, notification.Published, notification.Title, notification.Text, notification.Link, notification.UserId, notification.IsRead, notification.Created, notification.CreatedBy, notification.LastModified, notification.LastModifiedBy);
 

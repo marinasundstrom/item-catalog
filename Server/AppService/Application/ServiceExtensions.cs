@@ -41,7 +41,7 @@ public class Handler : DelegatingHandler
 
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _currentUserService.GetToken());
+        request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _currentUserService.GetAccessToken());
 
         return base.SendAsync(request, cancellationToken);
     }
