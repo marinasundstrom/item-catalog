@@ -24,7 +24,7 @@ public class NotificationConsumer : IConsumer<NotificationDto>
 
         var dto = new Worker.Client.NotificationDto() {
             Id = notification.Id, 
-            Published = notification.Published, 
+            Published = notification.Published.GetValueOrDefault(),
             Title = notification.Title, 
             Text = notification.Text, 
             Link = notification.Link, 

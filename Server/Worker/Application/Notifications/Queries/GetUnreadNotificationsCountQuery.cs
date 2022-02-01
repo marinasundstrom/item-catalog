@@ -22,7 +22,9 @@ public class GetUnreadNotificationsCountQuery : IRequest<int>
 
         public async Task<int> Handle(GetUnreadNotificationsCountQuery request, CancellationToken cancellationToken)
         {
-            var query = context.Notifications.AsQueryable();
+            var query = context.Notifications
+                .Where(n => n.Published != null)
+                .AsQueryable();
 
             if (_currentUserService.UserId is not null)
             {

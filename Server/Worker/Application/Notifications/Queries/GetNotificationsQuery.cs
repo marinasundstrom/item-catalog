@@ -41,7 +41,9 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
 
         public async Task<NotificationsResults> Handle(GetNotificationsQuery request, CancellationToken cancellationToken)
         {
-            var query = context.Notifications.AsQueryable();
+            var query = context.Notifications
+                .Where(n => n.Published != null)
+                .AsQueryable();
 
             if (_currentUserService.UserId is not null)
             {
@@ -72,6 +74,7 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
             {
                 unreadNotificationsCount = await context.Notifications
                     .OrderByDescending(n => n.Published)
+                    .Where(n => n.Published != null)
                     .Where(n => n.UserId == _currentUserService.UserId || n.UserId == null)
                     .Where(n => !n.IsRead)
                     .CountAsync(cancellationToken);
@@ -80,7 +83,7 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
             var notifications = await query.ToListAsync(cancellationToken);
 
             return new NotificationsResults(
-                notifications.Select(notification => new NotificationDto(notification.Id, notification.Published, notification.Title, notification.Text, notification.Link, notification.UserId, notification.IsRead, notification.Created, notification.CreatedBy, notification.LastModified, notification.LastModifiedBy)),
+                notifications.Select(notification => new NotificationDto(notification.Id, notification.Published.GetValueOrDefault(), notification.Title, notification.Text, notification.Link, notification.UserId, notification.IsRead, notification.Created, notification.CreatedBy, notification.LastModified, notification.LastModifiedBy)),
                 unreadNotificationsCount,
                 totalCount);
         }

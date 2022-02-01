@@ -37,7 +37,7 @@ public class NotificationsController : Controller
     [HttpPost]
     public async Task<ActionResult> CreateNotification(CreateNotificationDto dto, CancellationToken cancellationToken)
     {
-        await _mediator.Send(new CreateNotificationCommand(dto.Title, dto.Text, dto.Link, dto.UserId), cancellationToken);
+        await _mediator.Send(new CreateNotificationCommand(dto.Title, dto.Text, dto.Link, dto.UserId, dto.ScheduledFor), cancellationToken);
 
         return Ok();
     }
@@ -75,4 +75,6 @@ public class CreateNotificationDto
     public string? Link { get; set; }
 
     public string? UserId { get; set; }
+
+    public DateTime? ScheduledFor { get; set; }
 }

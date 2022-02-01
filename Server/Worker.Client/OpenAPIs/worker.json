@@ -354,6 +354,11 @@
           "userId": {
             "type": "string",
             "nullable": true
+          },
+          "scheduledFor": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         }
       }

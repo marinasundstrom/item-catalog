@@ -34,6 +34,7 @@ public class MarkNotificationAsReadCommand : IRequest
         public async Task<Unit> Handle(MarkNotificationAsReadCommand request, CancellationToken cancellationToken)
         {
             var notification = await context.Notifications
+                .Where(n => n.Published != null)
                 .Where(n => n.UserId == _currentUserService.UserId || n.UserId == null)
                 .FirstOrDefaultAsync(i => i.Id == request.NotificationId, cancellationToken);
 
