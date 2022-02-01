@@ -16,14 +16,16 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
     public string? SortBy { get; }
     public Application.Common.Models.SortDirection? SortDirection { get; }
     public string? UserId { get; }
+    public string? Tag { get; }
     public bool IncludeUnreadNotificationsCount { get; }
 
     public GetNotificationsQuery(
-        string? userId,
+        string? userId, string? tag,
         bool includeUnreadNotificationsCount,
         int page, int pageSize, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null)
     {
         UserId = userId;
+        Tag = tag;
         IncludeUnreadNotificationsCount = includeUnreadNotificationsCount;
         Page = page;
         PageSize = pageSize;
@@ -48,11 +50,12 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
 
             if (request.UserId is not null)
             {
-                query = query.Where(n => n.UserId == request.UserId || request.UserId == null);
+                query = query.Where(n => n.UserId == request.UserId);
             }
-            else
+
+            if (request.Tag is not null)
             {
-                query = query.Where(n => n.UserId == null);
+                query = query.Where(n => n.Tag == request.Tag);
             }
 
             query = query.OrderByDescending(n => n.Published);
@@ -76,7 +79,7 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
                 unreadNotificationsCount = await context.Notifications
                     .OrderByDescending(n => n.Published)
                     .Where(n => n.Published != null)
-                    .Where(n => n.UserId == request.UserId || n.UserId == null)
+                    .Where(n => n.UserId == request.UserId)
                     .Where(n => !n.IsRead)
                     .CountAsync(cancellationToken);
             }

@@ -22,7 +22,6 @@ public class MarkAllNotificationsAsReadCommand : IRequest
         {
             var notifications = await context.Notifications
                 .Where(n => n.Published != null)
-                //.Where(n => n.UserId == _currentUserService.UserId || n.UserId == null)
                 .ToListAsync(cancellationToken);
 
             foreach(var notification in notifications)

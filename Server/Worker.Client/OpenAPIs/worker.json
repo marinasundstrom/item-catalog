@@ -45,13 +45,22 @@
             "x-position": 1
           },
           {
+            "name": "tag",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
             "name": "includeUnreadNotificationsCount",
             "in": "query",
             "schema": {
               "type": "boolean",
               "default": false
             },
-            "x-position": 2
+            "x-position": 3
           },
           {
             "name": "page",
@@ -61,7 +70,7 @@
               "format": "int32",
               "default": 1
             },
-            "x-position": 3
+            "x-position": 4
           },
           {
             "name": "pageSize",
@@ -71,7 +80,7 @@
               "format": "int32",
               "default": 5
             },
-            "x-position": 4
+            "x-position": 5
           },
           {
             "name": "sortBy",
@@ -80,7 +89,7 @@
               "type": "string",
               "nullable": true
             },
-            "x-position": 5
+            "x-position": 6
           },
           {
             "name": "sortDirection",
@@ -97,7 +106,7 @@
                 }
               ]
             },
-            "x-position": 6
+            "x-position": 7
           }
         ],
         "responses": {

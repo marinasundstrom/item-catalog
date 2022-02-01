@@ -31,7 +31,6 @@ public class DeleteNotificationCommand : IRequest
         public async Task<Unit> Handle(DeleteNotificationCommand request, CancellationToken cancellationToken)
         {
             var notification = await context.Notifications
-                //.Where(n => n.UserId == _currentUserService.UserId || n.UserId == null)
                 .FirstOrDefaultAsync(i => i.Id == request.NotificationId, cancellationToken);
 
             if (notification is null)

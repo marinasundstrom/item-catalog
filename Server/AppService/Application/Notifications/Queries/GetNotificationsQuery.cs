@@ -43,7 +43,7 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
         {
             var userId = _currentUserService.UserId;
 
-            var results = await _notificationsClient.GetNotificationsAsync(userId, request.IncludeUnreadNotificationsCount, request.Page, request.PageSize, request.SortBy, (Worker.Client.SortDirection?)request.SortDirection);
+            var results = await _notificationsClient.GetNotificationsAsync(userId, null, request.IncludeUnreadNotificationsCount, request.Page, request.PageSize, request.SortBy, (Worker.Client.SortDirection?)request.SortDirection);
             var notifications = results.Items;
 
             return new NotificationsResults(

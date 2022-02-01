@@ -35,10 +35,6 @@ public class GetUnreadNotificationsCountQuery : IRequest<int>
             {
                 query = query.Where(n => n.UserId == request.UserId);
             }
-            else
-            {
-                query = query.Where(n => n.UserId == null);
-            }
 
             var unreadNotificationsCount = await query
                 .Where(n => !n.IsRead)

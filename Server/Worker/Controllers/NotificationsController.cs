@@ -28,11 +28,11 @@ public class NotificationsController : Controller
 
     [HttpGet]
     public async Task<ActionResult<NotificationsResults>> GetNotifications(
-        string? userId,
+        string? userId, string? tag,
         bool includeUnreadNotificationsCount = false,
         int page = 1, int pageSize = 5, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null, CancellationToken cancellationToken = default)
     {
-        return Ok(await _mediator.Send(new GetNotificationsQuery(userId, includeUnreadNotificationsCount, page - 1, pageSize, sortBy, sortDirection), cancellationToken));
+        return Ok(await _mediator.Send(new GetNotificationsQuery(userId, tag, includeUnreadNotificationsCount, page - 1, pageSize, sortBy, sortDirection), cancellationToken));
     }
 
     [HttpPost]
