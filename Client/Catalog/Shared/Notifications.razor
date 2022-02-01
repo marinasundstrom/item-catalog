@@ -81,7 +81,11 @@
 
     async Task OnNotificationClicked(NotificationDto notification)
     {
-        await MarkNotificationAsRead(notification);
+        if(!notification.IsRead) 
+        {
+            await MarkNotificationAsRead(notification);
+            notification.IsRead = true;
+        }
 
         if (notification.Link is not null)
         {
