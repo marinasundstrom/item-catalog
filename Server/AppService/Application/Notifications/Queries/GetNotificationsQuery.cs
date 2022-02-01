@@ -43,7 +43,7 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
             var notifications = results.Items;
 
             return new NotificationsResults(
-                notifications.Select(notification => new NotificationDto(notification.Id, notification.Title, notification.Text, notification.Link, notification.Published.GetValueOrDefault().Date, notification.IsRead)),
+                notifications.Select(notification => new NotificationDto(notification.Id, notification.Title, notification.Text, notification.Link, notification.Published.GetValueOrDefault().DateTime, notification.IsRead)),
                 results.UnreadNotificationsCount,
                 results.TotalCount);
         }
