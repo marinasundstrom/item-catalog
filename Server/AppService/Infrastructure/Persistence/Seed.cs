@@ -15,6 +15,7 @@ public static class Seed
         await context.Database.EnsureDeletedAsync();
         await context.Database.EnsureCreatedAsync();
 
+        /*
         if (!context.Items.Any())
         {
             context.Items.AddRange(new Item[] {
@@ -23,5 +24,6 @@ public static class Seed
 
             await context.SaveChangesAsync();
         }
+        */
     }
 }
