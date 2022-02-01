@@ -42,6 +42,10 @@ public class NotificationCreatedEventHandler : INotificationHandler<DomainEventN
             var jobId = _recurringJobManager.Schedule<INotificationSender>(
                 (sender) => sender.SendNotification(notification),
                     offset);
+
+            notification.ScheduledJobId = jobId;
+
+            await _context.SaveChangesAsync();
         }
         else
         {

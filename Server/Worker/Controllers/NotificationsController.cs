@@ -58,6 +58,14 @@ public class NotificationsController : Controller
         return Ok();
     }
 
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteNotification(string id, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(new DeleteNotificationCommand(id), cancellationToken);
+
+        return Ok();
+    }
+
     [HttpGet("UnreadCount")]
     public async Task<ActionResult<int>> GetUnreadNotificationsCount(CancellationToken cancellationToken = default)
     {
