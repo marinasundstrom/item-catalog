@@ -35,8 +35,8 @@
 
         try
         {
-            var results = await SearchClient.SearchAsync(searchText);
-            return results;
+            var results = await SearchClient.SearchAsync(searchText, 1, 10, null, null);
+            return results.Items;
         }
         catch (Exception e)
         {
