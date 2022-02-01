@@ -1,6 +1,5 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client
 @using Catalog.Client
-@using Worker.Client
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @implements IAsyncDisposable
 @inject INotificationsClient NotificationsClient
@@ -31,7 +30,7 @@
                     <MudMenuItem Class="@cls" OnClick="async () => await OnNotificationClicked(notification)">
                         <MudText Typo="Typo.subtitle2">@notification.Title</MudText>
                         @*<MudText Typo="Typo.body2">@notification.Text</MudText>*@
-                        <MudText Typo="Typo.body2">@($"{notification.CreatedBy} • {(notification.Published.Date == DateTime.Now.Date ? notification.Published.ToString("HH:mm") : notification.Published.ToString("yyyy-MM-dd HH:mm"))}")</MudText>
+                        <MudText Typo="Typo.body2">@($"{"test"} • {(notification.Published.Date == DateTime.Now.Date ? notification.Published.ToString("HH:mm") : notification.Published.ToString("yyyy-MM-dd HH:mm"))}")</MudText>
                     </MudMenuItem>
                     <MudDivider Class="my-2" />
                     }

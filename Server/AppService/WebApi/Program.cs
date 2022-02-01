@@ -20,6 +20,8 @@ using NSwag;
 using NSwag.Generation.Processors.Security;
 
 using Catalog.Application;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -104,6 +106,25 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 {
                     NameClaimType = "name",
                     RoleClaimType = "role"
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = context =>
+                    {
+                        // Add the access_token as a claim, as we may actually need it
+                        var accessToken = context.SecurityToken as JwtSecurityToken;
+                        if (accessToken != null)
+                        {
+                            ClaimsIdentity identity = context.Principal.Identity as ClaimsIdentity;
+                            if (identity != null)
+                            {
+                                identity.AddClaim(new Claim("access_token", accessToken.RawData));
+                            }
+                        }
+
+                        return Task.CompletedTask;
+                    }
                 };
 
                 //options.TokenValidationParameters.ValidateAudience = false;

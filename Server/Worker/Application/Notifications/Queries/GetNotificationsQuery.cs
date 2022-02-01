@@ -83,7 +83,7 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
             var notifications = await query.ToListAsync(cancellationToken);
 
             return new NotificationsResults(
-                notifications.Select(notification => new NotificationDto(notification.Id, notification.Published.GetValueOrDefault(), notification.Title, notification.Text, notification.Link, notification.UserId, notification.IsRead, notification.Created, notification.CreatedBy, notification.LastModified, notification.LastModifiedBy)),
+                notifications.Select(notification => new NotificationDto(notification.Id, notification.Title, notification.Text, notification.Link, notification.UserId, notification.IsRead, notification.Published, notification.ScheduledFor, notification.Created, notification.CreatedBy, notification.LastModified, notification.LastModifiedBy)),
                 unreadNotificationsCount,
                 totalCount);
         }

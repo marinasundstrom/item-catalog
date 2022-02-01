@@ -13,6 +13,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Tye.Extensions.Configuration" Version="0.10.0-alpha.21420.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,4 +24,16 @@
     </ProjectReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Notifications\" />
+    <None Remove="Notifications\Queries\" />
+    <None Remove="Microsoft.Extensions.Http" />
+    <None Remove="Microsoft.Tye.Extensions.Configuration" />
+    <None Remove="Notifications\Commands\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Notifications\" />
+    <Folder Include="Notifications\Queries\" />
+    <Folder Include="Notifications\Commands\" />
+  </ItemGroup>
 </Project>

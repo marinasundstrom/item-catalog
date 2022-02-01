@@ -1,5 +1,5 @@
 ﻿namespace Worker.Application.Notifications;
 
 public record NotificationDto(
-    string Id, DateTime Published, string Title, string? Text, string? Link, string? UserId, bool IsRead,
+    string Id, string Title, string? Text, string? Link, string? UserId, bool IsRead, DateTime? Published, DateTime? ScheduledFor,
     DateTime Created, string CreatedBy, DateTime? LastModified, string? LastModifiedBy);
