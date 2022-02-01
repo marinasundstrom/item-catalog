@@ -16,11 +16,17 @@
         </div>
 
         <div>
+            @if (isLoading)
+            {
+                <MudText Typo="Typo.subtitle2">Loading notifications...</MudText>
+            }
+            else
+            {
             @if (notifications.Any())
             {
                 @foreach (var notification in notifications)
-                {
-                    var cls = $"px-2 py-0 rounded {(!notification.IsRead ? "notification-unread" : string.Empty)}";
+                    {
+                        var cls = $"px-2 py-0 rounded {(!notification.IsRead ? "notification-unread" : string.Empty)}";
 
                     <MudMenuItem Class="@cls" OnClick="async () => await OnNotificationClicked(notification)">
                         <MudText Typo="Typo.subtitle2">@notification.Title</MudText>
@@ -28,26 +34,28 @@
                         <MudText Typo="Typo.body2">@($"{notification.CreatedBy} • {(notification.Published.Date == DateTime.Now.Date ? notification.Published.ToString("HH:mm") : notification.Published.ToString("yyyy-MM-dd HH:mm"))}")</MudText>
                     </MudMenuItem>
                     <MudDivider Class="my-2" />
-                }
+                    }
 
                 @if (totalNotificationsCount > 5)
-                {
+                    {
                     <div class="d-flex justify-center align-center px-2 py-2 relative">
                         <MudLink Class="mud-text-secondary my-2" Href="/notifications">More notifications</MudLink>
                     </div>
+                    }
                 }
-            }
-            else
-            {
+                else
+                {
                 <div class="d-flex justify-center align-center px-2 py-8 relative">
                     <MudText Class="mud-text-secondary my-12">Nothing new :(</MudText>
                 </div>
+                }
             }
         </div>
     </MudMenu>
 </MudBadge>
 
 @code {
+    bool isLoading = true;
     HubConnection hubConnection = null!;
     List<NotificationDto> notifications = new List<NotificationDto>();
     int totalNotificationsCount = 0;
@@ -88,6 +96,8 @@
             unreadNotificationsCount = result.UnreadNotificationsCount.GetValueOrDefault();
 
             notifications.AddRange(result.Items);
+
+            isLoading = false;
 
             hubConnection = new HubConnectionBuilder()
                 .WithUrl($"{NavigationManager.BaseUri}api/hubs/notifications", options =>
