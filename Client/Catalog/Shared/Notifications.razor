@@ -6,6 +6,9 @@
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
 @inject IAccessTokenProvider AccessTokenProvider
+@inject IJSRuntime JSRuntime
+
+<audio id="sound" src="/pling.mp3" />
 
 <MudBadge Color="Color.Secondary" Content="BadgeText" Overlap="true" Visible="@(unreadNotificationsCount > 0)" Class="me-5">
     <MudMenu Icon="@(unreadNotificationsCount > 0 ? Icons.Filled.Notifications : Icons.Outlined.Notifications)" Color="Color.Inherit" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter" PopoverClass="docs-layout-menu-shadow" ListClass="pa-2 docs-menu-list" LockScroll="true">
@@ -152,6 +155,11 @@
         }
     }
 
+    public async Task PlaySound()
+    {
+        await JSRuntime.InvokeAsync<string>("PlayAudio", new[] { "sound" });
+    }
+
     async Task MarkAllNotificationsAsRead()
     {
         await NotificationsClient.MarkAllNotificationsAsReadAsync();
@@ -193,6 +201,8 @@
         });
 
         StateHasChanged();
+
+        PlaySound();
 
         return Task.CompletedTask;
     }
