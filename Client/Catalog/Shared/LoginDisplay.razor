@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
+@inject IDialogService DialogService
 
 <AuthorizeView>
     <Authorized>
@@ -16,6 +17,13 @@
 @code {
     private async Task BeginSignOut(MouseEventArgs args)
     {
+        var result = await DialogService.ShowMessageBox("Log out", "Are you sure?", "Yes", "No");
+
+        if(!result.GetValueOrDefault()) 
+        {
+            return;
+        }
+
         await SignOutManager.SetSignOutState();
         Navigation.NavigateTo("authentication/logout");
     }

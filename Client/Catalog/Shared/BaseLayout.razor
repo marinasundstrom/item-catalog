@@ -2,7 +2,7 @@
 
 <MudLayout>
     <AppBar DrawerToggleCallback="DrawerToggle" />
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" DisableOverlay="true" Elevation="2" Variant="@DrawerVariant.Temporary">
         <MudDrawerHeader>
             <MudText Typo="Typo.h5" Class="mt-1">Catalog</MudText>
         </MudDrawerHeader>
