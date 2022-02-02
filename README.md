@@ -10,7 +10,7 @@ A "Worker" service demonstrates how to communicate with a microservice through a
 
 **For more info:**
 
-* Watch [demo video (1)](https://youtu.be/wXaQB18FvRk) and [video 2](https://youtu.be/DGNxoAn2ywU).
+* Watch [demo video 1](https://youtu.be/wXaQB18FvRk) and [video 2](https://youtu.be/DGNxoAn2ywU).
 
 * Features explained [here](https://github.com/marinasundstrom/item-catalog/blob/main/docs/features.md).
 
