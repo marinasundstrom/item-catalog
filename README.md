@@ -38,14 +38,16 @@ Redis is also integrated.
 
 ## Screenshots
 
-<a href="/Screenshots/macOS.png">
+<!-- <a href="/Screenshots/macOS.png">
 <img src="/Screenshots/macOS.png" height="250"  alt="macOS" /></a>
 
 <a href="/Screenshots/iPhone.png">
-<img src="/Screenshots/iPhone.png" height="250"  alt="iPhone"  /></a>
+<img src="/Screenshots/iPhone.png" height="250"  alt="iPhone"  /></a> -->
 
 <a href="/Screenshots/web.png">
 <img src="/Screenshots/web.png" height="250"  alt="Web"  /></a>
+
+Web App
 
 ## Getting started
 
