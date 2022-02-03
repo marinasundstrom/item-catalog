@@ -1,7 +1,7 @@
 ﻿using Worker.Application.Common.Interfaces;
 using Worker.Domain.Entities;
 
-namespace Catalog.Application.Common.Interfaces;
+namespace Worker.Application.Common.Interfaces;
 
 public interface INotificationPublisher
 {

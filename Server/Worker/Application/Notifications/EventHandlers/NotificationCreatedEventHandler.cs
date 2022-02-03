@@ -6,7 +6,7 @@ using Worker.Domain.Events;
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-using Catalog.Application.Common.Interfaces;
+using Worker.Application.Common.Interfaces;
 using Hangfire;
 
 namespace Worker.Application.Notifications.EventHandlers;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Catalog.Application.Common.Interfaces;
+using Worker.Application.Common.Interfaces;
 
 using Worker.Application;
 using Worker.Application.Common.Interfaces;
