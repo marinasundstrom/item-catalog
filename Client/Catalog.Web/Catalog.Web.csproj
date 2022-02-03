@@ -7,6 +7,10 @@
     <RootNamespace>Catalog</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Catalog.Web' ">
     <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>

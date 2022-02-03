@@ -6,7 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
@@ -15,6 +14,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.1" />
     <PackageReference Include="MudBlazor" Version="6.0.5" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.1" />
@@ -23,4 +23,5 @@
   <ItemGroup>
     <ProjectReference Include="..\WebApi.Client\WebApi.Client.csproj" />
   </ItemGroup>
+
 </Project>

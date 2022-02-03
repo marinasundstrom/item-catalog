@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 using Catalog.Services;
 
@@ -15,6 +16,11 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddApp(this IServiceCollection services)
     {
+        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("sv");
+        CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("sv");
+
+        services.AddLocalization();
+
         services.AddMudServices();
 
         services.AddScoped<INotificationService, NotificationService>();
