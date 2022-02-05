@@ -1,10 +1,11 @@
 ﻿
-using Worker.Application.Common.Interfaces;
+using Hangfire;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-using Hangfire;
+
+using Worker.Application.Common.Interfaces;
 
 namespace Worker.Application.Notifications.Commands;
 
@@ -38,7 +39,7 @@ public class DeleteNotificationCommand : IRequest
                 throw new Exception();
             }
 
-            if(notification.ScheduledJobId is not null && notification.Published is null)
+            if (notification.ScheduledJobId is not null && notification.Published is null)
             {
                 _backgroundJobClient.Delete(notification.ScheduledJobId);
             }

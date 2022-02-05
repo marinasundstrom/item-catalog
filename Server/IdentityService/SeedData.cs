@@ -1,9 +1,14 @@
 ﻿using System.Security.Claims;
+
 using IdentityModel;
-using IdentityService.Data;
+
 using IdentityServerHost.Models;
+
+using IdentityService.Data;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 using Serilog;
 
 namespace IdentityService;

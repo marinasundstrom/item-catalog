@@ -1,13 +1,13 @@
 
 using System.Data.Common;
 
-using Worker.Application.Common.Interfaces;
-using Worker.Domain.Entities;
-using Worker.Domain.Events;
-
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
+
+using Worker.Application.Common.Interfaces;
+using Worker.Domain.Entities;
+using Worker.Domain.Events;
 
 namespace Worker.Application.Notifications.Commands;
 

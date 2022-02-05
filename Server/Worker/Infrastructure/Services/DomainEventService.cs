@@ -1,12 +1,12 @@
 ﻿using System;
 
-using Worker.Application.Common.Interfaces;
-using Worker.Application.Common.Models;
-using Worker.Domain.Common;
-
 using MediatR;
 
 using Microsoft.Extensions.Logging;
+
+using Worker.Application.Common.Interfaces;
+using Worker.Application.Common.Models;
+using Worker.Domain.Common;
 
 namespace Worker.Infrastructure.Services;
 

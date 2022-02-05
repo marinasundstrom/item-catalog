@@ -26,4 +26,3 @@ public class DoSomethingCommand : IRequest<double>
         }
     }
 }
-

@@ -1,13 +1,12 @@
 using System;
 
-using Worker.Application.Common.Interfaces;
-
 using Contracts;
 
 using MassTransit;
 
 using Microsoft.EntityFrameworkCore;
 
+using Worker.Application.Common.Interfaces;
 using Worker.Application.Common.Interfaces;
 using Worker.Domain.Entities;
 

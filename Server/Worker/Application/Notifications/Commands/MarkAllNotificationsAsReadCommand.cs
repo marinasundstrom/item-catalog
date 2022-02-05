@@ -1,9 +1,9 @@
 ﻿
-using Worker.Application.Common.Interfaces;
-
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
+
+using Worker.Application.Common.Interfaces;
 
 namespace Worker.Application.Notifications.Commands;
 
@@ -24,7 +24,7 @@ public class MarkAllNotificationsAsReadCommand : IRequest
                 .Where(n => n.Published != null)
                 .ToListAsync(cancellationToken);
 
-            foreach(var notification in notifications)
+            foreach (var notification in notifications)
             {
                 notification.IsRead = true;
                 notification.Read = DateTime.Now;

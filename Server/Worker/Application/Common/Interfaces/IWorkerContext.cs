@@ -1,7 +1,7 @@
-using Worker.Domain.Entities;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+
+using Worker.Domain.Entities;
 
 namespace Worker.Application.Common.Interfaces;
 

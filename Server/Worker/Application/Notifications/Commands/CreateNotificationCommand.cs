@@ -1,11 +1,11 @@
 
 using System.Data.Common;
 
+using MediatR;
+
 using Worker.Application.Common.Interfaces;
 using Worker.Domain.Entities;
 using Worker.Domain.Events;
-
-using MediatR;
 
 namespace Worker.Application.Notifications.Commands;
 
@@ -33,7 +33,7 @@ public class CreateNotificationCommand : IRequest
     public class CreateNotificationCommandHandler : IRequestHandler<CreateNotificationCommand>
     {
         private readonly IWorkerContext context;
-        
+
         public CreateNotificationCommandHandler(IWorkerContext context)
         {
             this.context = context;
@@ -41,7 +41,7 @@ public class CreateNotificationCommand : IRequest
 
         public async Task<Unit> Handle(CreateNotificationCommand request, CancellationToken cancellationToken)
         {
-            if(request.UserId is not null)
+            if (request.UserId is not null)
             {
                 CreateNotification(request);
             }

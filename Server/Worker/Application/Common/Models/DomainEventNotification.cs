@@ -1,8 +1,8 @@
 ﻿using System;
 
-using Worker.Domain.Common;
-
 using MediatR;
+
+using Worker.Domain.Common;
 
 namespace Worker.Application.Common.Models;
 

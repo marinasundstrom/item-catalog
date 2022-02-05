@@ -7,7 +7,7 @@ namespace Catalog.Domain.Entities;
 
 public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent
 {
-    List<Comment> _comments = new List<Comment>();
+    readonly List<Comment> _comments = new List<Comment>();
 
     protected Item()
     {

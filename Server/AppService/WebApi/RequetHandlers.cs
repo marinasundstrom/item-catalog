@@ -71,7 +71,7 @@ static partial class RequestHandlers
     static async Task<IResult> GetItem(string id, IMediator mediator, IDistributedCache cache, CancellationToken cancellationToken)
     {
         string cacheKey = $"item-{id}";
-        
+
         var item = await cache.GetAsync<ItemDto?>(cacheKey, cancellationToken);
 
         if (item is null)

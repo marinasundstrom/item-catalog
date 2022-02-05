@@ -1,7 +1,8 @@
-using Microsoft.AspNetCore.SignalR;
+using System.Security.Claims;
 
 using Catalog.WebApi;
-using System.Security.Claims;
+
+using Microsoft.AspNetCore.SignalR;
 
 public class EmailBasedUserIdProvider : IUserIdProvider
 {

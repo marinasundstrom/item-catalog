@@ -1,11 +1,9 @@
 ﻿using System;
 
-using Worker.Application.Common.Interfaces;
-
 using Worker.Application;
 using Worker.Application.Common.Interfaces;
+using Worker.Application.Common.Interfaces;
 using Worker.Infrastructure;
-
 using Worker.Services;
 
 namespace Worker;

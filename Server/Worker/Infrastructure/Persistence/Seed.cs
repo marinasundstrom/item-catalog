@@ -1,7 +1,7 @@
+using Microsoft.Extensions.DependencyInjection;
+
 using Worker.Domain.Entities;
 using Worker.Infrastructure.Persistence;
-
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Worker.Infrastructure.Persistence;
 

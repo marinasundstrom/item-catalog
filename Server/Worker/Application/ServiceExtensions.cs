@@ -1,11 +1,11 @@
 ﻿using System;
 
-using Worker.Application.Notifications.Queries;
-
 using MediatR;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using Worker.Application.Notifications.Queries;
 
 namespace Worker.Application;
 

@@ -1,8 +1,8 @@
 ﻿
-using Worker.Domain.Entities;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+using Worker.Domain.Entities;
 
 namespace Worker.Infrastructure.Persistence.Configurations;
 

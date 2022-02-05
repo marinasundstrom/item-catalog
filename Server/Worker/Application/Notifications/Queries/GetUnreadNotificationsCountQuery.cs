@@ -1,9 +1,9 @@
 ﻿
-using Worker.Application.Common.Interfaces;
-
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
+
+using Worker.Application.Common.Interfaces;
 
 namespace Worker.Application.Notifications.Queries;
 

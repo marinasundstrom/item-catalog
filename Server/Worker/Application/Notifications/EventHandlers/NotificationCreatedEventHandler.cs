@@ -1,13 +1,14 @@
 ﻿
-using Worker.Application.Common.Interfaces;
-using Worker.Application.Common.Models;
-using Worker.Domain.Events;
+using Hangfire;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
+
 using Worker.Application.Common.Interfaces;
-using Hangfire;
+using Worker.Application.Common.Interfaces;
+using Worker.Application.Common.Models;
+using Worker.Domain.Events;
 
 namespace Worker.Application.Notifications.EventHandlers;
 

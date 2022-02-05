@@ -1,12 +1,12 @@
 ﻿using System;
 
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+
 using Worker.Application.Common.Interfaces;
 using Worker.Domain.Common;
 using Worker.Domain.Entities;
 using Worker.Infrastructure;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Worker.Infrastructure.Persistence;
 

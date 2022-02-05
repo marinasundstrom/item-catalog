@@ -51,7 +51,7 @@ public class AddItemCommand : IRequest
                     await transaction.CommitAsync();
                 }
             }
-            catch(DbException exc)
+            catch (DbException)
             {
 
             }

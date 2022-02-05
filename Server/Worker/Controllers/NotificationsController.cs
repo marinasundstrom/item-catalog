@@ -1,16 +1,16 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 
+using MediatR;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 using Worker.Application.Common.Interfaces;
 using Worker.Application.Common.Models;
 using Worker.Application.Notifications;
 using Worker.Application.Notifications.Commands;
 using Worker.Application.Notifications.Queries;
-
-using MediatR;
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Worker.WebApi.Controllers;
 

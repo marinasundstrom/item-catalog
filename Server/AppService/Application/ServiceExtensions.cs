@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Net.Http.Headers;
+
+using Catalog.Application.Common.Interfaces;
+using Catalog.Application.Items.Queries;
+
 using MediatR;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Catalog.Application.Items.Queries;
-using System.Net.Http.Headers;
-using Catalog.Application.Common.Interfaces;
 
 namespace Catalog.Application;
 

@@ -1,11 +1,11 @@
 ﻿using System;
 
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
 using Worker.Application.Common.Interfaces;
 using Worker.Infrastructure.Persistence;
 using Worker.Infrastructure.Services;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Worker.Infrastructure;
 

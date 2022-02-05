@@ -37,7 +37,7 @@ public class Notification : AuditableEntity, ISoftDelete, IHasDomainEvent
     public string? UserId { get; set; }
 
     public DateTime? Published { get; set; }
-    
+
     public DateTime? ScheduledFor { get; set; }
 
     public string? ScheduledJobId { get; set; }

@@ -1,9 +1,13 @@
 using System.Threading.Tasks;
+
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Services;
+
 using IdentityModel;
+
 using IdentityServerHost.Models;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -20,7 +24,7 @@ public class Index : PageModel
     private readonly IIdentityServerInteractionService _interaction;
     private readonly IEventService _events;
 
-    [BindProperty] 
+    [BindProperty]
     public string LogoutId { get; set; }
 
     public Index(SignInManager<ApplicationUser> signInManager, IIdentityServerInteractionService interaction, IEventService events)
@@ -50,7 +54,7 @@ public class Index : PageModel
                 showLogoutPrompt = false;
             }
         }
-            
+
         if (showLogoutPrompt == false)
         {
             // if the request for logout was properly authenticated from IdentityServer, then
@@ -69,7 +73,7 @@ public class Index : PageModel
             // this captures necessary info from the current logged in user
             // this can still return null if there is no context needed
             LogoutId ??= await _interaction.CreateLogoutContextAsync();
-                
+
             // delete local authentication cookie
             await _signInManager.SignOutAsync();
 

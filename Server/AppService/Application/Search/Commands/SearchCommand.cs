@@ -51,11 +51,12 @@ public class SearchCommand : IRequest<Results<SearchResultItem>>
 
             var totalCount = await query.CountAsync(cancellationToken);
 
-            var projectedQuery = query.Select(i => new SearchResultItem() {
-                    Title = i.Name,
-                    ResultType = SearchResultItemType.Item,
-                    ItemId = i.Id
-                });
+            var projectedQuery = query.Select(i => new SearchResultItem()
+            {
+                Title = i.Name,
+                ResultType = SearchResultItemType.Item,
+                ItemId = i.Id
+            });
 
             if (request.SortBy is not null)
             {

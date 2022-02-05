@@ -1,13 +1,14 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 
+using Catalog.Application.Notifications;
+using Catalog.Application.Notifications.Commands;
+using Catalog.Application.Notifications.Queries;
+
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Catalog.Application.Notifications.Commands;
-using Catalog.Application.Notifications;
-using Catalog.Application.Notifications.Queries;
 
 namespace Catalog.WebApi.Controllers;
 
