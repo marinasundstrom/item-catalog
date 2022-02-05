@@ -12,43 +12,40 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-	<data name="Items">
-		<value>Saker</value>
+	<data name="Notifications">
+		<value>Notifieringar</value>
 	</data>
-    <data name="NewItem">
-		<value>Ny sak</value>
-	</data>
-    <data name="SortBy">
+	<data name="SortBy">
 		<value>Sortera efter</value>
 	</data>
-    <data name="Header_Name">
-		<value>Namn</value>
+	<data name="Header_Title">
+		<value>Titel</value>
 	</data>
-    <data name="Header_Description">
-		<value>Beskrivning</value>
+	<data name="Header_Text">
+		<value>Text</value>
 	</data>
-    <data name="Header_CommentCount">
-		<value>Kommentarer</value>
+    <data name="Header_Published">
+		<value>Publicerad</value>
 	</data>
-    <data name="Header_Created">
+	<data name="Header_Created">
 		<value>Skapad</value>
 	</data>
-    <data name="Header_CreatedBy">
+	<data name="Header_CreatedBy">
 		<value>Skapad av</value>
 	</data>
-    <data name="Header_LastModified">
+	<data name="Header_LastModified">
 		<value>Senast ändrad</value>
 	</data>
-    <data name="Header_LastModifiedBy">
+	<data name="Header_LastModifiedBy">
 		<value>Ändrad av</value>
 	</data>
-    <data name="NoRecordsFound">
+	<data name="NoRecordsFound">
 		<value>Inget resultat</value>
 	</data>
-    <data name="Loading">
+	<data name="Loading">
 		<value>Laddar...</value>
 	</data>
-    <data name="RowsPerPage">
+	<data name="RowsPerPage">
 		<value>Rader per sida</value>
 	</data>
 </root>

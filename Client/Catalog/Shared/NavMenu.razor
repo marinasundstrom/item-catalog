@@ -1,13 +1,15 @@
-﻿<MudNavMenu>
+﻿@inject IStringLocalizer<NavMenu> T
+
+<MudNavMenu>
     <MudSpacer />
     
-    <MudNavLink Icon="@Icons.Material.Filled.Dashboard" Href="/" Match="NavLinkMatch.All" Class="mb-4">Dashboard</MudNavLink>
+    <MudNavLink Icon="@Icons.Material.Filled.Dashboard" Href="/" Match="NavLinkMatch.All" Class="mb-4">@T["Dashboard"]</MudNavLink>
 
-    <MudText Typo="Typo.caption" Class="ms-4"><b>General</b></MudText>
+    <MudText Typo="Typo.caption" Class="ms-4"><b>@T["General"]</b></MudText>
     <AuthorizeView>
-        <MudNavLink Icon="@Icons.Material.Filled.List" Href="/items">Items</MudNavLink>
+        <MudNavLink Icon="@Icons.Material.Filled.List" Href="/items">@T["Items"]</MudNavLink>
     </AuthorizeView>
-    <MudNavLink Icon="@Icons.Material.Filled.List" Href="/worker">Worker</MudNavLink>
+    <MudNavLink Icon="@Icons.Material.Filled.List" Href="/worker">@T["Worker"]</MudNavLink>
     @*
         <MudNavGroup Title="Settings" Expanded="true">
             <MudNavLink Href="/users">Users</MudNavLink>

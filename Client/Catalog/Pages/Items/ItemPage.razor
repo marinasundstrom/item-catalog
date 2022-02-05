@@ -2,6 +2,7 @@
 @using Catalog.Client
 @implements IDisposable
 @attribute [Authorize]
+@inject IStringLocalizer<ItemPage> T
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 @inject IItemsClient ItemsClient
@@ -31,18 +32,18 @@
     </MudPaper>
 
     <MudPaper Class="mt-4 px-4 py-4">
-        <MudText Typo="Typo.h6" Align="Align.Left" GutterBottom="true">Comments</MudText>
+        <MudText Typo="Typo.h6" Align="Align.Left" GutterBottom="true"> @T["Comments"]</MudText>
 
         <MudButton @onclick="OpenDialog" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Default" Class="mb-2 mt-2 mb-2">
-            New comment
+            @T["NewComment"]
         </MudButton>
 
-        <MudTable T="CommentDto" Elevation="0" Dense="true" @ref="table" SortLabel="Sort By" ServerData="@(new Func<TableState, Task<TableData<CommentDto>>>(ServerReload))" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+        <MudTable T="CommentDto" Elevation="0" Dense="true" @ref="table" SortLabel="@T["SortBy"]" ServerData="@(new Func<TableState, Task<TableData<CommentDto>>>(ServerReload))" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
             <HeaderContent>
                 <MudTh></MudTh>
-                <MudTh>Text</MudTh>
-                <MudTh><MudTableSortLabel T="CommentDto" SortLabel="Created">Created</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel T="CommentDto" SortLabel="CreatedBy">Created by</MudTableSortLabel></MudTh>
+                <MudTh>@T["Header_Text"]</MudTh>
+                <MudTh><MudTableSortLabel T="CommentDto" SortLabel="Created">@T["Header_Created"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel T="CommentDto" SortLabel="CreatedBy">@T["Header_CreatedBy"]</MudTableSortLabel></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd>
@@ -53,13 +54,13 @@
                 <MudTd DataLabel="Created by">@context.CreatedBy</MudTd>
             </RowTemplate>
             <NoRecordsContent>
-                <MudText>No matching records found</MudText>
+                <MudText>@T["NoRecordsFound"]</MudText>
             </NoRecordsContent>
             <LoadingContent>
-                <MudText>Loading...</MudText>
+                <MudText>@T["Loading"]</MudText>
             </LoadingContent>
             <PagerContent>
-                <MudTablePager />
+                <MudTablePager RowsPerPageString="@T["RowsPerPage"]" />
             </PagerContent>
         </MudTable>
     </MudPaper>

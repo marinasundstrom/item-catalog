@@ -1,7 +1,9 @@
-﻿<MudAppBar Elevation="1" Dense="true">
+﻿@inject IStringLocalizer<AppBar> T
+
+<MudAppBar Elevation="1" Dense="true">
     <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(async (e) => await DrawerToggleCallback.InvokeAsync())" />
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
-        <MudText Typo="Typo.h5">Catalog</MudText>
+        <MudText Typo="Typo.h5">@T["Catalog"]</MudText>
     </MudHidden>
     <MudSpacer />
     <AuthorizeView>

@@ -2,6 +2,7 @@
 @using Catalog.Client
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @implements IAsyncDisposable
+@inject IStringLocalizer<Notifications> T
 @inject INotificationsClient NotificationsClient
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
@@ -13,14 +14,14 @@
 <MudBadge Color="Color.Secondary" Content="BadgeText" Overlap="true" Visible="@(unreadNotificationsCount > 0)">
     <MudMenu Icon="@(unreadNotificationsCount > 0 ? Icons.Filled.Notifications : Icons.Outlined.Notifications)" Color="Color.Inherit" AnchorOrigin="Origin.BottomLeft" TransformOrigin="Origin.TopCenter" PopoverClass="docs-layout-menu-shadow" ListClass="pa-2 docs-menu-list" LockScroll="true">
         <div class="d-flex justify-space-between align-center px-2">
-            <MudText Typo="Typo.subtitle2">Notifications</MudText>
-            <MudButton Disabled="@(unreadNotificationsCount == 0)" OnClick="MarkAllNotificationsAsRead" StartIcon="@Icons.Filled.DoneAll" Variant="Variant.Text" Color="Color.Primary">Mark as read</MudButton>
+            <MudText Typo="Typo.subtitle2">@T["Notifications"]</MudText>
+            <MudButton Disabled="@(unreadNotificationsCount == 0)" OnClick="MarkAllNotificationsAsRead" StartIcon="@Icons.Filled.DoneAll" Variant="Variant.Text" Color="Color.Primary">@T["MarkAllAsRead"]</MudButton>
         </div>
 
         <div>
             @if (isLoading)
             {
-                <MudText Typo="Typo.subtitle2">Loading notifications...</MudText>
+            <MudText Typo="Typo.subtitle2">@T["Loading"]</MudText>
             }
             else
             {
@@ -41,14 +42,14 @@
                 @if (totalNotificationsCount > 5)
                     {
                     <div class="d-flex justify-center align-center px-2 py-2 relative">
-                        <MudLink Class="mud-text-secondary my-2" Href="/notifications">More notifications</MudLink>
+                        <MudLink Class="mud-text-secondary my-2" Href="/notifications">@T["MoreNotifications"]</MudLink>
                     </div>
                     }
                 }
                 else
                 {
                 <div class="d-flex justify-center align-center px-2 py-8 relative">
-                    <MudText Class="mud-text-secondary my-12">Nothing new :(</MudText>
+                    <MudText Class="mud-text-secondary my-12">@T["NothingNew"]</MudText>
                 </div>
                 }
             }

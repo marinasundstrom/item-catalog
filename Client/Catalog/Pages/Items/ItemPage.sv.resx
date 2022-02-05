@@ -12,11 +12,11 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-	<data name="Items">
-		<value>Saker</value>
+    <data name="Comments">
+		<value>Kommentarer</value>
 	</data>
-    <data name="NewItem">
-		<value>Ny sak</value>
+    <data name="NewComment">
+		<value>Ny kommentar</value>
 	</data>
     <data name="SortBy">
 		<value>Sortera efter</value>
@@ -24,11 +24,8 @@
     <data name="Header_Name">
 		<value>Namn</value>
 	</data>
-    <data name="Header_Description">
-		<value>Beskrivning</value>
-	</data>
-    <data name="Header_CommentCount">
-		<value>Kommentarer</value>
+    <data name="Header_Text">
+		<value>Text</value>
 	</data>
     <data name="Header_Created">
 		<value>Skapad</value>
