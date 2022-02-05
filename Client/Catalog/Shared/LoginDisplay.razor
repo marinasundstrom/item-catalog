@@ -12,7 +12,10 @@
             </ActivatorContent>
             <ChildContent>
                 <MudMenuItem OnClick="BeginSignOut">
-                    Log out
+                    <div class="d-flex">
+                        <MudIcon Icon="@Icons.Material.Filled.Logout" class="me-2" />
+                        <MudText Style="overflow: hidden; white-space: nowrap;">Log out</MudText>
+                    </div>
                 </MudMenuItem>
             </ChildContent>
         </MudMenu>
