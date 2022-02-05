@@ -105,7 +105,7 @@ Read this [guide](https://www.howtogeek.com/howto/27350/beginner-geek-how-to-edi
 
 ### Conclusion
 
-You should now be able to reach the identity server site in your browser by navigating to [```https://identity.local```](https://identity.local).
+Provided that the service has been started, you should now be able to reach the IdentityService site in your browser by navigating to [```https://identity.local```](https://identity.local).
 
 Please be aware that you have to configure the certs.
 
