@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
+using Microsoft.JSInterop;
 
 using MudBlazor.Services;
 
@@ -16,8 +17,8 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddApp(this IServiceCollection services)
     {
-        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("sv");
-        CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("sv");
+        //CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("sv");
+        //CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("sv");
 
         services.AddLocalization();
 
@@ -68,5 +69,25 @@ public static class ServiceExtensions
         .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
         return services;
+    }
+
+    public static async Task UseApp(this IServiceProvider serviceProvider) 
+    {
+        CultureInfo culture;
+        var js = serviceProvider.GetRequiredService<IJSRuntime>();
+        var result = await js.InvokeAsync<string>("blazorCulture.get");
+
+        if (result != null)
+        {
+            culture = new CultureInfo(result);
+        }
+        else
+        {
+            culture = new CultureInfo("en-US");
+            await js.InvokeVoidAsync("blazorCulture.set", "en-US");
+        }
+
+        CultureInfo.DefaultThreadCurrentCulture = culture;
+        CultureInfo.DefaultThreadCurrentUICulture = culture;
     }
 }

@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject IDialogService DialogService
 
 <MudLayout>
     <AppBar DrawerToggleCallback="DrawerToggle" />
@@ -7,14 +8,24 @@
     </MudDrawer>
     <MudMainContent>
         @Body
+
+        <div class="mt-4">
+            <MudButton OnClick="ChangeLocale">Change locale</MudButton>
+        </div>
     </MudMainContent>
 </MudLayout>
 
 @code {
-    bool _drawerOpen = true;
+    bool _drawerOpen = false;
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    async Task ChangeLocale() 
+    {
+        var dialogRef = DialogService.Show<CultureSelector>("Change locale");
+        await dialogRef.Result;
     }
 }
