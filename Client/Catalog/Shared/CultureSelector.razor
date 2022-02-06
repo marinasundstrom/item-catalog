@@ -1,20 +1,21 @@
 @using System.Globalization
 @inject IJSRuntime JSRuntime
+@inject IStringLocalizer<CultureSelector> T
 @inject NavigationManager Nav
 
 <EditForm Model="@this">
     <MudDialog>
         <DialogContent>
-            <MudSelect Label="Locale" HelperText="Select your locale" @bind-Value="Culture">
+            <MudSelect Label="@T["Locale"]" HelperText="@T["SelectYourLocale"]" @bind-Value="Culture">
                 @foreach (var culture in supportedCultures)
                 {
-                    <MudSelectItem Value="@culture">@culture.DisplayName</MudSelectItem>
+                    <MudSelectItem Value="@culture">@T[culture.Name]</MudSelectItem>
                 }
             </MudSelect>
         </DialogContent>
         <DialogActions>
-            <MudButton OnClick="Cancel">Cancel</MudButton>
-            <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+            <MudButton OnClick="Cancel">@T["Cancel"]</MudButton>
+            <MudButton Color="Color.Primary" OnClick="Submit">@T["Ok"]</MudButton>
         </DialogActions>
     </MudDialog>
 

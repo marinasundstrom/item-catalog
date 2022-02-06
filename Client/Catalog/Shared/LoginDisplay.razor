@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject IStringLocalizer<LoginDisplay> T
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 @inject IDialogService DialogService
@@ -14,7 +15,7 @@
                 <MudMenuItem OnClick="BeginSignOut">
                     <div class="d-flex">
                         <MudIcon Icon="@Icons.Material.Filled.Logout" class="me-2" />
-                        <MudText Style="overflow: hidden; white-space: nowrap;">Log out</MudText>
+                        <MudText Style="overflow: hidden; white-space: nowrap;">@T["LogOut"]</MudText>
                     </div>
                 </MudMenuItem>
             </ChildContent>
@@ -28,7 +29,7 @@
 @code {
     private async Task BeginSignOut(MouseEventArgs args)
     {
-        var result = await DialogService.ShowMessageBox("Log out", "Are you sure?", "Yes", "No");
+        var result = await DialogService.ShowMessageBox(T["LogOut"], T["AreYouSure"], T["Yes"], T["No"]);
 
         if(!result.GetValueOrDefault()) 
         {
