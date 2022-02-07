@@ -22,6 +22,9 @@ Multi-platform app, with Web backend and API. Written entirely in .NET.
 
 App can be compiled to run on iOS, macOS, Android, Windows, and, of course, Web. Thanks to .NET and Blazor.
 
+<a href="/docs/overview.PNG">
+<img src="/docs/overview.PNG" height="250"  alt="Web"  /></a>
+
 Contains a WebApi. Uses SQL Server and emulated Azure Blob Storage out of box.
 
 The "Worker" service is used to demonstrate how to off-load tasks to a micro service using asynchronous messaging. The library used is MassTransit, and for transport it uses RabbitMQ. It also Hangfire to schedule recurring tasks.
