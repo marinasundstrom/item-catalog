@@ -23,7 +23,7 @@ Multi-platform app, with Web backend and API. Written entirely in .NET.
 App can be compiled to run on iOS, macOS, Android, Windows, and, of course, Web. Thanks to .NET and Blazor.
 
 <a href="/docs/overview.PNG">
-<img src="/docs/overview.PNG" height="250"  alt="Web"  /></a>
+<img src="/docs/overview.PNG" height="450"  alt="Overview"  /></a>
 
 Contains a WebApi. Uses SQL Server and emulated Azure Blob Storage out of box.
 
