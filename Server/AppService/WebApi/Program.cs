@@ -167,13 +167,10 @@ app.MapGet("/info", () =>
 
 //await app.Services.SeedAsync();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapHub<ItemsHub>("/hubs/items");
-    endpoints.MapHub<SomethingHub>("/hubs/something");
-    endpoints.MapHub<WorkerHub>("/hubs/worker");
-    endpoints.MapHub<NotificationHub>("/hubs/notifications");
-});
+app.MapControllers();
+app.MapHub<ItemsHub>("/hubs/items");
+app.MapHub<SomethingHub>("/hubs/something");
+app.MapHub<WorkerHub>("/hubs/worker");
+app.MapHub<NotificationHub>("/hubs/notifications");
 
 app.Run();
