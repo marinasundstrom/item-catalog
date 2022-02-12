@@ -1,4 +1,4 @@
-﻿@page "/items2"
+﻿@page "/items"
 @layout MainLayout2
 @implements IAsyncDisposable
 @attribute [Authorize]
@@ -22,9 +22,13 @@
     <p>Loading...</p>
 }
 else
-{ 
+{
     <MudButton @onclick="OpenDialog" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Default" Class="mb-2 mt-2 mb-8">
         @T["NewItem"]
+    </MudButton>
+
+    <MudButton Link="/items/list" Variant="Variant.Filled" StartIcon="@Icons.Filled.List" Color="Color.Default" Class="ms-2 mb-2 mt-2 mb-8">
+        @T["List"]
     </MudButton>
 
     <MudGrid>
@@ -35,10 +39,11 @@ else
                     <MudCardMedia Image="@item.Image" Height="200" />
                     <MudCardContent>
                         <MudText Typo="Typo.h5">@item.Name</MudText>
-                        <MudText Typo="Typo.body2">@item.Description</MudText>
+                        <MudText Typo="Typo.body1">@item.Description</MudText>
+                        <MudText Typo="Typo.body2">@item.Created.ToString("g")</MudText>
                     </MudCardContent>
                     <MudCardActions>
-                        <MudButton Variant="Variant.Text" Color="Color.Primary" Link="@($"/items/{item.Id}")">More</MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary" Link="@($"/items/{item.Id}")">@T["More"]</MudButton>
                     </MudCardActions>
                 </MudCard>
             </MudItem>
