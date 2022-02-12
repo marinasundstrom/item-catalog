@@ -8,6 +8,9 @@ There is also a Web version of the app.
 
 A "Worker" service demonstrates how to communicate with a microservice through asynchronous messaging.
 
+<a href="/Screenshots/web.png">
+<img src="/Screenshots/web.png" height="250"  alt="Web"  /></a>
+
 **For more info:**
 
 * Watch [demo video 1](https://youtu.be/wXaQB18FvRk) and [video 2](https://youtu.be/DGNxoAn2ywU).
@@ -38,19 +41,6 @@ Nginx is used as a reverse-proxy.
 Dev environment is based around projects and containers orchestrated by .NET Tye. Enabling you to launch all backend services with one simple command.
 
 Redis is also integrated.
-
-## Screenshots
-
-<!-- <a href="/Screenshots/macOS.png">
-<img src="/Screenshots/macOS.png" height="250"  alt="macOS" /></a>
-
-<a href="/Screenshots/iPhone.png">
-<img src="/Screenshots/iPhone.png" height="250"  alt="iPhone"  /></a> -->
-
-<a href="/Screenshots/web.png">
-<img src="/Screenshots/web.png" height="250"  alt="Web"  /></a>
-
-Web App
 
 ## Getting started
 
