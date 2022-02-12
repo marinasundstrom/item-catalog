@@ -14,4 +14,11 @@ public partial class App : Application
 
         MainPage = new MainPage();
     }
+
+    protected override void OnStart()
+    {
+        base.OnStart();
+
+        //await _services.ConfigureApp();
+    }
 }

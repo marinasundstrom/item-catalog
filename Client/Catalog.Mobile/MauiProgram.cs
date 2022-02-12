@@ -30,7 +30,7 @@ public static class MauiProgram
 
         builder.Services.AddBlazorWebView();
 
-        builder.Services.AddApp();
+        builder.Services.AddApp(builder.Configuration);
 
         Options.UseNativeUpload = true;
 

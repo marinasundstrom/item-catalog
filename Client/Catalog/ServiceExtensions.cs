@@ -4,7 +4,7 @@ using System.Globalization;
 using Catalog.Services;
 
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
 using Microsoft.JSInterop;
@@ -15,10 +15,12 @@ namespace Catalog;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddApp(this IServiceCollection services)
+    public static IServiceCollection AddApp(this IServiceCollection services, IConfiguration configuration)
     {
         //CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("sv");
         //CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("sv");
+
+        string url = "https://localhost/";
 
         services.AddLocalization();
 
@@ -33,14 +35,14 @@ public static class ServiceExtensions
         services.AddHttpClient(nameof(Catalog.Client.IClient), (sp, http) =>
         {
             var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"{navigationManager.BaseUri}api/");
+            http.BaseAddress = new Uri($"{url}api/");
         })
         .AddTypedClient<Catalog.Client.IClient>((http, sp) => new Catalog.Client.Client(http));
 
         services.AddHttpClient(nameof(Catalog.Client.IItemsClient), (sp, http) =>
         {
             var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"{navigationManager.BaseUri}api/");
+            http.BaseAddress = new Uri($"{url}api/");
         })
         .AddTypedClient<Catalog.Client.IItemsClient>((http, sp) => new Catalog.Client.ItemsClient(http))
         .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
@@ -48,14 +50,14 @@ public static class ServiceExtensions
         services.AddHttpClient(nameof(Catalog.Client.IDoSomethingClient), (sp, http) =>
         {
             var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"{navigationManager.BaseUri}api/");
+            http.BaseAddress = new Uri($"{url}api/");
         })
         .AddTypedClient<Catalog.Client.IDoSomethingClient>((http, sp) => new Catalog.Client.DoSomethingClient(http));
 
         services.AddHttpClient(nameof(Catalog.Client.ISearchClient), (sp, http) =>
         {
             var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"{navigationManager.BaseUri}api/");
+            http.BaseAddress = new Uri($"{url}api/");
         })
         .AddTypedClient<Catalog.Client.ISearchClient>((http, sp) => new Catalog.Client.SearchClient(http))
         .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
@@ -63,7 +65,7 @@ public static class ServiceExtensions
         services.AddHttpClient(nameof(Catalog.Client.INotificationsClient), (sp, http) =>
         {
             var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"{navigationManager.BaseUri}api/");
+            http.BaseAddress = new Uri($"{url}api/");
         })
         .AddTypedClient<Catalog.Client.INotificationsClient>((http, sp) => new Catalog.Client.NotificationsClient(http))
         .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
@@ -71,7 +73,12 @@ public static class ServiceExtensions
         return services;
     }
 
-    public static async Task UseApp(this IServiceProvider serviceProvider) 
+    public static async Task ConfigureApp(this IServiceProvider serviceProvider)
+    {
+        await SetLocale(serviceProvider);
+    }
+
+    private static async Task SetLocale(IServiceProvider serviceProvider)
     {
         CultureInfo culture;
         var js = serviceProvider.GetRequiredService<IJSRuntime>();
