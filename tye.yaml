@@ -25,7 +25,7 @@ services:
     port: 5030
 
 - name: identity
-  project: Server/IdentityService/IdentityService.csproj
+  project: Server/IdentityService/IdentityService/IdentityService.csproj
   bindings:
   - protocol: https
     port: 5040

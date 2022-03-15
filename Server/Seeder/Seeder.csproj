@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IdentityService.Client\IdentityService.Client.csproj" />
+    <ProjectReference Include="..\IdentityService\IdentityService.Client\IdentityService.Client.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Microsoft.Extensions.Http" />
