@@ -4,7 +4,7 @@ using MudBlazor;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
-namespace Catalog.Pages.Items
+namespace Catalog.Items
 {
     public partial class ItemPage
     {

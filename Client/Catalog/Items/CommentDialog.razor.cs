@@ -7,7 +7,7 @@ using Catalog.Client;
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Catalog.Pages.Items
+namespace Catalog.Items
 {
     public partial class CommentDialog
     {

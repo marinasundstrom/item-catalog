@@ -4,16 +4,21 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Catalog.Client;
 using MudBlazor;
 
-namespace Catalog.Pages.Items
+namespace Catalog.Items
 {
-    public partial class ItemsPage
+    public partial class ItemsPage2
     {
-        MudTable<ItemDto> table;
+        int selectedPage;
+        int pageCount;
+        IEnumerable<ItemDto> items;
+
         HubConnection hubConnection;
         Stream imageToUpload = null;
         
         protected override async Task OnInitializedAsync()
         {
+            await OnPageSelected(1);
+
             try
             {
                 hubConnection = new HubConnectionBuilder().WithUrl($"{NavigationManager.BaseUri}api/hubs/items", options =>
@@ -64,54 +69,68 @@ namespace Catalog.Pages.Items
 
         async Task OnItemAdded(ItemDto item)
         {
-            Snackbar.Add("Item was added", Severity.Success);
-            if (imageToUpload is not null)
+            try
             {
-                try
+                Snackbar.Add("Item was added", Severity.Success);
+                if (imageToUpload is not null)
                 {
-                    await ItemsClient.UploadImageAsync(item.Id, new FileParameter(imageToUpload));
+                    try
+                    {
+                        await ItemsClient.UploadImageAsync(item.Id, new FileParameter(imageToUpload));
+                    }
+                    catch (Exception exc)
+                    {
+                        Snackbar.Add(exc.Message, Severity.Error);
+                    }
                 }
-                catch (AccessTokenNotAvailableException exception)
-                {
-                    exception.Redirect();
-                }
-                catch (Exception exc)
-                {
-                    Snackbar.Add(exc.Message, Severity.Error);
-                }
-            }
 
-            imageToUpload?.Dispose();
-            imageToUpload = null;
-            await table.ReloadServerData();
+                imageToUpload?.Dispose();
+                imageToUpload = null;
+                await OnPageSelected(selectedPage);
+            }
+            catch (AccessTokenNotAvailableException exception)
+            {
+                exception.Redirect();
+            }
         }
 
         async Task OnItemDeleted(string id, string name)
         {
             Snackbar.Add($"\"{name}\" was removed", Severity.Success);
-            await table.ReloadServerData();
+            await OnPageSelected(selectedPage);
         }
 
         async Task OnImageUploaded(string id, string image)
         {
             Snackbar.Add($"Image was uploaded", Severity.Success);
-            await table.ReloadServerData();
+            await OnPageSelected(selectedPage);
         }
 
-        private async Task<TableData<ItemDto>> ServerReload(TableState state)
+        private async Task OnPageSelected(int page)
         {
+            int pageSize = 10;
+
             try
             {
-                var results = await ItemsClient.GetItemsAsync(state.Page, state.PageSize, state.SortLabel, state.SortDirection == MudBlazor.SortDirection.Ascending ? Catalog.Client.SortDirection.Asc : Catalog.Client.SortDirection.Desc);
-                return new TableData<ItemDto>()
-                {TotalItems = results.TotalCount, Items = results.Items};
+                selectedPage = page;
+
+                var results = await ItemsClient.GetItemsAsync(selectedPage - 1, pageSize, null, Catalog.Client.SortDirection.Asc);
+
+                items = results.Items;
+
+                pageCount = (int)(results.TotalCount / 10);
+
+                if(results.TotalCount % 10 != 0)
+                {
+                    pageCount++;
+                }
             }
             catch (AccessTokenNotAvailableException exception)
             {
                 exception.Redirect();
             }
 
-            return null!;
+            StateHasChanged();
         }
 
         private void RowClickEvent(TableRowClickEventArgs<ItemDto> args)
@@ -132,6 +151,10 @@ namespace Catalog.Pages.Items
                 imageToUpload = model.Stream;
                 await ItemsClient.AddItemAsync(new AddItemDto()
                 {Name = model.Name, Description = model.Description});
+            }
+            catch (AccessTokenNotAvailableException exception)
+            {
+                exception.Redirect();
             }
             catch (Exception exc)
             {
