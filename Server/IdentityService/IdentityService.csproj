@@ -3,22 +3,40 @@
   <PropertyGroup>
 	  <TargetFramework>net6.0</TargetFramework>
 	  <ImplicitUsings>enable</ImplicitUsings>
+	  <RootNamespace>Catalog.IdentityService</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'SelfHost' " />
   <ItemGroup>
     <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="6.0.3" />
 
-	<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.1" />
-	<PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
 
-	<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.1" />
-	<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1" />
-	<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.1" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.1"><IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-  <PrivateAssets>all</PrivateAssets>
-  </PackageReference>
-  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.1"><IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
+
+    <PackageReference Include="NSwag.AspNetCore" Version="13.15.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="6.0.1" />
+
+    <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="7.3.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+    <PackageReference Include="AspNetCore.Authentication.ApiKey" Version="6.0.1" />
+    <PackageReference Include="System.CommandLine.DragonFruit" Version="0.4.0-alpha.22114.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IdentityService.Contracts\IdentityService.Contracts.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+
 </Project>

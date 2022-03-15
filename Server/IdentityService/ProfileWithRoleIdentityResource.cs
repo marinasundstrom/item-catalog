@@ -2,7 +2,7 @@
 
 using IdentityModel;
 
-namespace IdentityService;
+namespace Catalog.IdentityService;
 
 public class ProfileWithRoleIdentityResource : IdentityResources.Profile
 {

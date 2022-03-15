@@ -6,7 +6,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 using Worker.Application.Common.Interfaces;
-using Worker.Application.Common.Interfaces;
 using Worker.Application.Common.Models;
 using Worker.Domain.Events;
 

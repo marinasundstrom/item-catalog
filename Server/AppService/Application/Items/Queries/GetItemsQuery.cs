@@ -38,7 +38,10 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
         public async Task<Results<ItemDto>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
         {
             var query = context.Items
+                .Include(i => i.CreatedBy)
+                .Include(i => i.LastModifiedBy)
                 .OrderBy(i => i.Created)
+                .AsSplitQuery()
                 .AsQueryable();
 
             var totalCount = await query.CountAsync(cancellationToken);
@@ -56,7 +59,7 @@ public class GetItemsQuery : IRequest<Results<ItemDto>>
             var items = await query.ToListAsync(cancellationToken);
 
             return new Results<ItemDto>(
-                items.Select(item => new ItemDto(item.Id, item.Name, item.Description, urlHelper.CreateImageUrl(item.Image), item.CommentCount, item.Created, item.CreatedBy, item.LastModified, item.LastModifiedBy)),
+                items.Select(item => item.ToDto(urlHelper)),
                 totalCount);
         }
     }

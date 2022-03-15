@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Catalog.Client;
 using MudBlazor;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace Catalog.Pages.Items
 {
@@ -9,6 +10,7 @@ namespace Catalog.Pages.Items
     {
         MudTable<CommentDto> table;
         ItemDto? item;
+        bool loadingFailed = false;
 
         [Parameter]
         public string Id { get; set; } = null !;
@@ -21,16 +23,32 @@ namespace Catalog.Pages.Items
 
         async Task LoadAsync()
         {
+            loadingFailed = false;
+
+            #if DEBUG
+            await Task.Delay(2000);
+            #endif
+
             try
             {
+                //throw new Exception();
+
                 item = await ItemsClient.GetItemAsync(Id);
             }
             catch (ApiException<ProblemDetails> exc)
             {
+                loadingFailed = true;
+
                 Snackbar.Add(exc.Result.Detail, Severity.Error);
+            }
+            catch (AccessTokenNotAvailableException exception)
+            {
+                exception.Redirect();
             }
             catch (Exception exc)
             {
+                loadingFailed = true;
+
                 Snackbar.Add(exc.Message, Severity.Error);
             }
         }
@@ -44,27 +62,48 @@ namespace Catalog.Pages.Items
 
         private async Task<TableData<CommentDto>> ServerReload(TableState state)
         {
-            var results = await ItemsClient.GetCommentsAsync(Id, state.Page, state.PageSize, state.SortLabel, state.SortDirection == MudBlazor.SortDirection.Ascending ? Catalog.Client.SortDirection.Asc : Catalog.Client.SortDirection.Desc);
-            return new TableData<CommentDto>()
-            {TotalItems = results.TotalCount, Items = results.Items};
+            try
+            { 
+                var results = await ItemsClient.GetCommentsAsync(Id, state.Page, state.PageSize, state.SortLabel, state.SortDirection == MudBlazor.SortDirection.Ascending ? Catalog.Client.SortDirection.Asc : Catalog.Client.SortDirection.Desc);
+                return new TableData<CommentDto>()
+                {
+                    TotalItems = results.TotalCount,
+                    Items = results.Items
+                };
+
+            }
+            catch (AccessTokenNotAvailableException exception)
+            {
+                exception.Redirect();
+            }
+
+            return null!;
         }
 
-        private async Task OpenDialog()
+        private async Task OpenDialog(CommentDto? comment)
         {
-            var dialogReference = DialogService.Show<CreateCommentDialog>("Write a comment");
+            var parameters = new DialogParameters();
+            parameters.Add(nameof(CommentDialog.ItemId), Id);
+            parameters.Add(nameof(CommentDialog.CommentId), comment?.Id);
+
+            var dialogReference = DialogService.Show<CommentDialog>(comment is not null ? "Update comment" : "Write a comment", parameters);
             var result = await dialogReference.Result;
-            var model = (CreateCommentDialog.FormModel)result.Data;
+            var model = (CommentDialog.FormModel)result.Data;
+
             if (result.Cancelled)
                 return;
-            try
+
+            await table.ReloadServerData();
+        }
+
+        private async Task DeleteComment(CommentDto comment)
+        {
+            var result = await DialogService.ShowMessageBox($"Delete comment?", "Are you sure?", "Yes", "No");
+            if (result.GetValueOrDefault())
             {
-                await ItemsClient.PostCommentAsync(Id, new PostCommentDto()
-                {Text = model.Text});
+                await ItemsClient.DeleteCommentAsync(Id, comment.Id);
+
                 await table.ReloadServerData();
-            }
-            catch (Exception exc)
-            {
-                Snackbar.Add(exc.Message.ToString(), Severity.Error);
             }
         }
 

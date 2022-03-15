@@ -1,8 +1,12 @@
-﻿namespace Catalog.Domain.Common;
+﻿using Catalog.Domain.Entities;
+
+namespace Catalog.Domain.Common;
 
 public interface ISoftDelete
 {
     DateTime? Deleted { get; set; }
 
-    string? DeletedBy { get; set; }
+    string? DeletedById { get; set; }
+
+    User? DeletedBy { get; set; }
 }

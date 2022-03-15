@@ -1,0 +1,118 @@
+﻿@page "/users"
+@attribute [Authorize(Roles = "Administrator,Manager")]
+@using IdentityService.Client
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject IUsersClient UsersClient
+
+<PageTitle>Users - Catalog</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Users</MudText>
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="OnNewUserClicked">New User</MudButton>
+
+<MudTable T="UserDto" ServerData="@(new Func<TableState, Task<TableData<UserDto>>>(ServerReload))"
+          Hover="true" @ref="table" Class="mt-4" OnRowClick="(e) => GotToUser(e.Item)">
+    <ToolBarContent>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s => OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start" Immediate="true" DebounceInterval="500"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel T="UserDto" SortLabel="FirstName">First Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="UserDto" SortLabel="LastName">Last Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="UserDto" SortLabel="DisplayName">Display Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="UserDto" SortLabel="Ssn">SSN</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel T="UserDto" SortLabel="Email">Email</MudTableSortLabel></MudTh>
+        <MudTh>Role</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate Context="user">
+        <MudTd DataLabel="First Name">@user.FirstName</MudTd>
+        <MudTd DataLabel="Last Name">@user.LastName</MudTd>
+        <MudTd DataLabel="Display Name">@user.DisplayName</MudTd>
+        <MudTd DataLabel="SSN">@user.Ssn</MudTd>
+        <MudTd DataLabel="Email">@user.Email</MudTd>
+        <MudTd DataLabel="Role">@user.Role</MudTd>
+        <MudTd>
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="async () => await OnEditUserClicked(user)" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="async () => await DeleteUser(user)" />
+        </MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No matching records found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+@code {
+    MudTable<UserDto> table;
+    string searchString;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    private async Task<TableData<UserDto>> ServerReload(TableState state)
+    {
+        try
+        {
+            var page = await UsersClient.GetUsersAsync(state.Page, state.PageSize, searchString,
+                state.SortLabel, state.SortDirection == MudBlazor.SortDirection.None ? null : state.SortDirection == MudBlazor.SortDirection.Descending ? IdentityService.Client.SortDirection.Desc : IdentityService.Client.SortDirection.Asc);
+
+            return new TableData<UserDto>() { TotalItems = page.TotalItems, Items = page.Items };
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+
+        return null!;
+    }
+
+    private void OnSearch(string text)
+    {
+        searchString = text;
+        table.ReloadServerData();
+    }
+
+    private void GotToUser(UserDto user)
+    {
+        NavigationManager.NavigateTo($"/Users/{user.Id}"); ;
+    }
+
+    private async Task OnNewUserClicked()
+    {
+        NavigationManager.NavigateTo($"/Users/Create");
+    }
+
+    private async Task OnEditUserClicked(UserDto user)
+    {
+        NavigationManager.NavigateTo($"/Users/{user.Id}/Edit");
+    }
+
+    private async Task DeleteUser(UserDto user)
+    {
+        try
+        {
+            var dialogResult = await DialogService.ShowMessageBox($"Delete {user.FirstName}?", "Are you sure?", "Yes", "No");
+
+            if (!dialogResult.GetValueOrDefault())
+                return;
+
+            await UsersClient.DeleteUserAsync(user.Id);
+
+            table.ReloadServerData();
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+}

@@ -1,11 +1,8 @@
 ﻿using Catalog.Application.Common.Interfaces;
-using Catalog.WebApi.Hubs;
 
 using Contracts;
 
 using MassTransit;
-
-using Microsoft.AspNetCore.SignalR;
 
 namespace Catalog.Consumers;
 

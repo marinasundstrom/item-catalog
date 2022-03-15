@@ -13,12 +13,12 @@
 @inject IDialogService DialogService
 @inject IAccessTokenProvider AccessTokenProvider
 
-<PageTitle>@T["Items"]</PageTitle>
+<PageTitle>@T["Items"] - Catalog</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">@T["Items"]</MudText>
 
 <MudPaper Elevation="1" Class="px-4 py-4">
-    <MudButton @onclick="OpenDialog" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Default" Class="mb-2 mt-2 mb-2">
+    <MudButton @onclick="OpenDialog" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2 mb-2">
         @T["NewItem"]
     </MudButton>
 
@@ -42,9 +42,9 @@
             <MudTd DataLabel="@T["Header_Description"]">@context.Description</MudTd>
             <MudTd DataLabel="@T["Header_Comments"]">@context.CommentCount</MudTd>
             <MudTd DataLabel="@T["Header_Created"]">@context.Created.ToString("g")</MudTd>
-            <MudTd DataLabel="@T["Header_CreatedBy"]">@context.CreatedBy</MudTd>
+            <MudTd DataLabel="@T["Header_CreatedBy"]">@context.CreatedBy.GetDisplayName()</MudTd>
             <MudTd DataLabel="@T["Header_LastModified"]">@context.LastModified?.ToString("g")</MudTd>
-            <MudTd DataLabel="@T["Header_LastModifiedBy"]">@context.LastModifiedBy</MudTd>
+            <MudTd DataLabel="@T["Header_LastModifiedBy"]">@context.LastModifiedBy?.GetDisplayName()</MudTd>
             <MudTd><MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="async () => await DeleteItem(context)" /></MudTd>
         </RowTemplate>
         <NoRecordsContent>
@@ -58,3 +58,7 @@
         </PagerContent>
     </MudTable>
 </MudPaper>
+
+
+
+

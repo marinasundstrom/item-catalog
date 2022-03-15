@@ -24,4 +24,10 @@
     <data name="Worker">
 		<value>Arbetare</value>
 	</data>
+    <data name="Projects">
+		<value>Projekt</value>
+	</data>
+	<data name="ReportTime">
+		<value>Rapportera tid</value>
+	</data>
 </root>

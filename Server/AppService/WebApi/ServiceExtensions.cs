@@ -11,7 +11,7 @@ namespace Catalog.WebApi;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddServices(this IServiceCollection services)
+    public  static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IUrlHelper, UrlHelper>();
@@ -29,6 +29,13 @@ public static class ServiceExtensions
         services.AddScoped<IWorkerClient, WorkerClient>();
         services.AddScoped<INotificationClient, NotificationClient>();
         services.AddScoped<ISomethingClient, SomethingClient>();
+
+        services.AddHttpClient(nameof(Catalog.IdentityService.Client.IUsersClient) + "2", (sp, http) =>
+        {
+            http.BaseAddress = new Uri($"https://identity.local/");
+            http.DefaultRequestHeaders.Add("X-API-KEY", "foobar");
+        })
+        .AddTypedClient<Catalog.IdentityService.Client.IUsersClient>((http, sp) => new Catalog.IdentityService.Client.UsersClient(http));
 
         return services;
     }

@@ -7,4 +7,10 @@
     <RootNamespace>Catalog.Domain</RootNamespace>
   </PropertyGroup>
   
+  <ItemGroup>
+    <None Remove="Exceptions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
 </Project>

@@ -1,29 +1,44 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Catalog</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <SupportedPlatform Include="browser" />
-  </ItemGroup>
+  <PropertyGroup>
+    <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+  </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Portal' ">
+    <ExternalConsole>true</ExternalConsole>
+  </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.2" />
-    <PackageReference Include="MudBlazor" Version="6.0.6" />
+    <PackageReference Include="MudBlazor" Version="6.0.7" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebApi.Client\WebApi.Client.csproj" />
-    <ProjectReference Include="..\Catalog.Shared\Catalog.Shared.csproj" />
+    <ProjectReference Include="..\Catalog.Client\Catalog.Client.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\IdentityService.Client\IdentityService.Client.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\Worker.Client\Worker.Client.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\Catalog.Shared\Catalog.Shared.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
-
+  <ItemGroup>
+    <None Remove="Microsoft.AspNetCore.SignalR.Client" />
+  </ItemGroup>
 </Project>

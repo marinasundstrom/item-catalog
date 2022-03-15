@@ -134,40 +134,23 @@ Watch and Debug messages:
 tye run --watch -v Debug
 ```
 
-## Create the app databases
+# Seed data
 
-This will create and seed the main app database.
-
-In the source file ```Server/AppService/WebApi/Program.cs```, scroll down to the following line:
-
-```C#
-//await app.Services.SeedAsync();
-```
-
-Toggle the comment off.
-
-```C#
-await app.Services.SeedAsync();
-```
-
-If you are in Watch mode, then the service will restart, and the uncommented code will execute.
-
-Make sure to toggle the comment on again, or else the database will be recreated everytime you make a change to AppService.
-
-*This line of code has to be toggled off everytime the Domain model change in order for the database to be recreated.*
-
-## Seed IdentityService database
-
-The following steps will seed the database.
-
-In a terminal, go to the ```Server/IdentityService``` project directory.
-
-Make sure that the database server is running. *(See previous steps)*
-
-Run this command:
+If you have not already, start the services:
 
 ```sh
-dotnet run -- /seed
+tye run --watch -v Debug
+```
+
+(Re)create databases:
+
+```
+./seed.sh
+```
+
+Seed users:
+```
+dotnet run --project ./Server/Seeder/Seeder.csproj
 ```
 
 ## Set up Azurite Storage Emulator

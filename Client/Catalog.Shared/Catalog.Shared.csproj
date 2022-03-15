@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Catalog.Shared</RootNamespace>
   </PropertyGroup>
 
 
@@ -20,6 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebApi.Client\WebApi.Client.csproj" />
+    <ProjectReference Include="..\Catalog.Client\Catalog.Client.csproj" />
   </ItemGroup>
 </Project>

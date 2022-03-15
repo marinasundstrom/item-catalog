@@ -13,7 +13,7 @@
 @inject IDialogService DialogService
 @inject IAccessTokenProvider AccessTokenProvider
 
-<PageTitle>@T["Items"]</PageTitle>
+<PageTitle>@T["Items"] - Catalog</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">@T["Items"]</MudText>
 
@@ -23,7 +23,7 @@
 }
 else
 {
-    <MudButton @onclick="OpenDialog" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Default" Class="mb-2 mt-2 mb-8">
+    <MudButton @onclick="OpenDialog" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2 mb-8">
         @T["NewItem"]
     </MudButton>
 
@@ -35,17 +35,29 @@ else
         @foreach (var item in items)
         {
             <MudItem xs="12" md="4" lg="4">
-                <MudCard>
-                    <MudCardMedia Image="@item.Image" Height="200" />
-                    <MudCardContent>
-                        <MudText Typo="Typo.h5">@item.Name</MudText>
-                        <MudText Typo="Typo.body1">@item.Description</MudText>
-                        <MudText Typo="Typo.body2">@item.Created.ToString("g")</MudText>
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton Variant="Variant.Text" Color="Color.Primary" Link="@($"/items/{item.Id}")">@T["More"]</MudButton>
-                    </MudCardActions>
-                </MudCard>
+                <MudBadge Color="Color.Primary" Visible="@(item.CommentCount > 0)" Content="@item.CommentCount">
+                    <MudCard>
+                        <MudCardMedia Image="@item.Image" Height="200" />
+                        <MudCardContent>
+                            <MudText Typo="Typo.h5">@item.Name</MudText>
+                            <MudText Typo="Typo.body1">@item.Description</MudText>
+
+                            <div class="mt-4">
+                                <MudText Typo="Typo.body2">Created on @item.Created.ToString("g") by @item.CreatedBy.GetDisplayName()</MudText>
+                            </div>
+
+                            @if (item.LastModifiedBy is not null)
+                            {
+                                <div class="mt-2">
+                                    <MudText Typo="Typo.body2">Last modified on @item.LastModified?.ToString("g") by @item.LastModifiedBy.GetDisplayName()</MudText>
+                                </div>
+                            }
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary" Link="@($"/items/{item.Id}")">@T["More"]</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudBadge>
             </MudItem>
         }
     </MudGrid>
