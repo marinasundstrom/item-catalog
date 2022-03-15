@@ -1,10 +1,6 @@
 # Item Catalog
 
-App for cataloging items with pictures.
-
-Built with .NET MAUI using Blazor. Components are from MudBlazor. It is multi-platform.
-
-There is also a Web version of the app.
+App for cataloging items with pictures. Components are from MudBlazor.
 
 A "Worker" service demonstrates how to communicate with a microservice through asynchronous messaging.
 
@@ -21,9 +17,7 @@ A "Worker" service demonstrates how to communicate with a microservice through a
 
 ## Introduction
 
-Multi-platform app, with Web backend and API. Written entirely in .NET.
-
-App can be compiled to run on iOS, macOS, Android, Windows, and, of course, Web. Thanks to .NET and Blazor.
+Client app, with Web backend and API. Written entirely in .NET.
 
 <a href="/docs/overview.PNG">
 <img src="/docs/overview.PNG" height="450"  alt="Overview"  /></a>
