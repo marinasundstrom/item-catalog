@@ -8,29 +8,11 @@
 
 <MudText Typo="Typo.h5" Align="Align.Left" GutterBottom="true" Class="mt-8">@T["Comments"]</MudText>
 
-<MudButton OnClick="async () => await OpenDialog(null)" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2 mb-4">
-    @T["NewComment"]
-</MudButton>
+<CommentBox ItemId="@ItemId" IsEditing="true" Title="What do you think?" OnPosted="OnCommentPosted" />
 
 @foreach (var comment in comments)
 {
-    <MudPaper Class="pa-4 mb-4">
-        <div class="d-flex justify-space-between flex-grow-1 gap-4">
-            <MudText Typo="Typo.h6">@comment.CreatedBy.GetDisplayName() said:</MudText>
-
-            <div class="justify-end">
-                <MudIconButton Icon="@Icons.Material.Outlined.Edit" OnClick="async () => await OpenDialog(comment)"></MudIconButton>
-                <MudIconButton Icon="@Icons.Material.Outlined.Delete" OnClick="async () => await DeleteComment(comment)"></MudIconButton>
-            </div>
-        </div>
-
-        <MudText Typo="Typo.body1">@comment.Text</MudText>
-
-        <div class="mt-4">
-            <MudText Typo="Typo.body2">@comment.Created.ToString("g")</MudText>
-            <MudText Typo="Typo.body2">@comment.LastModified?.ToString("g")</MudText>
-        </div>
-    </MudPaper>
+    <CommentBox ItemId="@ItemId" Comment="@comment" Text="@comment.Text" OnUpdated="OnCommentUpdated" OnDeleted="OnCommentDeleted" />
 }
 
 @if (isLoading)
@@ -123,57 +105,34 @@
         await LoadAsync();
     }
 
-    private async Task OpenDialog(CommentDto? comment)
+    private async Task OnCommentPosted(CommentDto comment)
     {
-        var parameters = new DialogParameters();
-        parameters.Add(nameof(CommentDialog.ItemId), ItemId);
-        parameters.Add(nameof(CommentDialog.CommentId), comment?.Id);
+        comments.Insert(0, comment);
 
-        var dialogReference = DialogService.Show<CommentDialog>(comment is not null ? "Update comment" : "Write a comment", parameters);
-        var result = await dialogReference.Result;
+        skip++;
+        totalItems++;
+    }
 
-        if (result.Cancelled)
-            return;
+    private async Task OnCommentUpdated(CommentDto comment)
+    {
+        var index = comments.IndexOf(comment);
 
-        var result2 = (CommentDto)result.Data;
-
-        if(comment is not null)
+        if (index > -1)
         {
-            var index = comments.IndexOf(comment);
-
-            if (index > -1)
-            {
-                comments[index] = result2;
-            }
+            comments[index] = comment;       
         }
-        else
-        {
-            comments.Insert(0, result2);
+    }
 
-            skip++;
-            totalItems++;
-        }
+    private async Task OnCommentDeleted(CommentDto comment)
+    {
+        comments.Remove(comment);
 
         //await ReloadAsync();
+
+        skip--;
+        totalItems--;
+
+        StateHasChanged();
     }
-
-    private async Task DeleteComment(CommentDto comment)
-    {
-        var result = await DialogService.ShowMessageBox($"Delete comment?", "Are you sure?", "Yes", "No");
-        if (result.GetValueOrDefault())
-        {
-            await ItemsClient.DeleteCommentAsync(ItemId, comment.Id);
-
-            comments.Remove(comment);
-
-            //await ReloadAsync();
-
-            skip--;
-            totalItems--;
-
-            StateHasChanged();
-        }
-    }
-
 }
 

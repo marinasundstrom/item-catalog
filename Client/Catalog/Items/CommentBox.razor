@@ -1,0 +1,130 @@
+@using Catalog.Client
+@using System.ComponentModel.DataAnnotations
+@inject IItemsClient ItemsClient
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
+@if (IsEditing)
+{
+    <EditForm Model="this" OnValidSubmit="Submit">
+        <DataAnnotationsValidator />
+
+        <MudPaper Class="pa-4 mb-4">
+            @if (Title is not null)
+            {
+                <MudText Typo="Typo.h6" Align="Align.Left">@Title</MudText>
+            }
+
+            <MudTextField @bind-Value="Text" Lines="3" For="() => Text" />
+
+            <div class="d-flex justify-end">
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mb-2 mt-3">
+                    @if (Comment is null)
+                    {
+                        <text>Post comment</text>
+                    }
+                    else
+                    {
+                        <text>Update comment</text>
+                    }
+                </MudButton>
+            </div>
+        </MudPaper>
+    </EditForm>
+}
+else
+{
+    @if (Comment is not null)
+    {
+        <MudPaper Class="pa-4 mb-4">
+            <div class="d-flex justify-space-between flex-grow-1 gap-4">
+                <MudText Typo="Typo.h6">@Comment.CreatedBy.GetDisplayName() said:</MudText>
+
+                <div class="justify-end">
+                    <MudIconButton Icon="@Icons.Material.Outlined.Edit" OnClick="async () => IsEditing = !IsEditing"></MudIconButton>
+                    <MudIconButton Icon="@Icons.Material.Outlined.Delete" OnClick="Delete"></MudIconButton>
+                </div>
+            </div>
+
+            <MudText Typo="Typo.body1">@Comment.Text</MudText>
+
+            <div class="mt-4">
+                <MudText Typo="Typo.body2">@Comment.Created.ToString("g")</MudText>
+                <MudText Typo="Typo.body2">@Comment.LastModified?.ToString("g")</MudText>
+            </div>
+        </MudPaper>
+    }
+}
+
+
+@code
+{
+    [Parameter] public bool IsEditing { get; set; }
+
+    [Parameter] public string? Title { get; set; }
+
+    [Required]
+    [StringLength(1024, ErrorMessage = "Text length can't be more than 1024.")]
+    [Parameter] public string? Text { get; set; }
+
+    [Parameter] public string? ItemId { get; set; }
+
+    [Parameter] public CommentDto? Comment { get; set; }
+
+    [Parameter] public EventCallback<CommentDto> OnPosted { get; set; }
+
+    [Parameter] public EventCallback<CommentDto> OnUpdated { get; set; }
+
+    [Parameter] public EventCallback<CommentDto> OnDeleted { get; set; }
+
+    public async Task Submit()
+    {
+        try
+        {
+            if (Comment is null)
+            {
+                var comment = await ItemsClient.PostCommentAsync(ItemId, new PostCommentDto()
+                {
+                    Text = Text
+                });
+
+                Text = null;
+
+                await OnPosted.InvokeAsync(comment);
+            }
+            else
+            {
+                await ItemsClient.UpdateCommentAsync(ItemId, Comment.Id, new UpdateCommentDto()
+                {
+                    Text = Text
+                });
+
+                Comment.Text = Text;
+                Comment.LastModified = DateTime.Now;
+
+                IsEditing = false;
+
+                await OnUpdated.InvokeAsync(Comment);
+            }
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+        catch (Exception exc)
+        {
+            Snackbar.Add("Comment was not updated.", Severity.Error);
+        }
+    }
+
+    public async Task Delete()
+    {
+        var result = await DialogService.ShowMessageBox($"Delete comment?", "Are you sure?", "Yes", "No");
+        if (result.GetValueOrDefault())
+        {
+            await ItemsClient.DeleteCommentAsync(ItemId, Comment.Id);
+
+            await OnDeleted.InvokeAsync(Comment);
+        }
+    }
+}
