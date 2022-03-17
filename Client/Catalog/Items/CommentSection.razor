@@ -1,0 +1,108 @@
+﻿@using Catalog.Client
+@inject IStringLocalizer<ItemPage> T
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject IItemsClient ItemsClient
+@inject NavigationManager NavigationManager
+
+<MudPaper Class="mt-4 px-4 py-4">
+    <MudText Typo="Typo.h6" Align="Align.Left" GutterBottom="true"> @T["Comments"]</MudText>
+
+    <MudButton OnClick="async () => await OpenDialog(null)" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2 mb-2">
+        @T["NewComment"]
+    </MudButton>
+
+    <MudTable T="CommentDto" Elevation="0" Dense="true" @ref="table" SortLabel="@T["SortBy"]" ServerData="@(new Func<TableState, Task<TableData<CommentDto>>>(ServerReload))" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+        <HeaderContent>
+            <MudTh></MudTh>
+            <MudTh>@T["Header_Text"]</MudTh>
+            <MudTh><MudTableSortLabel T="CommentDto" SortLabel="Created">@T["Header_Created"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel T="CommentDto" SortLabel="CreatedBy">@T["Header_CreatedBy"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel T="CommentDto" SortLabel="Created">@T["Header_Edited"]</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel T="CommentDto" SortLabel="CreatedBy">@T["Header_EditedBy"]</MudTableSortLabel></MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>
+                <MudIcon Icon="@Icons.Material.Filled.InsertDriveFile" />
+            </MudTd>
+            <MudTd DataLabel="Name">@context.Text</MudTd>
+            <MudTd DataLabel="Created">@context.Created.ToString("g")</MudTd>
+            <MudTd DataLabel="Created by">@context.CreatedBy.GetDisplayName()</MudTd>
+            <MudTd DataLabel="Created">@context.LastModified?.ToString("g")</MudTd>
+            <MudTd DataLabel="Created by">@context.LastModifiedBy?.GetDisplayName()</MudTd>
+            <MudTh>
+                <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="async () => await OpenDialog(context)"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="async () => await DeleteComment(context)"></MudIconButton>
+            </MudTh>
+        </RowTemplate>
+        <NoRecordsContent>
+            <MudText>@T["NoRecordsFound"]</MudText>
+        </NoRecordsContent>
+        <LoadingContent>
+            <MudText>@T["Loading"]</MudText>
+        </LoadingContent>
+        <PagerContent>
+            <MudTablePager RowsPerPageString="@T["RowsPerPage"]" />
+        </PagerContent>
+    </MudTable>
+</MudPaper>
+
+@code {
+    MudTable<CommentDto> table;
+
+    bool isLoading = false;
+    bool loadingFailed = false;
+
+    [Parameter]
+    public string ItemId { get; set; } = null!;
+
+    private async Task<TableData<CommentDto>> ServerReload(TableState state)
+    {
+        try
+        {
+            var results = await ItemsClient.GetCommentsAsync(ItemId, state.Page, state.PageSize, state.SortLabel, state.SortDirection == MudBlazor.SortDirection.Ascending ? Catalog.Client.SortDirection.Asc : Catalog.Client.SortDirection.Desc);
+            return new TableData<CommentDto>()
+            {
+                TotalItems = results.TotalCount,
+                Items = results.Items
+            };
+
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+
+        return null!;
+    }
+
+    private async Task OpenDialog(CommentDto? comment)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add(nameof(CommentDialog.ItemId), ItemId);
+        parameters.Add(nameof(CommentDialog.CommentId), comment?.Id);
+
+        var dialogReference = DialogService.Show<CommentDialog>(comment is not null ? "Update comment" : "Write a comment", parameters);
+        var result = await dialogReference.Result;
+        var model = (CommentDialog.FormModel)result.Data;
+
+        if (result.Cancelled)
+            return;
+
+        await table.ReloadServerData();
+    }
+
+    private async Task DeleteComment(CommentDto comment)
+    {
+        var result = await DialogService.ShowMessageBox($"Delete comment?", "Are you sure?", "Yes", "No");
+        if (result.GetValueOrDefault())
+        {
+            await ItemsClient.DeleteCommentAsync(ItemId, comment.Id);
+
+            await table.ReloadServerData();
+        }
+    }
+
+}
+
