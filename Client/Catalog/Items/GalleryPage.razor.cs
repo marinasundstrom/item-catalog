@@ -6,7 +6,7 @@ using MudBlazor;
 
 namespace Catalog.Items
 {
-    public partial class ItemsPage2
+    public partial class GalleryPage
     {
         int selectedPage;
         int pageCount;
