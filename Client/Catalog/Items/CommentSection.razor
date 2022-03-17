@@ -5,76 +5,123 @@
 @inject IItemsClient ItemsClient
 @inject NavigationManager NavigationManager
 
-<MudPaper Class="mt-4 px-4 py-4">
-    <MudText Typo="Typo.h6" Align="Align.Left" GutterBottom="true"> @T["Comments"]</MudText>
 
-    <MudButton OnClick="async () => await OpenDialog(null)" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2 mb-2">
-        @T["NewComment"]
-    </MudButton>
+<MudText Typo="Typo.h5" Align="Align.Left" GutterBottom="true" Class="mt-8">@T["Comments"]</MudText>
 
-    <MudTable T="CommentDto" Elevation="0" Dense="true" @ref="table" SortLabel="@T["SortBy"]" ServerData="@(new Func<TableState, Task<TableData<CommentDto>>>(ServerReload))" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
-        <HeaderContent>
-            <MudTh></MudTh>
-            <MudTh>@T["Header_Text"]</MudTh>
-            <MudTh><MudTableSortLabel T="CommentDto" SortLabel="Created">@T["Header_Created"]</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel T="CommentDto" SortLabel="CreatedBy">@T["Header_CreatedBy"]</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel T="CommentDto" SortLabel="Created">@T["Header_Edited"]</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel T="CommentDto" SortLabel="CreatedBy">@T["Header_EditedBy"]</MudTableSortLabel></MudTh>
-            <MudTh></MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd>
-                <MudIcon Icon="@Icons.Material.Filled.InsertDriveFile" />
-            </MudTd>
-            <MudTd DataLabel="Name">@context.Text</MudTd>
-            <MudTd DataLabel="Created">@context.Created.ToString("g")</MudTd>
-            <MudTd DataLabel="Created by">@context.CreatedBy.GetDisplayName()</MudTd>
-            <MudTd DataLabel="Created">@context.LastModified?.ToString("g")</MudTd>
-            <MudTd DataLabel="Created by">@context.LastModifiedBy?.GetDisplayName()</MudTd>
-            <MudTh>
-                <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="async () => await OpenDialog(context)"></MudIconButton>
-                <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="async () => await DeleteComment(context)"></MudIconButton>
-            </MudTh>
-        </RowTemplate>
-        <NoRecordsContent>
-            <MudText>@T["NoRecordsFound"]</MudText>
-        </NoRecordsContent>
-        <LoadingContent>
-            <MudText>@T["Loading"]</MudText>
-        </LoadingContent>
-        <PagerContent>
-            <MudTablePager RowsPerPageString="@T["RowsPerPage"]" />
-        </PagerContent>
-    </MudTable>
-</MudPaper>
+<MudButton OnClick="async () => await OpenDialog(null)" Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" Color="Color.Primary" Class="mb-2 mt-2 mb-4">
+    @T["NewComment"]
+</MudButton>
+
+@foreach (var comment in comments)
+{
+    <MudPaper Class="pa-4 mb-4">
+        <div class="d-flex justify-space-between flex-grow-1 gap-4">
+            <MudText Typo="Typo.h6">@comment.CreatedBy.GetDisplayName() said:</MudText>
+
+
+            <div class="justify-end">
+                <MudIconButton Icon="@Icons.Material.Outlined.Edit" OnClick="async () => await OpenDialog(comment)"></MudIconButton>
+                <MudIconButton Icon="@Icons.Material.Outlined.Delete" OnClick="async () => await DeleteComment(comment)"></MudIconButton>
+            </div>
+        </div>
+
+        <MudText Typo="Typo.body1">@comment.Text</MudText>
+
+        <div class="mt-4">
+            <MudText Typo="Typo.body2">@comment.Created.ToString("g")</MudText>
+            <MudText Typo="Typo.body2">@comment.LastModified?.ToString("g")</MudText>
+        </div>
+    </MudPaper>
+}
+
+@if (isLoading)
+{
+    <div class="mt-8">
+        <LoadingIndicator />
+    </div>
+}
+
+@if (comments.Count < totalItems)
+{
+    if (!isLoading)
+    {
+        <div class="d-flex justify-center flex-grow-1 gap-4 mt-8">
+            <MudButton Variant="Variant.Outlined" OnClick="async () => await LoadMoreAsync()">
+                Load more (@(totalItems - comments.Count) remain)
+            </MudButton>
+        </div>
+    }
+}
 
 @code {
-    MudTable<CommentDto> table;
+    List<CommentDto> comments = new List<CommentDto>();
 
     bool isLoading = false;
     bool loadingFailed = false;
 
+    int page = 1;
+    int totalItems = 0;
+
+    int pageSize = 5;
+
     [Parameter]
     public string ItemId { get; set; } = null!;
 
-    private async Task<TableData<CommentDto>> ServerReload(TableState state)
+    protected override async Task OnInitializedAsync()
     {
+#if DEBUG
+        pageSize = 2;
+#endif
+
+        await ReloadAsync();
+    }
+
+    async Task ReloadAsync()
+    {
+        comments.Clear();
+
+        page = 1;
+        await LoadAsync(page);
+    }
+
+    async Task LoadAsync(int page)
+    {
+        isLoading = true;
+        loadingFailed = false;
+
         try
         {
-            var results = await ItemsClient.GetCommentsAsync(ItemId, state.Page, state.PageSize, state.SortLabel, state.SortDirection == MudBlazor.SortDirection.Ascending ? Catalog.Client.SortDirection.Asc : Catalog.Client.SortDirection.Desc);
-            return new TableData<CommentDto>()
-            {
-                TotalItems = results.TotalCount,
-                Items = results.Items
-            };
+#if DEBUG
+            await Task.Delay(1000);
+#endif
 
+            var results = await ItemsClient.GetCommentsAsync(ItemId, page - 1, pageSize, null, null);
+            totalItems = results.TotalCount;
+
+            comments.AddRange(results.Items);
         }
         catch (AccessTokenNotAvailableException exception)
         {
             exception.Redirect();
         }
+        catch (Exception exception)
+        {
+            Snackbar.Add("Failed to load comments.", Severity.Success);
 
-        return null!;
+            loadingFailed = true;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+
+        StateHasChanged();
+    }
+
+    async Task LoadMoreAsync()
+    {
+        page++;
+        await LoadAsync(page);
     }
 
     private async Task OpenDialog(CommentDto? comment)
@@ -90,7 +137,9 @@
         if (result.Cancelled)
             return;
 
-        await table.ReloadServerData();
+        //comments.Insert(0, item);
+
+        await ReloadAsync();
     }
 
     private async Task DeleteComment(CommentDto comment)
@@ -100,8 +149,10 @@
         {
             await ItemsClient.DeleteCommentAsync(ItemId, comment.Id);
 
-            await table.ReloadServerData();
+            comments.Remove(comment);
         }
+
+        await ReloadAsync();
     }
 
 }
