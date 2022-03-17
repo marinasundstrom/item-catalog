@@ -8,7 +8,7 @@
 @inject IItemsClient ItemsClient
 @inject NavigationManager NavigationManager
 
-@if (item is null)
+@if (isLoading)
 {
     if(loadingFailed) 
     {
@@ -21,7 +21,7 @@
         <LoadingIndicator />
     }
 }
-else 
+else if(!isLoading && item is not null)
 {
     <PageTitle>@item.Name - Catalog</PageTitle>
 

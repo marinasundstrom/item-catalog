@@ -10,6 +10,8 @@ namespace Catalog.Items
     {
         MudTable<CommentDto> table;
         ItemDto? item;
+
+        bool isLoading = false;
         bool loadingFailed = false;
 
         [Parameter]
@@ -23,7 +25,10 @@ namespace Catalog.Items
 
         async Task LoadAsync()
         {
+            isLoading = true;
             loadingFailed = false;
+
+            StateHasChanged();
 
             #if DEBUG
             await Task.Delay(2000);
@@ -46,18 +51,23 @@ namespace Catalog.Items
                 exception.Redirect();
             }
             catch (Exception exc)
-            {
-                loadingFailed = true;
+            {                
+                loadingFailed = true;   
 
                 Snackbar.Add(exc.Message, Severity.Error);
             }
+            finally 
+            {
+                isLoading = false;
+            }
+
+            StateHasChanged();
         }
 
         async void OnLocationChanged(object sender, LocationChangedEventArgs ev)
         {
             await LoadAsync();
             await table.ReloadServerData();
-            StateHasChanged();
         }
 
         private async Task<TableData<CommentDto>> ServerReload(TableState state)
