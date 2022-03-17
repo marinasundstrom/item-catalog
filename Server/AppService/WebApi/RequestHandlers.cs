@@ -57,6 +57,12 @@ static partial class RequestHandlers
         .RequireAuthorization()
         .Produces<Results<CommentDto>>(StatusCodes.Status200OK);
 
+        app.MapGet("/{id}/CommentsIncr", GetCommentsIncr)
+        .WithName("Items_GetCommentsIncr")
+        .WithTags("Items")
+        .RequireAuthorization()
+        .Produces<Results<CommentDto>>(StatusCodes.Status200OK);
+
         app.MapGet("/{id}/Comments/{commentId}", GetComment)
        .WithName("Items_GetComment")
        .WithTags("Items")
@@ -68,7 +74,7 @@ static partial class RequestHandlers
         .WithName("Items_PostComment")
         .WithTags("Items")
         .RequireAuthorization()
-        .Produces(StatusCodes.Status200OK);
+        .Produces<CommentDto>(StatusCodes.Status200OK);
 
         app.MapPut("/{id}/Comments/{commentId}", UpdateComment)
         .WithName("Items_UpdateComment")
@@ -168,6 +174,14 @@ static partial class RequestHandlers
         return Results.Ok(result);
     }
 
+    static async Task<IResult> GetCommentsIncr(IMediator mediator, CancellationToken cancellationToken, string id, int skip = 0, int take = 10,
+        string? sortBy = null, Application.Common.Models.SortDirection sortDirection = Application.Common.Models.SortDirection.Desc)
+    {
+        var result = await mediator.Send(new GetCommentsIncrQuery(id, skip, take, sortBy, sortDirection), cancellationToken);
+
+        return Results.Ok(result);
+    }
+
     static async Task<IResult> GetComment(string id, string commentId, IMediator mediator, IDistributedCache cache, CancellationToken cancellationToken)
     {
         string cacheKey = $"comment-{commentId}";
@@ -198,9 +212,10 @@ static partial class RequestHandlers
             return Results.ValidationProblem(errors, statusCode: StatusCodes.Status400BadRequest);
         }
 
-        await mediator.Send(new PostCommentCommand(id, dto.Text), cancellationToken);
+        var id2 = await mediator.Send(new PostCommentCommand(id, dto.Text), cancellationToken);
+        var response = await mediator.Send(new GetCommentQuery(id2), cancellationToken);
 
-        return Results.Ok();
+        return Results.Ok(response);
     }
 
     static async Task<IResult> UpdateComment(string id, string commentId, UpdateCommentDto dto, IMediator mediator, IDistributedCache cache, CancellationToken cancellationToken)

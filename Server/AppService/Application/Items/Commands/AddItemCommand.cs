@@ -9,9 +9,9 @@ using MediatR;
 
 namespace Catalog.Application.Items.Commands;
 
-public record AddItemCommand(string Name, string Description) : IRequest
+public record AddItemCommand(string Name, string Description) : IRequest<string>
 {
-    public class AddItemCommandHandler : IRequestHandler<AddItemCommand>
+    public class AddItemCommandHandler : IRequestHandler<AddItemCommand, string>
     {
         private readonly ICatalogContext context;
         private readonly IUrlHelper urlHelper;
@@ -24,7 +24,7 @@ public record AddItemCommand(string Name, string Description) : IRequest
             this.client = client;
         }
 
-        public async Task<Unit> Handle(AddItemCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(AddItemCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -39,6 +39,8 @@ public record AddItemCommand(string Name, string Description) : IRequest
                     await context.SaveChangesAsync(cancellationToken);
 
                     await transaction.CommitAsync();
+
+                    return item.Id;
                 }
             }
             catch (DbException)
@@ -46,7 +48,7 @@ public record AddItemCommand(string Name, string Description) : IRequest
 
             }
 
-            return Unit.Value;
+            return null!;
         }
     }
 }

@@ -18,7 +18,6 @@
         <div class="d-flex justify-space-between flex-grow-1 gap-4">
             <MudText Typo="Typo.h6">@comment.CreatedBy.GetDisplayName() said:</MudText>
 
-
             <div class="justify-end">
                 <MudIconButton Icon="@Icons.Material.Outlined.Edit" OnClick="async () => await OpenDialog(comment)"></MudIconButton>
                 <MudIconButton Icon="@Icons.Material.Outlined.Delete" OnClick="async () => await DeleteComment(comment)"></MudIconButton>
@@ -47,7 +46,7 @@
     {
         <div class="d-flex justify-center flex-grow-1 gap-4 mt-8">
             <MudButton Variant="Variant.Outlined" OnClick="async () => await LoadMoreAsync()">
-                Load more (@(totalItems - comments.Count) remain)
+                Load more (@(totalItems - comments.Count) remaining)
             </MudButton>
         </div>
     }
@@ -59,10 +58,10 @@
     bool isLoading = false;
     bool loadingFailed = false;
 
-    int page = 1;
+    int skip = 0;
     int totalItems = 0;
 
-    int pageSize = 5;
+    int resultSize = 5;
 
     [Parameter]
     public string ItemId { get; set; } = null!;
@@ -70,7 +69,7 @@
     protected override async Task OnInitializedAsync()
     {
 #if DEBUG
-        pageSize = 2;
+        resultSize = 2;
 #endif
 
         await ReloadAsync();
@@ -80,11 +79,11 @@
     {
         comments.Clear();
 
-        page = 1;
-        await LoadAsync(page);
+        skip = 0;
+        await LoadAsync();
     }
 
-    async Task LoadAsync(int page)
+    async Task LoadAsync()
     {
         isLoading = true;
         loadingFailed = false;
@@ -95,7 +94,8 @@
             await Task.Delay(1000);
 #endif
 
-            var results = await ItemsClient.GetCommentsAsync(ItemId, page - 1, pageSize, null, null);
+            var results = await ItemsClient.GetCommentsIncrAsync(ItemId, skip, resultSize, null, null);
+            skip += results.Items.Count;
             totalItems = results.TotalCount;
 
             comments.AddRange(results.Items);
@@ -120,8 +120,7 @@
 
     async Task LoadMoreAsync()
     {
-        page++;
-        await LoadAsync(page);
+        await LoadAsync();
     }
 
     private async Task OpenDialog(CommentDto? comment)
@@ -132,14 +131,30 @@
 
         var dialogReference = DialogService.Show<CommentDialog>(comment is not null ? "Update comment" : "Write a comment", parameters);
         var result = await dialogReference.Result;
-        var model = (CommentDialog.FormModel)result.Data;
 
         if (result.Cancelled)
             return;
 
-        //comments.Insert(0, item);
+        var result2 = (CommentDto)result.Data;
 
-        await ReloadAsync();
+        if(comment is not null)
+        {
+            var index = comments.IndexOf(comment);
+
+            if (index > -1)
+            {
+                comments[index] = result2;
+            }
+        }
+        else
+        {
+            comments.Insert(0, result2);
+
+            skip++;
+            totalItems++;
+        }
+
+        //await ReloadAsync();
     }
 
     private async Task DeleteComment(CommentDto comment)
@@ -150,9 +165,14 @@
             await ItemsClient.DeleteCommentAsync(ItemId, comment.Id);
 
             comments.Remove(comment);
-        }
 
-        await ReloadAsync();
+            //await ReloadAsync();
+
+            skip--;
+            totalItems--;
+
+            StateHasChanged();
+        }
     }
 
 }

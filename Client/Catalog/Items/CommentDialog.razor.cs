@@ -27,13 +27,15 @@ namespace Catalog.Items
 
         [Parameter] public string? CommentId { get; set; }
 
+        CommentDto comment;
+
         protected override async Task OnInitializedAsync()
         {
             try
             {
                 if (CommentId is not null)
                 {
-                    var comment = await ItemsClient.GetCommentAsync(ItemId, CommentId);
+                    comment = await ItemsClient.GetCommentAsync(ItemId, CommentId);
                     model.Text = comment.Text;
                 }
             }
@@ -49,10 +51,12 @@ namespace Catalog.Items
             {
                 if (CommentId is null)
                 {
-                    await ItemsClient.PostCommentAsync(ItemId, new PostCommentDto()
+                    var item = await ItemsClient.PostCommentAsync(ItemId, new PostCommentDto()
                     {
                         Text = model.Text
                     });
+                    
+                    MudDialog.Close(DialogResult.Ok(item));
                 }
                 else
                 {
@@ -60,6 +64,10 @@ namespace Catalog.Items
                     {
                         Text = model.Text
                     });
+
+                    comment.Text = model.Text;
+
+                    MudDialog.Close(DialogResult.Ok(comment));
                 }
             }
             catch (AccessTokenNotAvailableException exception)
@@ -70,8 +78,6 @@ namespace Catalog.Items
             {
                 Snackbar.Add(exc.Message.ToString(), Severity.Error);
             }
-
-            MudDialog.Close(DialogResult.Ok(model));
         }
 
         void Cancel() => MudDialog.Cancel();

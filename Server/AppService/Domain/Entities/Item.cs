@@ -32,11 +32,13 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent
 
     public IReadOnlyList<Comment> Comments => _comments.AsReadOnly();
 
-    public void AddComment(string text)
+    public Comment AddComment(string text)
     {
         var comment = new Comment(text);
         comment.DomainEvents.Add(new CommentPostedEvent(Id, comment.Id));
         _comments.Add(comment);
+
+        return comment;
     }
 
     public DateTime? Deleted { get; set; }

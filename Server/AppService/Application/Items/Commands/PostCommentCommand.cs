@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Items.Commands;
 
-public record PostCommentCommand(string ItemId, string Text) : IRequest
+public record PostCommentCommand(string ItemId, string Text) : IRequest<string>
 {
-    public class PostCommentCommandHandler : IRequestHandler<PostCommentCommand>
+    public class PostCommentCommandHandler : IRequestHandler<PostCommentCommand, string>
     {
         private readonly ICatalogContext context;
 
@@ -18,17 +18,17 @@ public record PostCommentCommand(string ItemId, string Text) : IRequest
             this.context = context;
         }
 
-        public async Task<Unit> Handle(PostCommentCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(PostCommentCommand request, CancellationToken cancellationToken)
         {
             var item = await context.Items.FirstOrDefaultAsync(i => i.Id == request.ItemId, cancellationToken);
 
             if (item is null) throw new Exception();
 
-            item.AddComment(request.Text);
+            var comment = item.AddComment(request.Text);
 
             await context.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            return comment.Id;
         }
     }
 }
