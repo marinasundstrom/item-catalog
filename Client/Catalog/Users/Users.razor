@@ -4,6 +4,7 @@
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inject IUsersClient UsersClient
+@inject ISnackbar Snackbar
 
 <PageTitle>Users - Catalog</PageTitle>
 
@@ -11,7 +12,7 @@
 
 <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="OnNewUserClicked">New User</MudButton>
 
-<MudTable T="UserDto" ServerData="@(new Func<TableState, Task<TableData<UserDto>>>(ServerReload))"
+<MudTable T="UserDto" ServerData="@(new Func<TableState, Task<TableData<UserDto>>>(ServerReload))" Loading="isLoading"
           Hover="true" @ref="table" Class="mt-4" OnRowClick="(e) => GotToUser(e.Item)">
     <ToolBarContent>
         <MudSpacer />
@@ -51,6 +52,7 @@
 </MudTable>
 
 @code {
+    bool isLoading = false;
     MudTable<UserDto> table;
     string searchString;
 
@@ -61,6 +63,8 @@
 
     private async Task<TableData<UserDto>> ServerReload(TableState state)
     {
+        isLoading = true;
+
         try
         {
             var page = await UsersClient.GetUsersAsync(state.Page, state.PageSize, searchString,
@@ -71,6 +75,14 @@
         catch (AccessTokenNotAvailableException exception)
         {
             exception.Redirect();
+        }
+        catch (Exception exception)
+        {
+            Snackbar.Add("Failed to load users", Severity.Error);
+        }
+        finally
+        {
+            isLoading = false;
         }
 
         return null!;

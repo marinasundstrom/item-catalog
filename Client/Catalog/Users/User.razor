@@ -3,18 +3,19 @@
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inject IdentityService.Client.IUsersClient UsersClient
+@inject ISnackbar Snackbar
 
-@if (user is null)
+@if (isLoading)
 {
     <LoadingIndicator />
 }
-else 
+else if(!isLoading && user is not null)
 {
     <PageTitle>@user.GetDisplayName() - Catalog</PageTitle>
 
     <MudText Typo="Typo.h3" GutterBottom="true">@user.GetDisplayName()</MudText>
 
-    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Edit" IconColor="Color.Default" Class="me-2" OnClick="ChangeUserDetails">Edit details</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Edit" Class="me-2" OnClick="ChangeUserDetails">Edit details</MudButton>
     <MudButton Variant="Variant.Filled" OnClick="ChangePassword">Change password</MudButton>
 }
 
@@ -26,6 +27,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        isLoading = true;
+
         try
         {
             user = await UsersClient.GetUserAsync(UserId);
@@ -33,6 +36,14 @@ else
         catch (AccessTokenNotAvailableException exception)
         {
             exception.Redirect();
+        }
+        catch (Exception exception)
+        {
+            Snackbar.Add("Failed to load users", Severity.Error);
+        }
+        finally
+        {
+            isLoading = false;
         }
     }
 
