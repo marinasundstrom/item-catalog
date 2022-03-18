@@ -14,11 +14,13 @@ namespace Catalog.Application.Items.EventHandlers;
 public class CommentPostedEventHandler : INotificationHandler<DomainEventNotification<CommentPostedEvent>>
 {
     private readonly ICatalogContext context;
+    private readonly ICurrentUserService _currentUserService;
     private readonly INotificationsClient _notificationsClient;
 
-    public CommentPostedEventHandler(ICatalogContext context, INotificationsClient notificationsClient)
+    public CommentPostedEventHandler(ICatalogContext context, ICurrentUserService currentUserService, INotificationsClient notificationsClient)
     {
         this.context = context;
+        _currentUserService = currentUserService;
         _notificationsClient = notificationsClient;
     }
 
@@ -35,13 +37,16 @@ public class CommentPostedEventHandler : INotificationHandler<DomainEventNotific
 
         await context.SaveChangesAsync(cancellationToken);
 
-        await SendNotification(item, domainEvent, cancellationToken);
+        if (item.CreatedById != _currentUserService.UserId)
+        {
+            await SendNotification(item, domainEvent, cancellationToken);
+        }
     }
 
     private async Task SendNotification(Item item, CommentPostedEvent commentPostedEvent, CancellationToken cancellationToken)
     { 
         var comment = await context.Comments
-            .Include(x => x.CreatedBy)
+            .Include(c => c.CreatedBy)
             .FirstOrDefaultAsync(i => i.Id == commentPostedEvent.CommentId, cancellationToken);
 
         if (comment is null) return;
@@ -52,7 +57,7 @@ public class CommentPostedEventHandler : INotificationHandler<DomainEventNotific
             {
                 Title = $"{comment.CreatedBy!.FirstName} commented on {item.Name}.",
                 Text = comment.Text,
-                UserId = item.CreatedBy.Id,
+                UserId = item.CreatedById,
                 Link = $"/items/{item.Id}#comment-{comment.Id}"
             });
         }
