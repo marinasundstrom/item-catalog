@@ -4,18 +4,29 @@
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 
-@if (IsEditing)
-{
-    <EditForm Model="this" OnValidSubmit="Submit">
-        <DataAnnotationsValidator />
+<MudPaper Class="pa-4 mb-4">
+    @if (IsEditing)
+    {
+        <EditForm Model="this" OnValidSubmit="Submit">
+            <DataAnnotationsValidator />
 
-        <MudPaper Class="pa-4 mb-4">
-            @if (Title is not null)
-            {
-                <MudText Typo="Typo.h6" Align="Align.Left">@Title</MudText>
-            }
+            <div>
+                <div class="d-flex justify-start">
+                    @if (Title is not null)
+                    {
+                        <MudText Typo="Typo.h6" Align="Align.Left">@Title</MudText>
+                    }
+                </div>
 
-            <MudTextField @bind-Value="Text" Lines="3" For="() => Text" />
+                <div class="d-flex justify-end">
+                    @if (Comment is not null)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Outlined.Cancel" OnClick="CancelEdit"></MudIconButton>
+                    }
+                </div>
+            </div>
+
+            <MudTextField Variant="Variant.Outlined" @bind-Value="Text" Lines="3" Placeholder="Write here" For="() => Text" />
 
             <div class="d-flex justify-end">
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mb-2 mt-3">
@@ -29,14 +40,12 @@
                     }
                 </MudButton>
             </div>
-        </MudPaper>
-    </EditForm>
-}
-else
-{
-    @if (Comment is not null)
+        </EditForm>
+    }
+    else
     {
-        <MudPaper Class="pa-4 mb-4">
+        @if (Comment is not null)
+        {
             <div class="d-flex justify-space-between flex-grow-1 gap-4">
                 <MudText Typo="Typo.h6">@Comment.CreatedBy.GetDisplayName() said:</MudText>
 
@@ -47,14 +56,20 @@ else
             </div>
 
             <MudText Typo="Typo.body1">@Comment.Text</MudText>
-
-            <div class="mt-4">
-                <MudText Typo="Typo.body2">@Comment.Created.ToString("g")</MudText>
-                <MudText Typo="Typo.body2">@Comment.LastModified?.ToString("g")</MudText>
-            </div>
-        </MudPaper>
+        }
     }
-}
+    @if (Comment is not null)
+    {
+        <div class="d-flex justify-space-between flex-grow-1 gap-4 mt-4">
+            <MudText Typo="Typo.body2">Posted at @Comment.Created.ToString("g")</MudText>
+
+            @if (Comment.LastModified is not null)
+            {
+                <MudText Typo="Typo.body2">Edited at @Comment.LastModified?.ToString("g")</MudText>
+            }
+        </div>
+    }
+</MudPaper>
 
 
 @code
@@ -126,5 +141,11 @@ else
 
             await OnDeleted.InvokeAsync(Comment);
         }
+    }
+
+    void CancelEdit()
+    {
+        Text = null;
+        IsEditing = false;
     }
 }

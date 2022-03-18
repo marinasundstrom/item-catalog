@@ -8,7 +8,7 @@
 
 <MudText Typo="Typo.h5" Align="Align.Left" GutterBottom="true" Class="mt-8">@T["Comments"]</MudText>
 
-<CommentBox ItemId="@ItemId" IsEditing="true" Title="What do you think?" OnPosted="OnCommentPosted" />
+<CommentBox ItemId="@ItemId" IsEditing="true" Title="What are you thinking about?" OnPosted="OnCommentPosted" />
 
 @foreach (var comment in comments)
 {
@@ -119,7 +119,7 @@
 
         if (index > -1)
         {
-            comments[index] = comment;       
+            comments[index] = comment;
         }
     }
 
@@ -133,6 +133,11 @@
         totalItems--;
 
         StateHasChanged();
+
+        if (comments.Count < this.resultSize && comments.Count < this.totalItems)
+        {
+            await LoadAsync();
+        } 
     }
 }
 
