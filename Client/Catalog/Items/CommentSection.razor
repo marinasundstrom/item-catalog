@@ -6,13 +6,24 @@
 @inject NavigationManager NavigationManager
 
 
-<MudText Typo="Typo.h5" Align="Align.Left" GutterBottom="true" Class="mt-8">@T["Comments"]</MudText>
+<MudText Typo="Typo.h5" Align="Align.Left" GutterBottom="true" Class="mt-8">
+    @T["Comments"]
+    @if (totalItems != 0)
+    {
+        <text> (@totalItems)</text>
+    }
+ </MudText>
 
-<CommentBox ItemId="@ItemId" IsEditing="true" Title="What are you thinking about?" OnPosted="OnCommentPosted" />
+<CommentBox ItemId="@ItemId" IsEditing="true" Title="@Title" OnPosted="OnCommentPosted" />
 
 @foreach (var comment in comments)
 {
     <CommentBox ItemId="@ItemId" Comment="@comment" Text="@comment.Text" OnUpdated="OnCommentUpdated" OnDeleted="OnCommentDeleted" />
+}
+
+@if(!isLoading && !comments.Any())
+{
+    <MudText Typo="Typo.h6" Align="Align.Center" Class="mt-8">No comments :(</MudText>
 }
 
 @if (isLoading)
@@ -47,6 +58,9 @@
 
     [Parameter]
     public string ItemId { get; set; } = null!;
+
+    [Parameter]
+    public string Title { get; set; } = null!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -134,10 +148,12 @@
 
         StateHasChanged();
 
+        /*
         if (comments.Count < this.resultSize && comments.Count < this.totalItems)
         {
             await LoadAsync();
-        } 
+        }
+        */
     }
 }
 
