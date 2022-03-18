@@ -17,6 +17,8 @@ public static class ServiceExtensions
 
         services.AddScoped<INotificationPublisher, NotificationPublisher>();
 
+        services.AddScoped<IEmailService, EmailService>();
+
         return services;
     }
 }
