@@ -29,11 +29,14 @@ public class CommentPostedEventHandler : INotificationHandler<DomainEventNotific
         var domainEvent = notification.DomainEvent;
 
         var item = await context.Items
+            .AsNoTracking()
             .FirstOrDefaultAsync(i => i.Id == domainEvent.ItemId, cancellationToken);
 
         if (item is null) return;
 
-        item.CommentCount = await context.Comments.CountAsync(c => c.Item.Id == domainEvent.ItemId);
+        item.CommentCount = await context.Comments
+            .AsNoTracking()
+            .CountAsync(c => c.Item.Id == domainEvent.ItemId);
 
         await context.SaveChangesAsync(cancellationToken);
 
@@ -47,6 +50,8 @@ public class CommentPostedEventHandler : INotificationHandler<DomainEventNotific
     { 
         var comment = await context.Comments
             .Include(c => c.CreatedBy)
+            .AsNoTracking()
+            .AsSplitQuery()
             .FirstOrDefaultAsync(i => i.Id == commentPostedEvent.CommentId, cancellationToken);
 
         if (comment is null) return;

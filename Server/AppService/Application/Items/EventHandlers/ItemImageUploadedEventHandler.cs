@@ -26,7 +26,9 @@ public class ItemImageUploadedEventHandler : INotificationHandler<DomainEventNot
     {
         var domainEvent = notification.DomainEvent;
 
-        var item = await _context.Items.FirstAsync(i => i.Id == domainEvent.Id, cancellationToken);
+        var item = await _context.Items
+            .AsNoTracking()
+            .FirstAsync(i => i.Id == domainEvent.Id, cancellationToken);
 
         await _itemsClient.ImageUploaded(domainEvent.Id, _urlHelper.CreateImageUrl(item.Image)!);
     }

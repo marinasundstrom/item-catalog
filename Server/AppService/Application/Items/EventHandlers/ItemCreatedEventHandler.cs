@@ -31,6 +31,8 @@ public class ItemCreatedEventHandler : INotificationHandler<DomainEventNotificat
         var item = await _context.Items
             .Include(i => i.CreatedBy)
             .Include(i => i.LastModifiedBy)
+            .AsSplitQuery()
+            .AsNoTracking()
             .FirstAsync(i => i.Id == domainEvent.ItemId, cancellationToken);
 
         var itemDto = new ItemDto(item.Id, item.Name, item.Description, _urlHelper.CreateImageUrl(item.Image), item.CommentCount, item.Created, item.CreatedBy!.ToDto()!, item.LastModified, item.LastModifiedBy?.ToDto());
