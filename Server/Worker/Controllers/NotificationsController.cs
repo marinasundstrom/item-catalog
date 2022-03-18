@@ -16,7 +16,7 @@ namespace Worker.WebApi.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-[Authorize]
+[Authorize(AuthenticationSchemes = Worker.Authentication.AuthSchemes.Default)]
 public class NotificationsController : Controller
 {
     private readonly IMediator _mediator;

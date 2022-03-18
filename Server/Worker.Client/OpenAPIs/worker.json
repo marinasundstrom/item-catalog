@@ -124,6 +124,9 @@
         "security": [
           {
             "JWT": []
+          },
+          {
+            "ApiKey": []
           }
         ]
       },
@@ -160,6 +163,9 @@
         "security": [
           {
             "JWT": []
+          },
+          {
+            "ApiKey": []
           }
         ]
       }
@@ -198,6 +204,9 @@
         "security": [
           {
             "JWT": []
+          },
+          {
+            "ApiKey": []
           }
         ]
       }
@@ -224,6 +233,9 @@
         "security": [
           {
             "JWT": []
+          },
+          {
+            "ApiKey": []
           }
         ]
       }
@@ -262,6 +274,9 @@
         "security": [
           {
             "JWT": []
+          },
+          {
+            "ApiKey": []
           }
         ]
       }
@@ -299,6 +314,9 @@
         "security": [
           {
             "JWT": []
+          },
+          {
+            "ApiKey": []
           }
         ]
       }
@@ -450,6 +468,12 @@
         "type": "apiKey",
         "description": "Type into the textbox: Bearer {your JWT token}.",
         "name": "Authorization",
+        "in": "header"
+      },
+      "ApiKey": {
+        "type": "apiKey",
+        "description": "Type into the textbox: {your API key}.",
+        "name": "X-API-KEY",
         "in": "header"
       }
     }

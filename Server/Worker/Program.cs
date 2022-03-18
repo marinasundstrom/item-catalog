@@ -8,6 +8,8 @@ using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
+using Worker.Authentication;
+
 using NSwag;
 using NSwag.Generation.Processors.Security;
 
@@ -57,26 +59,20 @@ static class Program
                 Description = "Type into the textbox: Bearer {your JWT token}."
             });
 
+            document.AddSecurity("ApiKey", new OpenApiSecurityScheme
+            {
+                Type = OpenApiSecuritySchemeType.ApiKey,
+                Name = "X-API-KEY",
+                In = OpenApiSecurityApiKeyLocation.Header,
+                Description = "Type into the textbox: {your API key}."
+            });
+
             document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+            document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("ApiKey"));
         });
 
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-                    {
-                        options.Authority = "https://identity.local";
-                        options.Audience = "myapi";
-
-                        options.TokenValidationParameters = new TokenValidationParameters()
-                        {
-                            NameClaimType = "name"
-                        };
-
-                        //options.TokenValidationParameters.ValidateAudience = false;
-
-                        //options.Audience = "openid";
-
-                        //options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
-                    });
+        services.AddAuthWithJwt();
+        services.AddAuthWithApiKey();
 
         builder.Services.AddMassTransit(x =>
         {

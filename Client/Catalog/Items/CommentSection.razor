@@ -21,7 +21,7 @@
     <CommentBox ItemId="@ItemId" Comment="@comment" Text="@comment.Text" OnUpdated="OnCommentUpdated" OnDeleted="OnCommentDeleted" />
 }
 
-@if(!isLoading && !comments.Any())
+@if(!isLoading && !comments.Any() && totalItems == 0)
 {
     <MudText Typo="Typo.h6" Align="Align.Center" Class="mt-8">No comments :(</MudText>
 }
@@ -148,12 +148,10 @@
 
         StateHasChanged();
 
-        /*
         if (comments.Count < this.resultSize && comments.Count < this.totalItems)
         {
             await LoadAsync();
         }
-        */
     }
 }
 

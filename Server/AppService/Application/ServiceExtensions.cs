@@ -13,6 +13,8 @@ namespace Catalog.Application;
 
 public static class ServiceExtensions
 {
+    private const string ApiKey = "foobar";
+
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddMediatR(typeof(GetItemsQuery));
@@ -24,6 +26,7 @@ public static class ServiceExtensions
             var conf = sp.GetRequiredService<IConfiguration>();
 
             http.BaseAddress = conf.GetServiceUri("worker");
+            http.DefaultRequestHeaders.Add("X-API-KEY", ApiKey);
         })
         .AddTypedClient<Worker.Client.INotificationsClient>((http, sp) => new Worker.Client.NotificationsClient(http))
         .AddHttpMessageHandler<Handler>();
