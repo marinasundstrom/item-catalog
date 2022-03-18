@@ -7,7 +7,7 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Worker.Client;
+using Notifications.Client;
 
 namespace Catalog.Application.Items.EventHandlers;
 
@@ -58,7 +58,7 @@ public class CommentPostedEventHandler : INotificationHandler<DomainEventNotific
 
         try
         {
-            await _notificationsClient.CreateNotificationAsync(new Worker.Client.CreateNotificationDto()
+            await _notificationsClient.CreateNotificationAsync(new CreateNotificationDto()
             {
                 Title = $"{comment.CreatedBy!.FirstName} commented on {item.Name}.",
                 Text = comment.Text,

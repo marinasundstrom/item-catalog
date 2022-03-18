@@ -9,6 +9,8 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Notifications.Client;
+
 namespace Catalog.Application;
 
 public static class ServiceExtensions
@@ -21,14 +23,14 @@ public static class ServiceExtensions
 
         services.AddScoped<Handler>();
 
-        services.AddHttpClient(nameof(Worker.Client.INotificationsClient), (sp, http) =>
+        services.AddHttpClient(nameof(INotificationsClient), (sp, http) =>
         {
             var conf = sp.GetRequiredService<IConfiguration>();
 
-            http.BaseAddress = conf.GetServiceUri("worker");
+            http.BaseAddress = conf.GetServiceUri("notifications");
             http.DefaultRequestHeaders.Add("X-API-KEY", ApiKey);
         })
-        .AddTypedClient<Worker.Client.INotificationsClient>((http, sp) => new Worker.Client.NotificationsClient(http))
+        .AddTypedClient<INotificationsClient>((http, sp) => new NotificationsClient(http))
         .AddHttpMessageHandler<Handler>();
 
         return services;

@@ -26,6 +26,7 @@
      <ProjectReference Include="..\..\IdentityService\IdentityService.Contracts\IdentityService.Contracts.csproj" />
      <ProjectReference Include="..\Domain\Domain.csproj" />
      <ProjectReference Include="..\..\Contracts\Contracts.csproj" />
+     <ProjectReference Include="..\..\Notifications\Notifications.Client\Notifications.Client.csproj" />
   </ItemGroup>
 
 </Project>

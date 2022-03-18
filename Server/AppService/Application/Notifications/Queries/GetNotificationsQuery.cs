@@ -7,6 +7,8 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
+using Notifications.Client;
+
 namespace Catalog.Application.Notifications.Queries;
 
 public class GetNotificationsQuery : IRequest<NotificationsResults>
@@ -30,10 +32,10 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
 
     public class GetNotificationsQueryHandler : IRequestHandler<GetNotificationsQuery, NotificationsResults>
     {
-        private readonly Worker.Client.INotificationsClient _notificationsClient;
+        private readonly INotificationsClient _notificationsClient;
         private readonly ICurrentUserService _currentUserService;
 
-        public GetNotificationsQueryHandler(Worker.Client.INotificationsClient notificationsClient, ICurrentUserService currentUserService)
+        public GetNotificationsQueryHandler(INotificationsClient notificationsClient, ICurrentUserService currentUserService)
         {
             _notificationsClient = notificationsClient;
             _currentUserService = currentUserService;
@@ -43,7 +45,7 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
         {
             var userId = _currentUserService.UserId;
 
-            var results = await _notificationsClient.GetNotificationsAsync(userId, null, request.IncludeUnreadNotificationsCount, request.Page, request.PageSize, request.SortBy, (Worker.Client.SortDirection?)request.SortDirection);
+            var results = await _notificationsClient.GetNotificationsAsync(userId, null, request.IncludeUnreadNotificationsCount, request.Page, request.PageSize, request.SortBy, (global::Notifications.Client.SortDirection?)request.SortDirection);
             var notifications = results.Items;
 
             return new NotificationsResults(

@@ -5,7 +5,7 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Worker.Client;
+using Notifications.Client;
 
 namespace Catalog.Application.Notifications.Commands;
 
@@ -15,7 +15,7 @@ public class MarkAllNotificationsAsReadCommand : IRequest
     {
         private readonly INotificationsClient _notificationsClient;
 
-        public MarkAllNotificationsAsReadCommandHandler(Worker.Client.INotificationsClient notificationsClient)
+        public MarkAllNotificationsAsReadCommandHandler(INotificationsClient notificationsClient)
         {
             _notificationsClient = notificationsClient;
         }

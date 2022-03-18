@@ -5,7 +5,7 @@ using Catalog.WebApi.Hubs;
 
 using Microsoft.AspNetCore.SignalR;
 
-using Worker.Client;
+using Notifications.Client;
 
 namespace Catalog.WebApi.Services;
 

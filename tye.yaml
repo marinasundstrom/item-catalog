@@ -24,11 +24,17 @@ services:
   - protocol: https
     port: 5030
 
+- name: notifications
+  project: Server/Notifications/Notifications/Notifications.csproj
+  bindings:
+  - protocol: https
+    port: 5040
+
 - name: identity
   project: Server/IdentityService/IdentityService/IdentityService.csproj
   bindings:
   - protocol: https
-    port: 5040
+    port: 5050
 
 - name: azurite
   image: mcr.microsoft.com/azure-storage/azurite

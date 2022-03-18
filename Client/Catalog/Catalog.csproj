@@ -31,6 +31,9 @@
     <ProjectReference Include="..\..\Server\Worker\Worker.Client\Worker.Client.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\..\Server\Notifications\Notifications.Client\Notifications.Client.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
     <ProjectReference Include="..\Catalog.Shared\Catalog.Shared.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>

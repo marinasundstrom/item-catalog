@@ -71,7 +71,7 @@ public static class ServiceExtensions
         services.AddHttpClient(nameof(Catalog.Client.INotificationsClient), (sp, http) =>
         {
             var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"{navigationManager.BaseUri}api/");
+            http.BaseAddress = new Uri($"{navigationManager.BaseUri}notifications/");
         })
         .AddTypedClient<Catalog.Client.INotificationsClient>((http, sp) => new Catalog.Client.NotificationsClient(http))
         .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
