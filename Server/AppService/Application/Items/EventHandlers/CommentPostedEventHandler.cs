@@ -60,7 +60,7 @@ public class CommentPostedEventHandler : INotificationHandler<DomainEventNotific
         {
             await _notificationsClient.CreateNotificationAsync(new CreateNotificationDto()
             {
-                Title = $"{comment.CreatedBy!.FirstName} commented on {item.Name}.",
+                Title = $"{comment.CreatedBy!.GetDisplayName()} commented on {item.Name}.",
                 Text = comment.Text,
                 UserId = item.CreatedById,
                 Link = $"/items/{item.Id}#comment-{comment.Id}"
