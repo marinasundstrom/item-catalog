@@ -29,7 +29,6 @@ public class CommentPostedEventHandler : INotificationHandler<DomainEventNotific
         var domainEvent = notification.DomainEvent;
 
         var item = await context.Items
-            .AsNoTracking()
             .FirstOrDefaultAsync(i => i.Id == domainEvent.ItemId, cancellationToken);
 
         if (item is null) return;
