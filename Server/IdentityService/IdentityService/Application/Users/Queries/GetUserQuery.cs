@@ -30,7 +30,6 @@ public class GetUserQuery : IRequest<UserDto>
         {
             var user = await _context.Users
                 .Include(u => u.Roles)
-                .Include(u => u.Department)
                 .AsNoTracking()
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
@@ -40,8 +39,7 @@ public class GetUserQuery : IRequest<UserDto>
                 return null!;
             }
 
-            return new UserDto(user.Id, user.FirstName, user.LastName, user.DisplayName, user.Roles.First().Name, user.SSN, user.Email,
-                user.Department == null ? null : new DepartmentDto(user.Department.Id, user.Department.Name),
+            return new UserDto(user.Id, user.FirstName, user.LastName, user.DisplayName, user.Roles.First().Name, user.Email,
                     user.Created, user.LastModified);
         }
     }

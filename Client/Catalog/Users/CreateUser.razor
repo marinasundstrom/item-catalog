@@ -23,8 +23,6 @@
 
             <MudTextField Label="Display Name" Class="mb-6" Variant="Variant.Outlined" @bind-Value="DisplayName" For="() => DisplayName" />
 
-            <MudTextField Label="SSN" Class="mb-6" Variant="Variant.Outlined" @bind-Value="SSN" For="() => SSN" />
-
             <MudTextField Label="Email" Class="mb-6" Variant="Variant.Outlined" @bind-Value="Email" For="() => Email" />
 
             <MudAutocomplete Label="Role" Class="mb-6" Variant="Variant.Outlined" @bind-Value="Role" For="() => Role" SearchFunc="SearchRole" ToStringFunc="(x) => x.Name">
@@ -59,9 +57,6 @@
     public string? DisplayName { get; set; }
 
     [Required]
-    public string SSN { get; set; } = null!;
-
-    [Required]
     public RoleDto Role { get; set; } = null!;
 
     [Required]
@@ -91,7 +86,6 @@
                 FirstName = FirstName,
                 LastName = LastName,
                 DisplayName = DisplayName,
-                Ssn = SSN,
                 Email = Email,
                 Role = Role.Name,
                 Password = Password

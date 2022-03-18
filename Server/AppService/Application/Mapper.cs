@@ -11,7 +11,7 @@ public static class Mapper
 {
     public static UserDto ToDto(this Domain.Entities.User user)
     {
-        return new UserDto(user.Id, user.FirstName, user.LastName, user.DisplayName, user.SSN, user.Email, user.Created, user.Deleted);
+        return new UserDto(user.Id, user.FirstName, user.LastName, user.DisplayName,  user.Email, user.Created, user.Deleted);
     }
 
     public static ItemDto ToDto(this Domain.Entities.Item item, IUrlHelper urlHelper)

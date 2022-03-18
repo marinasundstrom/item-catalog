@@ -21,7 +21,6 @@ public static class Seed
                 Id = "api",
                 FirstName = "API",
                 LastName = "User",
-                SSN = "213",
                 Email = "test@foo.com",
                 Hidden = true
             });

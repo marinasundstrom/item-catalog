@@ -37,7 +37,7 @@ public class GetUserQuery : IRequest<UserDto>
                 return null!;
             }
 
-            return new UserDto(user.Id, user.FirstName, user.LastName, user.DisplayName, user.SSN, user.Email, user.Created, user.LastModified);
+            return new UserDto(user.Id, user.FirstName, user.LastName, user.DisplayName, user.Email, user.Created, user.LastModified);
         }
     }
 }

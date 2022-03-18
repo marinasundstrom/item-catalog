@@ -24,6 +24,6 @@ public class GetUserConsumer : IConsumer<GetUser>
 
         var user = await _mediator.Send(new Catalog.IdentityService.Application.Users.Queries.GetUserQuery(message.UserId));
 
-        await context.RespondAsync(new GetUserResponse(user.Id, user.FirstName, user.LastName, user.DisplayName, user.SSN, user.Email));
+        await context.RespondAsync(new GetUserResponse(user.Id, user.FirstName, user.LastName, user.DisplayName, user.Email));
     }
 }

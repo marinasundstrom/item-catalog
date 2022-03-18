@@ -8,13 +8,12 @@ namespace Catalog.Application.Users.Commands;
 
 public class CreateUserCommand : IRequest<UserDto>
 {
-    public CreateUserCommand(string? id, string firstName, string lastName, string? displayName, string ssn, string email)
+    public CreateUserCommand(string? id, string firstName, string lastName, string? displayName, string email)
     {
         Id = id;
         FirstName = firstName;
         LastName = lastName;
         DisplayName = displayName;
-        Ssn = ssn;
         Email = email;
     }
 
@@ -25,8 +24,6 @@ public class CreateUserCommand : IRequest<UserDto>
     public string LastName { get; }
 
     public string? DisplayName { get; }
-
-    public string Ssn { get; }
 
     public string Email { get; }
 
@@ -47,7 +44,6 @@ public class CreateUserCommand : IRequest<UserDto>
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 DisplayName = request.DisplayName,
-                SSN = request.Ssn,
                 Email = request.Email
             };
 
@@ -55,7 +51,7 @@ public class CreateUserCommand : IRequest<UserDto>
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new UserDto(user.Id, user.FirstName, user.LastName, user.DisplayName, user.SSN, user.Email, user.Created, user.LastModified);
+            return new UserDto(user.Id, user.FirstName, user.LastName, user.DisplayName, user.Email, user.Created, user.LastModified);
         }
     }
 }

@@ -614,21 +614,9 @@
             "type": "string",
             "nullable": true
           },
-          "ssn": {
-            "type": "string",
-            "nullable": true
-          },
           "email": {
             "type": "string",
             "nullable": true
-          },
-          "department": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/DepartmentDto"
-              }
-            ]
           },
           "created": {
             "type": "string",
@@ -637,20 +625,6 @@
           "lastModified": {
             "type": "string",
             "format": "date-time",
-            "nullable": true
-          }
-        }
-      },
-      "DepartmentDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
             "nullable": true
           }
         }
@@ -672,10 +646,6 @@
             "nullable": true
           },
           "role": {
-            "type": "string",
-            "nullable": true
-          },
-          "ssn": {
             "type": "string",
             "nullable": true
           },
@@ -702,10 +672,6 @@
             "nullable": true
           },
           "displayName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ssn": {
             "type": "string",
             "nullable": true
           },

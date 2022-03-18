@@ -13,7 +13,6 @@ await usersClient.CreateUserAsync(new CreateUserDto
     LastName = "Administrator",
     DisplayName = "Administrator",
     Role = "Administrator",
-    Ssn = "",
     Email = "admin@email.com",
     Password = "Abc123!?"
 });

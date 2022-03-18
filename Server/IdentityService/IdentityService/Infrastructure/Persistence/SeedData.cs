@@ -37,16 +37,6 @@ public class SeedData
 
             result = await roleManager.CreateAsync(new Role()
             {
-                Name = "Manager"
-            });
-
-            if (!result.Succeeded)
-            {
-                throw new Exception(result.Errors.First().Description);
-            }
-
-            result = await roleManager.CreateAsync(new Role()
-            {
                 Name = "User"
             });
 

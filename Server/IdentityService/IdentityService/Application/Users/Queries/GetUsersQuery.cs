@@ -56,7 +56,6 @@ public class GetUsersQuery : IRequest<ItemsResult<UserDto>>
                 p.FirstName.ToLower().Contains(request.SearchString.ToLower())
                 || p.LastName.ToLower().Contains(request.SearchString.ToLower())
                 || ((p.DisplayName ?? "").ToLower().Contains(request.SearchString.ToLower()))
-                || p.SSN.ToLower().Contains(request.SearchString.ToLower())
                 || p.Email.ToLower().Contains(request.SearchString.ToLower()));
             }
 
@@ -69,11 +68,9 @@ public class GetUsersQuery : IRequest<ItemsResult<UserDto>>
 
             var users = await query
                 .Include(u => u.Roles)
-                .Include(u => u.Department)
                 .ToListAsync(cancellationToken);
 
-            var dtos = users.Select(user => new UserDto(user.Id, user.FirstName, user.LastName, user.DisplayName, user.Roles.First().Name, user.SSN, user.Email,
-                user.Department == null ? null : new DepartmentDto(user.Department.Id, user.Department.Name),
+            var dtos = users.Select(user => new UserDto(user.Id, user.FirstName, user.LastName, user.DisplayName, user.Roles.First().Name, user.Email,
                     user.Created, user.LastModified));
 
             return new ItemsResult<UserDto>(dtos, totalItems);

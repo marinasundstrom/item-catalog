@@ -16,15 +16,13 @@ namespace Catalog.IdentityService.Application.Users.Commands;
 
 public class CreateUserCommand : IRequest<UserDto>
 {
-    public CreateUserCommand(string firstName, string lastName, string? displayName, string role, string ssn, string email, string departmentId, string password)
+    public CreateUserCommand(string firstName, string lastName, string? displayName, string role, string email, string password)
     {
         FirstName = firstName;
         LastName = lastName;
         DisplayName = displayName;
         Role = role;
-        SSN = ssn;
         Email = email;
-        DepartmentId = departmentId;
         Password = password;
     }
 
@@ -36,11 +34,7 @@ public class CreateUserCommand : IRequest<UserDto>
 
     public string Role { get; }
 
-    public string SSN { get; }
-
     public string Email { get; }
-
-    public string DepartmentId { get; }
 
     public string Password { get; }
 
@@ -66,7 +60,6 @@ public class CreateUserCommand : IRequest<UserDto>
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 DisplayName = request.DisplayName,
-                SSN = request.SSN,
                 UserName = request.Email,
                 Email = request.Email,
                 EmailConfirmed = true
@@ -77,11 +70,6 @@ public class CreateUserCommand : IRequest<UserDto>
             if(role is null)
             {
                 throw new Exception("Role not found");
-            }
-
-            if (request.DepartmentId is not null)
-            {
-                user.Department = await _context.Departments.FirstAsync(x => x.Id == request.DepartmentId);
             }
 
             var result = await _userManager.CreateAsync(user, request.Password);
@@ -111,15 +99,13 @@ public class CreateUserCommand : IRequest<UserDto>
 
             user = await _context.Users
                .Include(u => u.Roles)
-               .Include(u => u.Department)
                .AsNoTracking()
                .AsSplitQuery()
                .FirstOrDefaultAsync(x => x.Id == user.Id, cancellationToken);
 
             await _eventPublisher.PublishEvent(new UserCreated(user.Id, _currentUserService.UserId));
 
-            return new UserDto(user.Id, user.FirstName, user.LastName, user.DisplayName, user.Roles.First().Name, user.SSN, user.Email,
-                user.Department == null ? null : new DepartmentDto(user.Department.Id, user.Department.Name),
+            return new UserDto(user.Id, user.FirstName, user.LastName, user.DisplayName, user.Roles.First().Name, user.Email,
                     user.Created, user.LastModified);
         }
     }

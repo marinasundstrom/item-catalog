@@ -16,15 +16,7 @@ public class User : IdentityUser, IAuditableEntity, ISoftDelete
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string? DisplayName { get; set; }
-    public string? SSN { get; set; }
-
-    public Department Department { get; set; }
-    public List<Team> Teams { get; } = new List<Team>();
-
-    public List<UserDependant> Dependants { get; } = new List<UserDependant>();
-
     public List<Role> Roles { get; } = new List<Role>();
-
     public List<UserRole> UserRoles { get; } = new List<UserRole>();
 
     public DateTime Created { get; set; }
@@ -53,47 +45,4 @@ public class UserRole : IdentityUserRole<string>
     public User User { get; set; }
 
     public Role Role { get; set; }
-}
-
-public class Team 
-{
-    public string Id { get; set; }
-
-    public string Name { get; set; }
-
-    public Department Department { get; set; }
-
-    public List<User> Persons { get; } = new List<User>();
-}
-
-public class Department 
-{
-    public string Id { get; set; }
-
-    public string Name { get; set; }
-
-    public List<Team> Teams { get; } = new List<Team>();
-
-    public List<User> Persons { get; } = new List<User>();
-}
-
-public class UserDependant 
-{
-    public string Id { get; set; }
-
-    public string FirstName { get; set; }
-
-    public string LastName { get; set; }
-
-    public DependantRelationship Relationship { get; set; }
-
-    public string PhoneNumber { get; set; }
-}
-
-public enum DependantRelationship
-{
-    Spouse,
-    Child,
-    Mother,
-    Father,
 }

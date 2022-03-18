@@ -10,13 +10,12 @@ namespace Catalog.IdentityService.Application.Users.Commands;
 
 public class UpdateUserDetailsCommand : IRequest<UserDto>
 {
-    public UpdateUserDetailsCommand(string userId, string firstName, string lastName, string? displayName, string ssn, string email)
+    public UpdateUserDetailsCommand(string userId, string firstName, string lastName, string? displayName, string email)
     {
         UserId = userId;
         FirstName = firstName;
         LastName = lastName;
         DisplayName = displayName;
-        Ssn = ssn;
         Email = email;
     }
 
@@ -27,8 +26,6 @@ public class UpdateUserDetailsCommand : IRequest<UserDto>
     public string LastName { get; }
 
     public string? DisplayName { get; }
-
-    public string Ssn { get; }
 
     public string Email { get; }
 
@@ -49,7 +46,6 @@ public class UpdateUserDetailsCommand : IRequest<UserDto>
         {
             var user = await _context.Users
                 .Include(u => u.Roles)
-                .Include(u => u.Department)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(x => x.Id == request.UserId, cancellationToken);
 
@@ -61,15 +57,13 @@ public class UpdateUserDetailsCommand : IRequest<UserDto>
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
             user.DisplayName = request.DisplayName;
-            user.SSN = request.Ssn;
             user.Email = request.Email;
 
             await _context.SaveChangesAsync(cancellationToken);
 
             await _eventPublisher.PublishEvent(new UserUpdated(user.Id, _currentUserService.UserId));
 
-            return new UserDto(user.Id, user.FirstName, user.LastName, user.DisplayName, user.Roles.First().Name, user.SSN, user.Email,
-                user.Department == null ? null : new DepartmentDto(user.Department.Id, user.Department.Name),
+            return new UserDto(user.Id, user.FirstName, user.LastName, user.DisplayName, user.Roles.First().Name, user.Email,
                     user.Created, user.LastModified);
         }
     }

@@ -89,12 +89,6 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string, Identi
 
     public DbSet<Role> Roles { get; set; } = null!;
 
-    public DbSet<UserDependant> UserDependants { get; set; } = null!;
-
-    public DbSet<Team> Teams { get; set; } = null!;
-
-    public DbSet<Department> Departments { get; set; } = null!;
-
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         foreach (var entry in ChangeTracker.Entries<IAuditableEntity>())
