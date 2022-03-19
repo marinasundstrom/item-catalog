@@ -2,29 +2,27 @@
 
 This document explains the features of this solution.
 
-The logic is implemented in the projects called Application and Worker.
+The logic is implemented in multiple services.
 
 ## Items
 
-The user can view, add, and deleted items. As an option the user can upload a picture, as well. 
+Add Items with pictures to the Catalog.
 
-Changes to the items list will instantly reflect in all clients thanks to notifications being sent from the server.
+User can comment on the Items, whether their own or others. Creators get notified when someone else comments on their Items.
+
+This is part of AppService.
 
 ## Notifications
 
-The app may receive notifications that are published by the Worker.
+The ability to publish notifications is built into the app and used by Items. It is its own service.
 
-The Worker manages notifications and publishes them to either all users or a specific user. Also does scheduled notifications.
+It even sends an email to the receiving User.
 
-## Async operation
+## Users
 
-The user sends two numbers and get a response back.
+In order to access functionality in this app, the User has to be logged in.
 
-The client request is HTTP API, and the response is sent back via WebSocket.
-
-The request arrives at the Web API that emits a message on the message bus. The Worker consumes that message, performs an operation, to then publish a response message. 
-
-The Web API consumes the response message, and emits it to the Web Socket, using SignalR. The client receives and displays the response.
+Administrators can create and manage Users. The service in charge is IdentityService.
 
 ## Worker (Ping)
 
