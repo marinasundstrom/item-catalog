@@ -4,11 +4,4 @@ This project uses Identity Server for authentication. Both Client and AppService
 
 It is implemented in the IdentityService project.
 
-Built-in users and credentials are:
-```
-alice
-Pass123$
-
-bob
-Pass123$
-```
+Admin credentials are seeded by the ```Seeder``` project.
