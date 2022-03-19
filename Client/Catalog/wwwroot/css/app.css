@@ -6,6 +6,10 @@ body {
     background-color: #f9f9f9 !important;
 }
 
+.uppercase {
+    text-transform: uppercase;
+}
+
 .search-box .mud-input-slot 
 {
     padding: 12px !important;
