@@ -48,6 +48,12 @@ class NotificationsContext : DbContext, INotificationsContext
 
     public DbSet<Notification> Notifications { get; set; } = null!;
 
+
+    public DbSet<Subscription> Subscriptions { get; set; } = null!;
+
+    public DbSet<SubscriptionGroup> SubscriptionGroups { get; set; } = null!;
+
+
     public DbSet<User> Users { get; set; } = null!;
 
 #nullable restore

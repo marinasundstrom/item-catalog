@@ -9,6 +9,10 @@ public interface INotificationsContext
 {
     DbSet<Notification> Notifications { get; }
 
+    DbSet<Subscription> Subscriptions { get; }
+
+    DbSet<SubscriptionGroup> SubscriptionGroups { get; }
+
     DbSet<User> Users { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

@@ -3,6 +3,8 @@ using System.Data.Common;
 
 using MediatR;
 
+using Microsoft.EntityFrameworkCore;
+
 using Notifications.Application.Common.Interfaces;
 using Notifications.Domain.Entities;
 using Notifications.Domain.Events;
@@ -19,14 +21,23 @@ public class CreateNotificationCommand : IRequest
 
     public string? UserId { get; set; }
 
+    public string[]? ExceptUserIds { get; set; }
+
+    public string? SubscriptionId { get; set; }
+
+    public string? SubscriptionGroupId { get; set; }
+
     public DateTime? ScheduledFor { get; set; }
 
-    public CreateNotificationCommand(string title, string? text, string? link, string? userId, DateTime? scheduledFor)
+    public CreateNotificationCommand(string title, string? text, string? link, string? userId, string[]? exceptUserIds, string? subscriptionId, string? subscriptionGroupId, DateTime? scheduledFor)
     {
         Title = title;
         Text = text;
         Link = link;
         UserId = userId;
+        ExceptUserIds = exceptUserIds;
+        SubscriptionId = subscriptionId;
+        SubscriptionGroupId = subscriptionGroupId;
         ScheduledFor = scheduledFor;
     }
 
@@ -41,13 +52,13 @@ public class CreateNotificationCommand : IRequest
 
         public async Task<Unit> Handle(CreateNotificationCommand request, CancellationToken cancellationToken)
         {
-            if (request.UserId is not null)
+            if (request.SubscriptionGroupId is not null)
             {
-                CreateNotification(request);
+                await CreateMultipleNotifications(request, cancellationToken);
             }
             else
             {
-                await CreateMultipleNotifications(request);
+                CreateNotification(request);
             }
 
             await context.SaveChangesAsync(cancellationToken);
@@ -57,13 +68,42 @@ public class CreateNotificationCommand : IRequest
 
         private void CreateNotification(CreateNotificationCommand request)
         {
-            Notification notification = CreateNotificationDO(request, null);
+            Notification notification = CreateNotificationDO(request, request.UserId, request.SubscriptionId, request.SubscriptionGroupId);
 
             context.Notifications.Add(notification);
         }
 
-        private async Task CreateMultipleNotifications(CreateNotificationCommand request)
+        private async Task CreateMultipleNotifications(CreateNotificationCommand request, CancellationToken cancellationToken = default)
         {
+            if(request.SubscriptionGroupId is not null)
+            {
+                var subscriptionGroup = await context.SubscriptionGroups
+                        .Include(sg => sg.Subscriptions)
+                        //.ThenInclude(s => s.User)
+                        .AsNoTracking()
+                        .AsSplitQuery()
+                        .FirstOrDefaultAsync(sg => sg.Id == request.SubscriptionGroupId, default);
+
+                if (subscriptionGroup is null)
+                {
+                    return;
+                }
+
+                foreach(var subscription in subscriptionGroup.Subscriptions)
+                {
+                    if(request.ExceptUserIds is not null 
+                        && request.ExceptUserIds.Contains(subscription.UserId)) 
+                    {
+                        continue;
+                    }
+
+                    Notification notification = CreateNotificationDO(request, subscription.UserId, request.SubscriptionId, request.SubscriptionGroupId);
+
+                    context.Notifications.Add(notification);
+                }
+            }
+
+            /*
             var users = await GetUsers();
 
             foreach (var user in users)
@@ -74,6 +114,7 @@ public class CreateNotificationCommand : IRequest
 
                 context.Notifications.Add(notification);
             }
+            */
         }
 
         private static Task<IEnumerable<string>> GetUsers()
@@ -81,7 +122,7 @@ public class CreateNotificationCommand : IRequest
             return Task.FromResult<IEnumerable<string>>(new string[] { "AliceSmith@email.com", "BobSmith@email.com" });
         }
 
-        private static Notification CreateNotificationDO(CreateNotificationCommand request, string? userId)
+        private static Notification CreateNotificationDO(CreateNotificationCommand request, string? userId, string? subscriptionId, string? subscriptionGroupId)
         {
             var notification = new Notification();
             notification.Id = Guid.NewGuid().ToString();
@@ -89,6 +130,8 @@ public class CreateNotificationCommand : IRequest
             notification.Text = request.Text;
             notification.Link = request.Link;
             notification.UserId = userId ?? request.UserId;
+            notification.SubscriptionId = subscriptionId;
+            notification.SubscriptionGroupId = subscriptionGroupId;
             notification.ScheduledFor = request.ScheduledFor;
 
             notification.DomainEvents.Add(new NotificationCreatedEvent(notification.Id));

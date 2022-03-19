@@ -38,6 +38,14 @@ public class Notification : AuditableEntity, ISoftDelete, IHasDomainEvent
 
     public User? User { get; set; }
 
+    public string? SubscriptionId { get; set; }
+
+    public Subscription? Subscription { get; set; }
+
+    public string? SubscriptionGroupId { get; set; }
+
+    public SubscriptionGroup? SubscriptionGroup { get; set; }
+
     public DateTime? Published { get; set; }
 
     public DateTime? ScheduledFor { get; set; }

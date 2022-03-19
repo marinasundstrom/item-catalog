@@ -13,6 +13,8 @@ public class User : AuditableEntity, ISoftDelete
 
     public string Email { get; set; } = null!;
 
+    public List<Subscription> Subscriptions { get; set; } = new List<Subscription>();
+
     public DateTime? Deleted { get; set; }
     public string? DeletedById { get; set; }
     public User? DeletedBy { get; set; }

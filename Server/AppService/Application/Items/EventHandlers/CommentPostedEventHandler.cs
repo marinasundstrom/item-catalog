@@ -16,12 +16,18 @@ public class CommentPostedEventHandler : INotificationHandler<DomainEventNotific
     private readonly ICatalogContext context;
     private readonly ICurrentUserService _currentUserService;
     private readonly INotificationsClient _notificationsClient;
+    private readonly ISubscriptionsClient _subscriptionsClient;
 
-    public CommentPostedEventHandler(ICatalogContext context, ICurrentUserService currentUserService, INotificationsClient notificationsClient)
+    public CommentPostedEventHandler(
+        ICatalogContext context,
+        ICurrentUserService currentUserService,
+        INotificationsClient notificationsClient,
+        ISubscriptionsClient subscriptionsClient)
     {
         this.context = context;
         _currentUserService = currentUserService;
         _notificationsClient = notificationsClient;
+        _subscriptionsClient = subscriptionsClient;
     }
 
     public async Task Handle(DomainEventNotification<CommentPostedEvent> notification, CancellationToken cancellationToken)
@@ -39,10 +45,7 @@ public class CommentPostedEventHandler : INotificationHandler<DomainEventNotific
 
         await context.SaveChangesAsync(cancellationToken);
 
-        if (item.CreatedById != _currentUserService.UserId)
-        {
-            await SendNotification(item, domainEvent, cancellationToken);
-        }
+        await SendNotification(item, domainEvent, cancellationToken);
     }
 
     private async Task SendNotification(Item item, CommentPostedEvent commentPostedEvent, CancellationToken cancellationToken)
@@ -55,14 +58,21 @@ public class CommentPostedEventHandler : INotificationHandler<DomainEventNotific
 
         if (comment is null) return;
 
+        await _subscriptionsClient.CreateSubscriptionAsync(new CreateSubscriptionDto()
+        {
+            UserId = comment.CreatedById,
+            SubscriptionGroupId = item.SubscriptionGroupId
+        });
+
         try
         {
             await _notificationsClient.CreateNotificationAsync(new CreateNotificationDto()
             {
                 Title = $"{comment.CreatedBy!.GetDisplayName()} commented on {item.Name}.",
                 Text = comment.Text,
-                UserId = item.CreatedById,
-                Link = $"/items/{item.Id}#comment-{comment.Id}"
+                Link = $"/items/{item.Id}#comment-{comment.Id}",
+                SubscriptionGroupId = item.SubscriptionGroupId,
+                ExceptUserIds = new[] { comment.CreatedById }
             });
         }
         catch(Exception exc)

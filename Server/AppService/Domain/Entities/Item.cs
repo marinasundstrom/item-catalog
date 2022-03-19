@@ -30,6 +30,8 @@ public class Item : AuditableEntity, ISoftDelete, IHasDomainEvent
 
     public int CommentCount { get; set; }
 
+    public string? SubscriptionGroupId { get; set; }
+
     public IReadOnlyList<Comment> Comments => _comments.AsReadOnly();
 
     public Comment AddComment(string text)

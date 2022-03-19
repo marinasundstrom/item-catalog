@@ -38,7 +38,7 @@ public class NotificationsController : Controller
     [HttpPost]
     public async Task<ActionResult> CreateNotification(CreateNotificationDto dto, CancellationToken cancellationToken)
     {
-        await _mediator.Send(new CreateNotificationCommand(dto.Title, dto.Text, dto.Link, dto.UserId, dto.ScheduledFor), cancellationToken);
+        await _mediator.Send(new CreateNotificationCommand(dto.Title, dto.Text, dto.Link, dto.UserId, dto.ExceptUserIds, dto.SubscriptionId, dto.SubscriptionGroupId, dto.ScheduledFor), cancellationToken);
 
         return Ok();
     }
@@ -84,6 +84,12 @@ public class CreateNotificationDto
     public string? Link { get; set; }
 
     public string? UserId { get; set; }
+
+    public string[]? ExceptUserIds { get; set; }
+
+    public string? SubscriptionId { get; set; }
+
+    public string? SubscriptionGroupId { get; set; }
 
     public DateTime? ScheduledFor { get; set; }
 }
