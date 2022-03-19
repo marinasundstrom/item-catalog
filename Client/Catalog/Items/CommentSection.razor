@@ -87,7 +87,7 @@
         try
         {
 #if DEBUG
-            await Task.Delay(1000);
+            //await Task.Delay(1000);
 #endif
 
             var results = await ItemsClient.GetCommentsIncrAsync(ItemId, skip, resultSize, null, null);

@@ -29,9 +29,9 @@ namespace Catalog.Items
 
             StateHasChanged();
 
-            #if DEBUG
-            await Task.Delay(2000);
-            #endif
+        #if DEBUG
+            //await Task.Delay(2000);
+        #endif
 
             try
             {
