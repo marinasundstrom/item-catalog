@@ -45,6 +45,7 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
         public async Task<NotificationsResults> Handle(GetNotificationsQuery request, CancellationToken cancellationToken)
         {
             var query = context.Notifications
+                .AsNoTracking()
                 .Where(n => n.Published != null)
                 .AsQueryable();
 
@@ -77,6 +78,7 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
             if (request.IncludeUnreadNotificationsCount)
             {
                 unreadNotificationsCount = await context.Notifications
+                    .AsNoTracking()
                     .OrderByDescending(n => n.Published)
                     .Where(n => n.Published != null)
                     .Where(n => n.UserId == request.UserId)

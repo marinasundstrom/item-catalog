@@ -28,6 +28,7 @@ public class GetUnreadNotificationsCountQuery : IRequest<int>
         public async Task<int> Handle(GetUnreadNotificationsCountQuery request, CancellationToken cancellationToken)
         {
             var query = context.Notifications
+                .AsNoTracking()
                 .Where(n => n.Published != null)
                 .AsQueryable();
 
