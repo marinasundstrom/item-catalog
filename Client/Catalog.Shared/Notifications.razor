@@ -21,36 +21,36 @@
         <div>
             @if (isLoading)
             {
-            <MudText Typo="Typo.subtitle2">@T["Loading"]</MudText>
+                <MudText Typo="Typo.subtitle2">@T["Loading"]</MudText>
             }
             else
             {
-            @if (notifications.Any())
-            {
-                @foreach (var notification in notifications)
+                @if (notifications.Any())
+                {
+                    @foreach (var notification in notifications)
                     {
                         var cls = $"px-2 py-0 rounded {(!notification.IsRead ? "notification-unread" : string.Empty)}";
 
-                    <MudMenuItem Class="@cls" OnClick="async () => await OnNotificationClicked(notification)">
-                        <MudText Typo="Typo.subtitle2">@notification.Title</MudText>
-                        <MudText Typo="Typo.body2">@notification.Text</MudText>
-                        <MudText Typo="Typo.body2">@($"{"test"} • {(notification.Published.Date == DateTime.Now.Date ? notification.Published.ToString("HH:mm") : notification.Published.ToString("yyyy-MM-dd HH:mm"))}")</MudText>
-                    </MudMenuItem>
-                    <MudDivider Class="my-2" />
+                        <MudMenuItem Class="@cls" OnClick="async () => await OnNotificationClicked(notification)">
+                            <MudText Typo="Typo.subtitle2">@notification.Title</MudText>
+                            <MudText Typo="Typo.body2">@notification.Text</MudText>
+                            <MudText Typo="Typo.body2">@($"{"test"} • {(notification.Published.Date == DateTime.Now.Date ? notification.Published.ToString("HH:mm") : notification.Published.ToString("yyyy-MM-dd HH:mm"))}")</MudText>
+                        </MudMenuItem>
+                        <MudDivider Class="my-2" />
                     }
 
-                @if (totalNotificationsCount > 5)
+                    @if (totalNotificationsCount > 5)
                     {
-                    <div class="d-flex justify-center align-center px-2 py-2 relative">
-                        <MudLink Class="mud-text-secondary my-2" Href="/notifications">@T["MoreNotifications"]</MudLink>
-                    </div>
+                        <div class="d-flex justify-center align-center px-2 py-2 relative">
+                            <MudLink Class="mud-text-secondary my-2" Href="/notifications">@T["MoreNotifications"]</MudLink>
+                        </div>
                     }
                 }
                 else
                 {
-                <div class="d-flex justify-center align-center px-2 py-8 relative">
-                    <MudText Class="mud-text-secondary my-12">@T["NothingNew"]</MudText>
-                </div>
+                    <div class="d-flex justify-center align-center px-2 py-8 relative">
+                        <MudText Class="mud-text-secondary my-12">@T["NothingNew"]</MudText>
+                    </div>
                 }
             }
         </div>
@@ -82,7 +82,7 @@
 
     async Task OnNotificationClicked(NotificationDto notification)
     {
-        if(!notification.IsRead) 
+        if (!notification.IsRead)
         {
             await MarkNotificationAsRead(notification);
             notification.IsRead = true;
@@ -187,7 +187,7 @@
         StateHasChanged();
     }
 
-    Task OnNotificationReceived(NotificationDto notification)
+    async Task OnNotificationReceived(NotificationDto notification)
     {
         notifications.Insert(0, notification);
 
@@ -207,9 +207,7 @@
 
         StateHasChanged();
 
-        PlaySound();
-
-        return Task.CompletedTask;
+        await PlaySound();
     }
 
     public async ValueTask DisposeAsync()
