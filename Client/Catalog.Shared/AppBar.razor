@@ -2,7 +2,7 @@
 @inject IStringLocalizer<CultureSelector> T2
 @inject IDialogService DialogService
 
-<MudAppBar Elevation="1" Dense="false">
+<MudAppBar Elevation="1" Dense="true">
     <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
         OnClick="@(async (e) => await DrawerToggleCallback.InvokeAsync())" />
     @*
