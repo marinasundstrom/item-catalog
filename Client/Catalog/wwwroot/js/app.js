@@ -10,6 +10,9 @@ window.blazorCulture = {
 window.helpers = {
     scrollIntoView: function (id) {
         const element = document.getElementById(id);
-        element.scrollIntoView();
+        if (element)
+        {
+            element.scrollIntoView();
+        }
     }
 }
