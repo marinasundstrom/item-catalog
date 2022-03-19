@@ -162,7 +162,7 @@
 
     public async Task PlaySound()
     {
-        await JSRuntime.InvokeAsync<string>("PlayAudio", new[] { "sound" });
+        await JSRuntime.InvokeAsync<string>("playAudio", new[] { "sound" });
     }
 
     async Task MarkAllNotificationsAsRead()

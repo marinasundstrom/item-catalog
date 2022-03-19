@@ -4,7 +4,7 @@
 @inject IDialogService DialogService
 @inject IItemsClient ItemsClient
 @inject NavigationManager NavigationManager
-
+@inject IJSRuntime JSRuntime  
 
 <MudText Typo="Typo.h5" Align="Align.Left" GutterBottom="true" Class="mt-8">
     @T["Comments"]
@@ -69,6 +69,20 @@
 #endif
 
         await ReloadAsync();
+
+        await ScrollIntoView();
+    }
+
+    async Task ScrollIntoView()
+    {
+        var url = NavigationManager.Uri;
+        var index = url.IndexOf("#");
+        if (index > -1)
+        {
+            var tag = url.Substring(index + 1);
+
+            await JSRuntime.InvokeAsync<string>("helpers.scrollIntoView", new[] { tag });
+        }
     }
 
     async Task ReloadAsync()
