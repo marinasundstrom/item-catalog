@@ -10,8 +10,11 @@ body {
     text-transform: uppercase;
 }
 
-.search-box .mud-input-slot 
-{
+.notifications-icon .mud-badge.mud-badge-top.right.mud-badge-overlap {
+    inset: auto auto calc(100% - 24px) calc(100% - 24px);
+}
+
+.search-box .mud-input-slot {
     padding: 12px !important;
     font-size: 12pt !important;
 }
