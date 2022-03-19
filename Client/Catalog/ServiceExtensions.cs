@@ -3,6 +3,7 @@ using System.Globalization;
 
 using Catalog.Services;
 using Catalog.Shared;
+using Catalog.Shared.Authorization;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
@@ -30,6 +31,8 @@ public static class ServiceExtensions
         services.AddSingleton<IFilePickerService, FilePickerService>();
 
         services.AddScoped<CustomAuthorizationMessageHandler>();
+
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
 
         services.AddClients();
 

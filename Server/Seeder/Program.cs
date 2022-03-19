@@ -30,14 +30,5 @@ static IServiceProvider BuildServiceProvider()
     })
     .AddTypedClient<IUsersClient>((http, sp) => new UsersClient(http));
 
-    /*
-    services.AddHttpClient(nameof(Catalog.TimeReport.Client.IProjectsClient), (sp, http) =>
-    {
-        http.BaseAddress = new Uri($"https://localhost:5050/");
-        http.DefaultRequestHeaders.Add("X-API-KEY", ApiKey);
-    })
-    .AddTypedClient<Catalog.TimeReport.Client.IProjectsClient>((http, sp) => new Catalog.TimeReport.Client.ProjectsClient(http));
-    */
-
     return services.BuildServiceProvider();
 }

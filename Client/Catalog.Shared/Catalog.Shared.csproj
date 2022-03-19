@@ -23,4 +23,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Server\AppService\AppService.Client\AppService.Client.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Authorization\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Authorization\" />
+  </ItemGroup>
 </Project>

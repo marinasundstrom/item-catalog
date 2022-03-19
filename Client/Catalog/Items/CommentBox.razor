@@ -1,8 +1,10 @@
 @using Catalog.Client
+@using Catalog.Shared.Authorization
 @using System.ComponentModel.DataAnnotations
 @inject IItemsClient ItemsClient
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
+@inject ICurrentUserService CurrentUserService
 
 <MudPaper Class="pa-4 mb-4" id="@(Comment is null ? null : $"comment-{Comment?.Id}")">
     @if (IsEditing)
@@ -16,7 +18,7 @@
                     {
                         <MudText Typo="Typo.h6" Align="Align.Left">@Title</MudText>
                     }
-                    @if(Comment is not null && IsEditing) 
+                    @if (Comment is not null && IsEditing)
                     {
                         <MudText Typo="Typo.h6" Align="Align.Left">Edit comment</MudText>
                     }
@@ -54,8 +56,14 @@
                 <MudText Typo="Typo.h6">@Comment.CreatedBy.GetDisplayName() said:</MudText>
 
                 <div>
-                    <MudIconButton Icon="@Icons.Material.Outlined.Edit" OnClick="async () => IsEditing = !IsEditing"></MudIconButton>
-                    <MudIconButton Icon="@Icons.Material.Outlined.Delete" OnClick="Delete"></MudIconButton>
+                    @if (isAuthorizedToEdit)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Outlined.Edit" OnClick="async () => IsEditing = !IsEditing"></MudIconButton>
+                    }
+                    @if (isAuthorizedToDelete)
+                    {
+                        <MudIconButton Icon="@Icons.Material.Outlined.Delete" OnClick="Delete"></MudIconButton>
+                    }
                 </div>
             </div>
 
@@ -95,6 +103,17 @@
     [Parameter] public EventCallback<CommentDto> OnUpdated { get; set; }
 
     [Parameter] public EventCallback<CommentDto> OnDeleted { get; set; }
+
+    bool isAuthorizedToEdit;
+    bool isAuthorizedToDelete;
+
+    protected override async Task OnInitializedAsync()
+    {
+        bool isAuthorCurrentUser = await CurrentUserService.GetUserId() == Comment?.CreatedBy?.Id;
+        bool isCurrentUserAdmin = await CurrentUserService.IsUserInRole(Roles.Administrator);
+        isAuthorizedToEdit = isAuthorCurrentUser;
+        isAuthorizedToDelete = isAuthorCurrentUser || isCurrentUserAdmin;
+    }
 
     public async Task Submit()
     {
