@@ -18,7 +18,7 @@
 
 @foreach (var comment in comments)
 {
-    <CommentBox ItemId="@ItemId" Comment="@comment" Text="@comment.Text" OnUpdated="OnCommentUpdated" OnDeleted="OnCommentDeleted" />
+    <CommentBox @key="comment.Id" ItemId="@ItemId" Comment="@comment" Text="@comment.Text" OnUpdated="OnCommentUpdated" OnDeleted="OnCommentDeleted" />
 }
 
 @if(!isLoading && !comments.Any() && totalItems == 0)
