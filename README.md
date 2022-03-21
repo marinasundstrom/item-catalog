@@ -4,8 +4,17 @@ App for cataloging items with pictures. Components are from MudBlazor.
 
 A "Worker" service demonstrates how to communicate with a microservice through asynchronous messaging.
 
-<a href="/Screenshots/web.png">
-<img src="/Screenshots/web.png" height="250"  alt="Web"  /></a>
+## Screenshots
+
+<a href="/Screenshots/Item.png">
+<img src="/Screenshots/Item.png" height="250"  alt="Item"  /></a>
+
+Item
+
+<a href="/Screenshots/ItemComments.png">
+<img src="/Screenshots/ItemComments.png" height="250"  alt="Item Comment"  /></a>
+
+Comments
 
 **For more info:**
 
