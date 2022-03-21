@@ -4,6 +4,14 @@ App for cataloging items with pictures. Components are from MudBlazor.
 
 A "Worker" service demonstrates how to communicate with a microservice through asynchronous messaging.
 
+**For more info:**
+
+* Watch [demo video](https://youtu.be/-9phNIWJd7A)
+
+* Features explained [here](https://github.com/marinasundstrom/item-catalog/blob/main/docs/features.md).
+
+* Read the [documentation](https://github.com/marinasundstrom/item-catalog/tree/main/docs).
+
 ## Screenshots
 
 <a href="/Screenshots/Item.png">
@@ -15,14 +23,6 @@ Item
 <img src="/Screenshots/ItemComments.png" height="250"  alt="Item Comment"  /></a>
 
 Comments
-
-**For more info:**
-
-* Watch [demo video](https://youtu.be/-9phNIWJd7A)
-
-* Features explained [here](https://github.com/marinasundstrom/item-catalog/blob/main/docs/features.md).
-
-* Read the [documentation](https://github.com/marinasundstrom/item-catalog/tree/main/docs).
 
 ## Introduction
 
