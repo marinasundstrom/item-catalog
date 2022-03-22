@@ -13,19 +13,37 @@
         margin-bottom: 4px;
     }
 
+    .bubble-group-right .bubble-group-footer {
+        float: right;
+    }
+
     .bubble-right {
         color: #fff;
         background-color: #1976d2;
 
         border-top-left-radius: 20px;
         border-bottom-left-radius: 20px;
+
+        float: right;
     }
+
+    /*
 
     .bubble-right-top {
         border-top-right-radius: 20px;
     }
 
     .bubble-right-bottom {
+        border-bottom-right-radius: 20px;
+    }
+
+    */
+
+    .bubble-row:first-child > .bubble-right {
+        border-top-right-radius: 20px;
+    }
+
+    .bubble-row:nth-last-child(1) > .bubble-right {
         border-bottom-right-radius: 20px;
     }
 
@@ -36,11 +54,23 @@
         border-bottom-right-radius: 20px;
     }
 
+    /*
+
     .bubble-left-top {
         border-top-left-radius: 20px;
     }
 
     .bubble-left-bottom {
+        border-bottom-left-radius: 20px;
+    }
+
+    */
+
+    .bubble-row:first-child > .bubble-left {
+        border-top-left-radius: 20px;
+    }
+
+    .bubble-row:nth-last-child(1) > .bubble-left {
         border-bottom-left-radius: 20px;
     }
 
@@ -51,93 +81,195 @@
 
 <MudGrid>
     <MudItem xs="12" sm="12" md="8">
-        <ChatSection>
-            <Header>
-                <MudText Typo="Typo.h6" Class="mt-6 mb-4" Align="Align.Center">Yesterday</MudText>
-            </Header>
 
-            <ChildContent>
-                <ChatBubbleGroup Placement="ChatBubble.BubblePlacement.Left">
-                    <Avatar>
-                        <MudAvatar Size="Size.Medium">BS</MudAvatar>
-                    </Avatar>
+        @foreach (var s in sections)
+        {
+            <ChatSection @key="@s.Id">
+                <Header>
+                    <MudText Typo="Typo.h6" Class="mt-6 mb-4" Align="Align.Center">@s.Header</MudText>
+                </Header>
 
-                    <ChildContent>
-                        <ChatBubble>
-                            <p>Hi Alice, How r u today?</p>
-                        </ChatBubble>
+                <ChildContent>
 
-                        <ChatBubble>
-                            <p>Did you train yesterday?</p>
-                        </ChatBubble>
+                    @foreach (var group in s.Groups)
+                    {
+                        <ChatBubbleGroup @key="@group.Id" Placement="@(group.Sender == "AS" ? ChatBubble.BubblePlacement.Right : ChatBubble.BubblePlacement.Left)">
+                            <Avatar>
+                                <MudAvatar Size="Size.Medium">@group.Sender</MudAvatar>
+                            </Avatar>
 
-                        <ChatBubble>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua. Volutpat lacus laoreet non curabitur gravida.</p>
-                        </ChatBubble>
-                    </ChildContent>
+                            <ChildContent>
+                                @foreach (var message in group.Messages)
+                                {
+                                    <ChatBubble @key="@message.Id">
+                                        <p>@message.Content</p>
+                                    </ChatBubble>
+                                }
+                            </ChildContent>
 
-                    <Footer>
-                        <MudText Typo="Typo.caption" Style="color: gray;">Received 11:37</MudText>
-                    </Footer>
-                </ChatBubbleGroup>
-            </ChildContent>
-        </ChatSection>
-
-        <ChatSection>
-            <Header>
-                <MudText Typo="Typo.h6" Class="mt-6 mb-4" Align="Align.Center">Today</MudText>
-            </Header>
-
-            <ChildContent>
-                <ChatBubbleGroup Placement="ChatBubble.BubblePlacement.Right">
-                    <Avatar>
-                        <MudAvatar Size="Size.Medium">AS</MudAvatar>
-                    </Avatar>
-
-                    <ChildContent>
-                        <ChatBubble>
-                            <p>Great! What's about you?</p>
-                        </ChatBubble>
-
-                        <ChatBubble>
-                            <p>Of course I did. Speaking of which check this out</p>
-                        </ChatBubble>
-                    </ChildContent>
-
-                    <Footer>
-                        <MudText Typo="Typo.caption" Style="color: gray;">Read 11:31</MudText>
-                    </Footer>
-                </ChatBubbleGroup>
-
-                <ChatBubbleGroup Placement="ChatBubble.BubblePlacement.Left">
-                    <Avatar>
-                        <MudAvatar Size="Size.Medium">BS</MudAvatar>
-                    </Avatar>
-
-                    <ChildContent>
-                        <ChatBubble>
-                            <p>I'm well</p>
-                        </ChatBubble>
-
-                        <ChatBubble>
-                            <p>See u later. ❤️</p>
-                        </ChatBubble>
-                    </ChildContent>
-
-                    <Footer>
-                        <MudText Typo="Typo.caption" Style="color: gray;">Received 11:37</MudText>
-                    </Footer>
-                </ChatBubbleGroup>
-            </ChildContent>
-        </ChatSection>
+                            <Footer>
+                                <MudText Typo="Typo.caption" Style="color: gray;">@group.Footer</MudText>
+                            </Footer>
+                        </ChatBubbleGroup>
+                    }
+                </ChildContent>
+            </ChatSection>
+        }
 
         <div>
             <MudText Typo="Typo.subtitle2" Class="mt-6 mb-4" Align="Align.Center">Conversation ended 11:37</MudText>
         </div>
+
+        <MudGrid>
+            <MudItem xs="12" sm="12" md="10">
+                <MudTextField @bind-Value="text" Variant="Variant.Outlined" Lines="5"></MudTextField>
+            </MudItem>
+
+             <MudItem xs="12" sm="12" md="2">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.Send" OnClick="Add1">Add BS</MudButton>
+
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.Send" OnClick="Add2">Add AS</MudButton>
+            </MudItem>
+        </MudGrid>
     </MudItem>
 
     <MudItem xs="12" sm="12" md="4">
 
     </MudItem>
 </MudGrid>
+
+@code {
+    protected override void OnInitialized()
+    {
+        var yesterdaySection = new Section()
+        {
+            Header = "Yesterday",
+        };
+
+        var group = new MessageGroup()
+        {
+            Sender = "BS",
+            Footer = "Received 11:26"
+        };
+
+        group.Messages.Add(new Message()
+        {
+            Content = "Hi Alice, How r u today?"
+        });
+
+        group.Messages.Add(new Message()
+        {
+            Content = "Did you train yesterday?"
+        });
+
+        group.Messages.Add(new Message()
+        {
+            Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat lacus laoreet non curabitur gravida."
+        });
+
+        yesterdaySection.Groups.Add(group);
+
+        sections.Add(yesterdaySection);
+
+        var todaySection = new Section()
+        {
+            Header = "Today",
+        };
+
+        group = new MessageGroup()
+        {
+            Sender = "AS",
+            Footer = "Read 11:32"
+        };
+
+        group.Messages.Add(new Message()
+        {
+            Content = "Great! What's about you?"
+        });
+
+        group.Messages.Add(new Message()
+        {
+            Content = "Of course I did. Speaking of which check this out"
+        });
+
+        todaySection.Groups.Add(group);
+
+        group = new MessageGroup()
+        {
+            Sender = "BS",
+            Footer = "Received 11:37"
+        };
+
+        group.Messages.Add(new Message()
+        {
+            Content = "I'm well"
+        });
+
+        group.Messages.Add(new Message()
+        {
+            Content = "See u later. ❤️"
+        });
+
+        todaySection.Groups.Add(group);
+
+        sections.Add(todaySection);
+    }
+
+    List<Section> sections = new List<Section>();
+
+    void Add1() => Add("BS");
+
+    void Add2() => Add("AS");
+
+    string text;
+
+    void Add(string name) 
+    {
+        if(string.IsNullOrEmpty(text))
+        {
+            return;
+        }
+
+        var lastSection = sections.Last();
+        var lastGroup = lastSection.Groups.Last();
+
+        if(lastGroup.Sender != name) {
+            lastGroup = new MessageGroup() {
+                Sender = name
+            };
+
+            lastSection.Groups.Add(lastGroup);
+        }
+
+        lastGroup.Messages.Add(new Message() {
+            Content = text
+        });
+
+        text = string.Empty;
+    }
+
+    public class Section
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+
+        public string? Header { get; set; }
+
+        public List<MessageGroup> Groups { get; set; } = new List<MessageGroup>();
+    }
+
+    public class MessageGroup
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+
+        public string Sender { get; set; } = null!;
+        public List<Message> Messages { get; set; } = new List<Message>();
+        public string Footer { get; set; } = null!;
+    }
+
+    public class Message
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+
+        public string Content { get; set; } = null!;
+    }
+}

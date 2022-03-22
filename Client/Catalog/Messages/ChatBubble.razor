@@ -1,5 +1,5 @@
-<div>
-    <div style="@Style @(Placement == ChatBubble.BubblePlacement.Right ? "float: right" : string.Empty)" class="@BubbleStyle @Class">
+<div class="bubble-row">
+    <div style="@Style" class="@BubbleStyle @Class">
         @ChildContent
     </div>
 </div>
@@ -12,26 +12,16 @@
     public BubblePlacement Placement { get; set; }
 
     [Parameter]
-    public BubblePosition Position { get; set; } = BubblePosition.Middle;
-
-    [Parameter]
     public string? Class { get; set; }
 
     [Parameter]
     public string? Style { get; set; }
 
-    string BubbleStyle => $"bubble bubble-{Placement.ToString().ToLower()} bubble-{Placement.ToString().ToLower()}-{Position.ToString().ToLower()}";
+    string BubbleStyle => $"bubble bubble-{Placement.ToString().ToLower()}";
 
     public enum BubblePlacement 
     {
         Left = 1,
         Right
-    }
-
-    public enum BubblePosition 
-    {
-        Top,
-        Middle,
-        Bottom
     }
 }

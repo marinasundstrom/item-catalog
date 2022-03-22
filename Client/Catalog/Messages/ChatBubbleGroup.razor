@@ -1,5 +1,5 @@
 <CascadingValue Value="Placement">
-    <div class="bubble-group d-flex justify-@PlacementClass flex-grow-1 gap-2">
+    <div class="bubble-group @PlacementClass d-flex justify-@FlexPlacementClass flex-grow-1 gap-2">
         @if (Placement == ChatBubble.BubblePlacement.Left)
         {
             @Avatar
@@ -7,7 +7,7 @@
         <div>
             @ChildContent
 
-            <div>
+            <div class="bubble-group-footer">
                 @Footer
             </div>
         </div>
@@ -31,5 +31,7 @@
     [Parameter]
     public ChatBubble.BubblePlacement Placement { get; set; }
 
-    string PlacementClass => Placement == ChatBubble.BubblePlacement.Left ? "start" : "end";
+    string FlexPlacementClass => Placement == ChatBubble.BubblePlacement.Left ? "start" : "end";
+
+    string PlacementClass => $"bubble-group-{Placement.ToString().ToLower()}";
 }
