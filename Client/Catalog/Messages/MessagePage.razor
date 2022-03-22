@@ -1,4 +1,14 @@
 @page "/messages"
+@attribute [Authorize]
+@using Microsoft.AspNetCore.SignalR.Client
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Humanizer
+@implements IAsyncDisposable
+@inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager
+@inject IAccessTokenProvider AccessTokenProvider
+@inject Catalog.Shared.Authorization.ICurrentUserService CurrentUserService
 
 <style>
     body {
@@ -26,7 +36,7 @@
 
         float: right;
     }
-    
+
     .bubble-group .bubble-group-content > div:first-child > .bubble-right {
         border-top-right-radius: 20px;
     }
@@ -69,9 +79,12 @@
 
                     @foreach (var group in s.Groups)
                     {
-                        <ChatBubbleGroup @key="@group.Id" Placement="@(group.Sender == "AS" ? ChatBubble.BubblePlacement.Right : ChatBubble.BubblePlacement.Left)">
+                        <ChatBubbleGroup @key="@group.Id" Placement="@(group.SenderId == userId ? ChatBubble.BubblePlacement.Right : ChatBubble.BubblePlacement.Left)">
                             <Avatar>
-                                <MudAvatar Size="Size.Medium">@group.Sender</MudAvatar>
+                                @{
+                                    var nameParts = group.Sender.Split(" ");
+                                }
+                                <MudAvatar Size="Size.Medium">@nameParts[0][0]@nameParts[1][0]</MudAvatar>
                             </Avatar>
 
                             <ChildContent>
@@ -92,9 +105,9 @@
             </ChatSection>
         }
 
-        <div>
+        @* <div>
             <MudText Typo="Typo.subtitle2" Class="mt-6 mb-4" Align="Align.Center">Conversation ended 11:37</MudText>
-        </div>
+        </div> *@
 
         <MudGrid>
             <MudItem xs="12" sm="12" md="10">
@@ -102,9 +115,7 @@
             </MudItem>
 
              <MudItem xs="12" sm="12" md="2">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.Send" OnClick="Add1">Add BS</MudButton>
-
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.Send" OnClick="Add2">Add AS</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.Send" OnClick="Post">Send</MudButton>
             </MudItem>
         </MudGrid>
     </MudItem>
@@ -115,7 +126,127 @@
 </MudGrid>
 
 @code {
-    protected override void OnInitialized()
+    HubConnection hubConnection;
+
+    string userId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        userId = await CurrentUserService.GetUserId();
+try
+            {
+                hubConnection = new HubConnectionBuilder().WithUrl($"{NavigationManager.BaseUri}api/hubs/messages", options =>
+                {
+                    options.AccessTokenProvider = async () =>
+                    {
+                        var results = await AccessTokenProvider.RequestAccessToken(new AccessTokenRequestOptions()
+                        {Scopes = new[]{"myapi"}});
+                        if (results.TryGetToken(out var accessToken))
+                        {
+                            return accessToken.Value;
+                        }
+
+                        return null !;
+                    };
+                }).WithAutomaticReconnect().Build();
+                
+                hubConnection.On<MessageDto>("MessageReceived", OnMessageReceived);
+
+                hubConnection.Closed += (error) =>
+                {
+                    if (error is not null)
+                    {
+                        Snackbar.Add($"{error.Message}", Severity.Error);
+                    }
+
+                    Snackbar.Add("Connection closed");
+                    return Task.CompletedTask;
+                };
+                hubConnection.Reconnected += (error) =>
+                {
+                    Snackbar.Add("Reconnected");
+                    return Task.CompletedTask;
+                };
+                hubConnection.Reconnecting += (error) =>
+                {
+                    Snackbar.Add("Reconnecting");
+                    return Task.CompletedTask;
+                };
+                await hubConnection.StartAsync();
+                Snackbar.Add("Connected");
+            }
+            catch (Exception exc)
+            {
+                Snackbar.Add(exc.Message.ToString(), Severity.Error);
+            }
+    }
+
+    void OnMessageReceived(MessageDto dto) 
+    {
+        var lastSection = sections.LastOrDefault();
+
+        if(lastSection is null) 
+        {
+            lastSection = new Section() 
+            {
+                Header = "Today"
+            };
+            sections.Add(lastSection);
+        }
+
+        var lastGroup = lastSection.Groups.LastOrDefault();
+
+        if(lastGroup is null) 
+        {
+            lastGroup = new MessageGroup() 
+            {
+                Sender = dto.SentBy,
+                SenderId = dto.SentById
+            };
+            lastSection.Groups.Add(lastGroup);
+        }
+
+        if(lastGroup.SenderId != dto.SentById) {
+            lastGroup = new MessageGroup() {
+                Sender = dto.SentBy,
+                SenderId = dto.SentById
+            };
+
+            lastSection.Groups.Add(lastGroup);
+
+            lastGroup.Footer = $"Received {DateTime.Now.Humanize()}";
+        }
+        else 
+        {
+            lastGroup.Footer = $"Read {DateTime.Now.Humanize()}";
+        }
+
+        lastGroup.Messages.Add(new Message() {
+            Content = dto.Content!
+        });
+
+        text = string.Empty;
+
+        StateHasChanged();
+    }
+
+    class MessageDto 
+    {
+        public string SentBy { get; set; } = null!;
+
+        public string SentById { get; set; } = null!;
+
+        public string? Content { get; set; }
+
+        public DateTime DateSent { get; set; }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await hubConnection.DisposeAsync();
+    }
+
+    private void Init() 
     {
         var yesterdaySection = new Section()
         {
@@ -193,6 +324,16 @@
 
     List<Section> sections = new List<Section>();
 
+    async Task Post() 
+    {
+        if(string.IsNullOrEmpty(text))
+        {
+            return;
+        }
+
+        await hubConnection.SendAsync("SendMessage", text);
+    }
+
     void Add1() => Add("BS");
 
     void Add2() => Add("AS");
@@ -211,7 +352,8 @@
 
         if(lastGroup.Sender != name) {
             lastGroup = new MessageGroup() {
-                Sender = name
+                Sender = name,
+                SenderId = ""
             };
 
             lastSection.Groups.Add(lastGroup);
@@ -238,6 +380,8 @@
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
         public string Sender { get; set; } = null!;
+        public string SenderId { get; set; } = null!;
+
         public List<Message> Messages { get; set; } = new List<Message>();
         public string Footer { get; set; } = null!;
     }

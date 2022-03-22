@@ -185,6 +185,7 @@ static class Program
         app.MapHub<SomethingHub>("/hubs/something");
         app.MapHub<WorkerHub>("/hubs/worker");
         app.MapHub<NotificationHub>("/hubs/notifications");
+        app.MapHub<MessageHub>("/hubs/messages");
 
         if(seed)
         {
