@@ -1,5 +1,35 @@
-@typeparam T
+<CascadingValue Value="Placement">
+    <div class="bubble-group d-flex justify-@PlacementClass flex-grow-1 gap-2">
+        @if (Placement == ChatBubble.BubblePlacement.Left)
+        {
+            @Avatar
+        }
+        <div>
+            @ChildContent
+
+            <div>
+                @Footer
+            </div>
+        </div>
+        @if (Placement == ChatBubble.BubblePlacement.Right)
+        {
+            @Avatar
+        }
+    </div>
+</CascadingValue>
 
 @code {
-    public List<T> Items { get; set; }
+    [Parameter]
+    public RenderFragment Avatar { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment Footer { get; set; } = null!;
+
+    [Parameter]
+    public ChatBubble.BubblePlacement Placement { get; set; }
+
+    string PlacementClass => Placement == ChatBubble.BubblePlacement.Left ? "start" : "end";
 }

@@ -51,100 +51,89 @@
 
 <MudGrid>
     <MudItem xs="12" sm="12" md="8">
-        <div class="bubble-section">
-            <div>
+        <ChatSection>
+            <Header>
                 <MudText Typo="Typo.h6" Class="mt-6 mb-4" Align="Align.Center">Yesterday</MudText>
-            </div>
-            <div class="bubble-section-content">
-                <div class="bubble-group d-flex justify-start flex-grow-1 gap-2">
-                    <MudAvatar Size="Size.Medium">BS</MudAvatar>
-                    <div>
-                        <div>
-                            <div class="bubble bubble-left bubble-left-top">
-                                <p>Hi Alice, How r u today?</p>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="bubble bubble-left">
-                                <p>Did you train yesterday</p>
+            </Header>
 
-                            </div>
-                        </div>
-                        <div>
-                            <div class="bubble bubble-left bubble-left-bottom">
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut
-                                    labore et dolore magna aliqua. Volutpat lacus laoreet non curabitur gravida.
-                                </p>
-                            </div>
-                        </div>
-                        <div>
-                            <MudText Typo="Typo.caption" Style="color: gray;">Received 11:25</MudText>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <ChildContent>
+                <ChatBubbleGroup Placement="ChatBubble.BubblePlacement.Left">
+                    <Avatar>
+                        <MudAvatar Size="Size.Medium">BS</MudAvatar>
+                    </Avatar>
 
-        <div class="bubble-section">
-            <div>
+                    <ChildContent>
+                        <ChatBubble>
+                            <p>Hi Alice, How r u today?</p>
+                        </ChatBubble>
+
+                        <ChatBubble>
+                            <p>Did you train yesterday?</p>
+                        </ChatBubble>
+
+                        <ChatBubble>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua. Volutpat lacus laoreet non curabitur gravida.</p>
+                        </ChatBubble>
+                    </ChildContent>
+
+                    <Footer>
+                        <MudText Typo="Typo.caption" Style="color: gray;">Received 11:37</MudText>
+                    </Footer>
+                </ChatBubbleGroup>
+            </ChildContent>
+        </ChatSection>
+
+        <ChatSection>
+            <Header>
                 <MudText Typo="Typo.h6" Class="mt-6 mb-4" Align="Align.Center">Today</MudText>
-            </div>
-            <div class="bubble-section-content">
-                <div class="bubble-group">
+            </Header>
 
-                    <div class="d-flex justify-end flex-grow-1 gap-2">
-                        <div>
-                            <div class="d-flex justify-end">
-                                <div class="bubble bubble-right bubble-right-top">
-                                    <p>
-                                        Great! What's about you?
-                                    </p>
-                                </div>
-                            </div>
-                            @*
-                                <div class="d-flex justify-end">
-                                <div class="bubble bubble-right">
-                                Test
-                                </div>
-                                </div>
-                            *@
-                            <div class="d-flex justify-end">
-                                <div class="bubble bubble-right bubble-right-bottom">
-                                    <p>Of course I did. Speaking of which check this out</p>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-end">
-                                <MudText Typo="Typo.caption" Style="color: gray;">Read 11:31</MudText>
-                            </div>
-                        </div>
+            <ChildContent>
+                <ChatBubbleGroup Placement="ChatBubble.BubblePlacement.Right">
+                    <Avatar>
                         <MudAvatar Size="Size.Medium">AS</MudAvatar>
-                    </div>
-                </div>
+                    </Avatar>
 
-                <div class="bubble-group d-flex justify-start flex-grow-1 gap-2">
-                    <MudAvatar Size="Size.Medium">BS</MudAvatar>
-                    <div>
-                        <div>
-                            <div class="bubble bubble-left bubble-left-top">
-                                <p>Im well.</p>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="bubble bubble-left bubble-left-bottom">
-                                <p>See u later. ❤️</p>
-                            </div>
-                        </div>
-                        <div>
-                            <MudText Typo="Typo.caption" Style="color: gray;">Received 11:37</MudText>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <MudText Typo="Typo.subtitle2" Class="mt-6 mb-4" Align="Align.Center">Conversation ended 11:37</MudText>
-            </div>
+                    <ChildContent>
+                        <ChatBubble>
+                            <p>Great! What's about you?</p>
+                        </ChatBubble>
+
+                        <ChatBubble>
+                            <p>Of course I did. Speaking of which check this out</p>
+                        </ChatBubble>
+                    </ChildContent>
+
+                    <Footer>
+                        <MudText Typo="Typo.caption" Style="color: gray;">Read 11:31</MudText>
+                    </Footer>
+                </ChatBubbleGroup>
+
+                <ChatBubbleGroup Placement="ChatBubble.BubblePlacement.Left">
+                    <Avatar>
+                        <MudAvatar Size="Size.Medium">BS</MudAvatar>
+                    </Avatar>
+
+                    <ChildContent>
+                        <ChatBubble>
+                            <p>I'm well</p>
+                        </ChatBubble>
+
+                        <ChatBubble>
+                            <p>See u later. ❤️</p>
+                        </ChatBubble>
+                    </ChildContent>
+
+                    <Footer>
+                        <MudText Typo="Typo.caption" Style="color: gray;">Received 11:37</MudText>
+                    </Footer>
+                </ChatBubbleGroup>
+            </ChildContent>
+        </ChatSection>
+
+        <div>
+            <MudText Typo="Typo.subtitle2" Class="mt-6 mb-4" Align="Align.Center">Conversation ended 11:37</MudText>
         </div>
     </MudItem>
 
