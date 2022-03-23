@@ -1,4 +1,4 @@
-@page "/messages"
+@page "/conversation"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.SignalR.Client
 @using Microsoft.AspNetCore.Components.Routing
@@ -70,7 +70,7 @@
 
         @foreach (var s in sections)
         {
-            <ChatSection @key="@s.Id">
+            <MudChatSection @key="@s.Id">
                 <Header>
                     <MudText Typo="Typo.h6" Class="mt-6 mb-4" Align="Align.Center">@s.Header</MudText>
                 </Header>
@@ -79,7 +79,7 @@
 
                     @foreach (var group in s.Groups)
                     {
-                        <ChatBubbleGroup @key="@group.Id" Placement="@(group.SenderId == userId ? ChatBubble.BubblePlacement.Right : ChatBubble.BubblePlacement.Left)">
+                        <MudChatMessageGroup @key="@group.Id" Placement="@(group.SenderId == userId ? ChatMessagePlacement.Right : ChatMessagePlacement.Left)">
                             <Avatar>
                                 @{
                                     var nameParts = group.Sender.Split(" ");
@@ -90,19 +90,19 @@
                             <ChildContent>
                                 @foreach (var message in group.Messages)
                                 {
-                                    <ChatBubble @key="@message.Id">
+                                    <MudChatMessage @key="@message.Id">
                                         <p>@message.Content</p>
-                                    </ChatBubble>
+                                    </MudChatMessage>
                                 }
                             </ChildContent>
 
                             <Footer>
                                 <MudText Typo="Typo.caption" Style="color: gray;">@group.Footer</MudText>
                             </Footer>
-                        </ChatBubbleGroup>
+                        </MudChatMessageGroup>
                     }
                 </ChildContent>
-            </ChatSection>
+            </MudChatSection>
         }
 
         @* <div>

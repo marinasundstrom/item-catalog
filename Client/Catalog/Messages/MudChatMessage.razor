@@ -9,7 +9,8 @@
     public RenderFragment ChildContent { get; set; } = null!;
 
     [CascadingParameter]
-    public BubblePlacement Placement { get; set; }
+    [Parameter]
+    public ChatMessagePlacement Placement { get; set; }
 
     [Parameter]
     public string? Class { get; set; }
@@ -18,10 +19,4 @@
     public string? Style { get; set; }
 
     string BubbleStyle => $"bubble bubble-{Placement.ToString().ToLower()}";
-
-    public enum BubblePlacement 
-    {
-        Left = 1,
-        Right
-    }
 }
