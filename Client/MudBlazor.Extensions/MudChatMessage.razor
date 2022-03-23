@@ -2,9 +2,12 @@
 
 <CascadingValue Value="Placement">
     <div class="bubble-group @PlacementClass d-flex justify-@FlexPlacementClass flex-grow-1 gap-2">
-        @if (Placement == ChatMessagePlacement.Left)
-        {
-            @Avatar
+        @if(ShowAvatar)
+        { 
+            if (Placement == ChatMessagePlacement.Left)
+            {
+                @Avatar
+            }
         }
         <div class="bubble-group-inner">
              @if (Header is not null)
@@ -41,11 +44,14 @@
                     @Footer
                 </div>
             }
-        </div>
-        @if (Placement == ChatMessagePlacement.Right)
-        {
-            @Avatar
-        }
+         </div>
+         @if(ShowAvatar)
+         { 
+            if (Placement == ChatMessagePlacement.Right)
+            {
+                @Avatar
+            }
+         }
     </div>
 </CascadingValue>
 
@@ -53,18 +59,21 @@
     [Parameter]
     public T? Message { get; set; }
 
-     [Parameter]
+    [Parameter]
     public IEnumerable<T>? Messages { get; set; }
 
     [Parameter]
     public RenderFragment Avatar { get; set; } = null!;
 
     [Parameter]
+    public bool ShowAvatar { get; set; } = true!;
+
+    [Parameter]
     public RenderFragment Content { get; set; } = null!;
 
     [Parameter]
     public RenderFragment<T> ContentTemplate { get; set; } = null!;
-    
+
     [Parameter]
     public RenderFragment Header { get; set; } = null!;
 

@@ -4,6 +4,7 @@ using Newtonsoft.Json.Converters;
 using Catalog.Application.Common.Interfaces;
 using Catalog.Application.Items;
 using Catalog.Application.Users;
+using Catalog.Application.Messages;
 
 namespace Catalog.Application;
 
@@ -22,5 +23,10 @@ public static class Mapper
     public static CommentDto ToDto(this Domain.Entities.Comment comment)
     {
         return new CommentDto(comment.Id, comment.Text, comment.Created, comment.CreatedBy?.ToDto(), comment.LastModified, comment.LastModifiedBy?.ToDto());
+    }
+
+    public static Messages.MessageDto ToDto(this Domain.Entities.Message message)
+    {
+        return new Messages.MessageDto(message.Id, message.Text, message.Created, message.CreatedBy?.ToDto(), message.LastModified, message.LastModifiedBy?.ToDto());
     }
 }

@@ -50,6 +50,8 @@ class CatalogContext : DbContext, ICatalogContext
 
     public DbSet<Comment> Comments { get; set; } = null!;
 
+    public DbSet<Message> Messages { get; set; } = null!;
+
     public DbSet<User> Users { get; set; } = null!;
 
 #nullable restore

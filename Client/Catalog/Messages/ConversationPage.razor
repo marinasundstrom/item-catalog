@@ -4,8 +4,10 @@
 @using Microsoft.AspNetCore.SignalR.Client
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Catalog.Client
 @using Humanizer
 @implements IAsyncDisposable
+@inject IMessagesClient MessagesClient
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 @inject IAccessTokenProvider AccessTokenProvider
@@ -17,18 +19,16 @@
 <MudGrid>
     <MudItem xs="12" sm="12" md="8">
 
-        @foreach (var s in sections)
-        {
-            <MudChatSection @key="@s.Id">
+            <MudChatSection>
                 <Header>
-                    <MudText Typo="Typo.h6" Class="mt-6 mb-4" Align="Align.Center">@s.Header</MudText>
+                    <MudText Typo="Typo.h6" Class="mt-6 mb-4" Align="Align.Center">Today</MudText>
                 </Header>
 
                 <ChildContent>
 
-                    @foreach (var group in s.Groups)
+                    @foreach (var group in groups)
                     {
-                        <MudChatMessage T="Message" Messages="group.Messages" @key="@group.Id" Placement="@(group.SenderId == userId ? ChatMessagePlacement.Right : ChatMessagePlacement.Left)">
+                        <MudChatMessage T="Message" Messages="group.Messages" @key="@group.Id" Placement="@(group.SenderId == userId ? ChatMessagePlacement.Right : ChatMessagePlacement.Left)" ShowAvatar="@(group.SenderId != userId)">
                             <Avatar>
                                 @{
                                     var nameParts = group.Sender.Split(" ");
@@ -78,7 +78,6 @@
             </MudChatSection>
 
             <div style="height: 50px"></div>
-        }
 
         @* <div>
             <MudText Typo="Typo.subtitle2" Class="mt-6 mb-4" Align="Align.Center">Conversation ended 11:37</MudText>
@@ -103,6 +102,9 @@
     HubConnection hubConnection;
 
     string userId;
+
+    List<MessageGroup> groups = new List<MessageGroup>();
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -155,6 +157,8 @@
         {
             Snackbar.Add(exc.Message.ToString(), Severity.Error);
         }
+
+        await LoadItems();
     }
 
     void OnUserJoined(UserDto2 dto)
@@ -173,18 +177,7 @@
 
     async Task OnMessageReceived(MessageDto dto)
     {
-        var lastSection = sections.LastOrDefault();
-
-        if(lastSection is null)
-        {
-            lastSection = new Section()
-            {
-                Header = "Today"
-            };
-            sections.Add(lastSection);
-        }
-
-        var lastGroup = lastSection.Groups.LastOrDefault();
+        var lastGroup = groups.LastOrDefault();
 
         if(lastGroup is null)
         {
@@ -193,7 +186,7 @@
                 Sender = dto.SentBy,
                 SenderId = dto.SentById
             };
-            lastSection.Groups.Add(lastGroup);
+            groups.Add(lastGroup);
         }
 
         if(lastGroup.SenderId != dto.SentById) {
@@ -202,7 +195,7 @@
                 SenderId = dto.SentById
             };
 
-            lastSection.Groups.Add(lastGroup);
+            groups.Add(lastGroup);
 
             lastGroup.Header = $"{DateTime.Now.TimeOfDay}";
             lastGroup.Footer = $"Received {DateTime.Now.Humanize()}";
@@ -220,6 +213,36 @@
         StateHasChanged();
 
         await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
+    }
+
+    async Task LoadItems()
+    {
+        await LoadItems(0);
+    }
+
+
+    async Task LoadItems(int skip)
+    {
+        var results = await MessagesClient.GetMessagesAsync(skip, 10, null!, null);
+
+        foreach(var result in results.Items)
+        {
+            var group = new MessageGroup()
+            {
+                SenderId = result.CreatedBy.Id,
+                Sender = result.CreatedBy.FirstName + " " + result.CreatedBy.LastName
+            };
+
+            group.Messages.Add(new Message()
+            {
+                Id = result.Id,
+                Content = result.Text
+            });
+
+            groups.Insert(0, group);
+        }
+
+        StateHasChanged();
     }
 
     class MessageDto

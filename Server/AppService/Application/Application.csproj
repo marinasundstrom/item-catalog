@@ -29,4 +29,14 @@
      <ProjectReference Include="..\..\Notifications\Notifications.Client\Notifications.Client.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Messages\" />
+    <None Remove="Messages\Queries\" />
+    <None Remove="Messages\Commands\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Messages\" />
+    <Folder Include="Messages\Queries\" />
+    <Folder Include="Messages\Commands\" />
+  </ItemGroup>
 </Project>
