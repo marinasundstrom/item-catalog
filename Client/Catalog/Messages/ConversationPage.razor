@@ -9,6 +9,7 @@
 @inject NavigationManager NavigationManager
 @inject IAccessTokenProvider AccessTokenProvider
 @inject Catalog.Shared.Authorization.ICurrentUserService CurrentUserService
+@inject IJSRuntime JSRuntime
 
 <style>
     body {
@@ -21,6 +22,10 @@
         word-break: break-word;
         border-radius: 4px;
         margin-bottom: 4px;
+    }
+
+    .bubble-group-right .bubble-group-header {
+        float: right;
     }
 
     .bubble-group-right .bubble-group-footer {
@@ -100,6 +105,10 @@
                                 }
                                 <MudAvatar Style="margin-top: -2px" Size="Size.Medium">@nameParts[0][0]@nameParts[1][0]</MudAvatar>
                             </Avatar>
+
+                            @* <Header>
+                                <MudText Typo="Typo.caption" Style="color: gray;">@group.Header</MudText>
+                            </Header> *@
 
                             <ContentTemplate Context="message">
                                 <MudChatBubble @key="message.Id">
@@ -217,7 +226,7 @@ try
             }
     }
 
-    void OnMessageReceived(MessageDto dto) 
+    async Task OnMessageReceived(MessageDto dto) 
     {
         var lastSection = sections.LastOrDefault();
 
@@ -250,10 +259,12 @@ try
 
             lastSection.Groups.Add(lastGroup);
 
+            lastGroup.Header = $"{DateTime.Now.TimeOfDay}";
             lastGroup.Footer = $"Received {DateTime.Now.Humanize()}";
         }
-        else 
+        else
         {
+            lastGroup.Header = $"{DateTime.Now.TimeOfDay}";
             lastGroup.Footer = $"Read {DateTime.Now.Humanize()}";
         }
 
@@ -261,9 +272,9 @@ try
             Content = dto.Content!
         });
 
-        text = string.Empty;
-
         StateHasChanged();
+
+        await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
     }
 
     class MessageDto 
@@ -368,39 +379,11 @@ try
         }
 
         await hubConnection.SendAsync("SendMessage", text);
-    }
-
-    void Add1() => Add("BS");
-
-    void Add2() => Add("AS");
-
-    string text;
-
-    void Add(string name) 
-    {
-        if(string.IsNullOrEmpty(text))
-        {
-            return;
-        }
-
-        var lastSection = sections.Last();
-        var lastGroup = lastSection.Groups.Last();
-
-        if(lastGroup.Sender != name) {
-            lastGroup = new MessageGroup() {
-                Sender = name,
-                SenderId = ""
-            };
-
-            lastSection.Groups.Add(lastGroup);
-        }
-
-        lastGroup.Messages.Add(new Message() {
-            Content = text
-        });
 
         text = string.Empty;
     }
+
+    string text;
 
     public class Section
     {
@@ -419,6 +402,9 @@ try
         public string SenderId { get; set; } = null!;
 
         public List<Message> Messages { get; set; } = new List<Message>();
+
+        public string Header { get; set; } = null!;
+
         public string Footer { get; set; } = null!;
     }
 
