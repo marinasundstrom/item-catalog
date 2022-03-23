@@ -1,3 +1,5 @@
+@typeparam T
+
 <CascadingValue Value="Placement">
     <div class="bubble-group @PlacementClass d-flex justify-@FlexPlacementClass flex-grow-1 gap-2">
         @if (Placement == ChatMessagePlacement.Left)
@@ -10,7 +12,24 @@
             </div>
 
             <div class="bubble-group-content">
-                @ChildContent
+                @if(Content is not null) 
+                {
+                    @Content
+                }
+                else if(ContentTemplate is not null)
+                {
+                    @if(Message is not null) 
+                    {
+                        @ContentTemplate(Message!)
+                    }
+                    else if(Messages is not null) 
+                    {
+                        @foreach (var message in Messages)
+                        {
+                            @ContentTemplate(message!)
+                        }
+                    }
+                }
             </div>
 
             <div class="bubble-group-footer">
@@ -26,10 +45,19 @@
 
 @code {
     [Parameter]
+    public T? Message { get; set; }
+
+     [Parameter]
+    public IEnumerable<T>? Messages { get; set; }
+
+    [Parameter]
     public RenderFragment Avatar { get; set; } = null!;
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = null!;
+    public RenderFragment Content { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment<T> ContentTemplate { get; set; } = null!;
     
     [Parameter]
     public RenderFragment Header { get; set; } = null!;

@@ -83,7 +83,7 @@
 
                     @foreach (var group in s.Groups)
                     {
-                        <MudChatMessage @key="@group.Id" Placement="@(group.SenderId == userId ? ChatMessagePlacement.Right : ChatMessagePlacement.Left)">
+                        <MudChatMessage T="Message" Messages="group.Messages" @key="@group.Id" Placement="@(group.SenderId == userId ? ChatMessagePlacement.Right : ChatMessagePlacement.Left)">
                             <Avatar>
                                 @{
                                     var nameParts = group.Sender.Split(" ");
@@ -91,14 +91,34 @@
                                 <MudAvatar Size="Size.Medium">@nameParts[0][0]@nameParts[1][0]</MudAvatar>
                             </Avatar>
 
-                            <ChildContent>
+                            <ContentTemplate Context="message">
+                                <MudChatBubble @key="message.Id">
+                                    <ChildContent>
+                                        <p>@message.Content</p>
+                                    </ChildContent>
+
+                                    <Actions>
+                                        <MudMenu AnchorOrigin="Origin.BottomLeft">
+                                            <ActivatorContent>
+                                                <MudIconButton Style="margin-top: -5px" Icon="@Icons.Filled.MoreVert" Variant="Variant.Text" Color="Color.Secondary" />
+                                            </ActivatorContent>
+                                            <ChildContent>
+                                                <MudMenuItem>Delete</MudMenuItem>
+                                                <MudMenuItem>Report</MudMenuItem>
+                                            </ChildContent>
+                                        </MudMenu>
+                                    </Actions>
+                                </MudChatBubble>
+                            </ContentTemplate>
+
+                            @* <Content>
                                 @foreach (var message in group.Messages)
                                 {
-                                    <MudChatContent @key="@message.Id">
+                                    <MudChatBubble @key="@message.Id">
                                         <p>@message.Content</p>
-                                    </MudChatContent>
+                                    </MudChatBubble>
                                 }
-                            </ChildContent>
+                            </Content> *@
 
                             <Footer>
                                 <MudText Typo="Typo.caption" Style="color: gray;">@group.Footer</MudText>
