@@ -1,0 +1,22 @@
+<div class="bubble-row">
+    <div style="@Style" class="@BubbleStyle @Class">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = null!;
+
+    [CascadingParameter]
+    [Parameter]
+    public ChatMessagePlacement Placement { get; set; }
+
+    [Parameter]
+    public string? Class { get; set; }
+
+    [Parameter]
+    public string? Style { get; set; }
+
+    string BubbleStyle => $"bubble bubble-{Placement.ToString().ToLower()}";
+}

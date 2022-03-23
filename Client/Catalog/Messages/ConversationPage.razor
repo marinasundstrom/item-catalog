@@ -79,7 +79,7 @@
 
                     @foreach (var group in s.Groups)
                     {
-                        <MudChatMessageGroup @key="@group.Id" Placement="@(group.SenderId == userId ? ChatMessagePlacement.Right : ChatMessagePlacement.Left)">
+                        <MudChatMessage @key="@group.Id" Placement="@(group.SenderId == userId ? ChatMessagePlacement.Right : ChatMessagePlacement.Left)">
                             <Avatar>
                                 @{
                                     var nameParts = group.Sender.Split(" ");
@@ -90,16 +90,16 @@
                             <ChildContent>
                                 @foreach (var message in group.Messages)
                                 {
-                                    <MudChatMessage @key="@message.Id">
+                                    <MudChatContent @key="@message.Id">
                                         <p>@message.Content</p>
-                                    </MudChatMessage>
+                                    </MudChatContent>
                                 }
                             </ChildContent>
 
                             <Footer>
                                 <MudText Typo="Typo.caption" Style="color: gray;">@group.Footer</MudText>
                             </Footer>
-                        </MudChatMessageGroup>
+                        </MudChatMessage>
                     }
                 </ChildContent>
             </MudChatSection>
