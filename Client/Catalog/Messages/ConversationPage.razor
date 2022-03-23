@@ -76,6 +76,8 @@
                     }
                 </ChildContent>
             </MudChatSection>
+
+            <div style="height: 50px"></div>
         }
 
         @* <div>
@@ -90,8 +92,7 @@
 
 <div class="bottom d-flex flex-grow-1 gap-4">
     <div class="flex-auto d-flex" style="width: 100%">
-        <MudTextField @bind-Value="text" Variant="Variant.Filled" Lines="1"></MudTextField>
-
+        <MudTextField @bind-Value="text" Variant="Variant.Filled" Class="rounded-lg" Lines="1"></MudTextField>
     </div>
     <div class="flex-auto d-flex" style="width: 54px">
         <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Filled.Send" Class="mt-2" Style="border-radius: 50%; padding: 15px;" OnClick="Post" />
@@ -123,7 +124,9 @@
                 };
             }).WithAutomaticReconnect().Build();
 
+            hubConnection.On<UserDto2>("UserJoined", OnUserJoined);
             hubConnection.On<MessageDto>("MessageReceived", OnMessageReceived);
+            hubConnection.On<UserDto2>("UserLeft", OnUserLeft);
 
             hubConnection.Closed += (error) =>
             {
@@ -152,6 +155,20 @@
         {
             Snackbar.Add(exc.Message.ToString(), Severity.Error);
         }
+    }
+
+    void OnUserJoined(UserDto2 dto)
+    {
+        Snackbar.Add($"{dto.User} has joined the conversation.");
+
+        StateHasChanged();
+    }
+
+    void OnUserLeft(UserDto2 dto)
+    {
+        Snackbar.Add($"{dto.User} has left the conversation.");
+
+        StateHasChanged();
     }
 
     async Task OnMessageReceived(MessageDto dto)
@@ -214,6 +231,12 @@
         public string? Content { get; set; }
 
         public DateTime DateSent { get; set; }
+    }
+
+    public class UserDto2
+    {
+        public string User { get; set; } = null!;
+        public string? UserId { get; set; }
     }
 
     public async ValueTask DisposeAsync()

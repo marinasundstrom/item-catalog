@@ -7,11 +7,14 @@
             @Avatar
         }
         <div class="bubble-group-inner">
-            <div class="bubble-group-header mt-1">
-                @Header
-            </div>
+             @if (Header is not null)
+             {
+                <div class="bubble-group-header mt-1">
+                    @Header
+                </div>
+             }
 
-            <div class="bubble-group-content">
+             <div class="bubble-group-content">
                 @if(Content is not null) 
                 {
                     @Content
@@ -32,9 +35,12 @@
                 }
             </div>
 
-            <div class="bubble-group-footer">
-                @Footer
-            </div>
+            @if (Footer is not null)
+            {
+                <div class="bubble-group-footer">
+                    @Footer
+                </div>
+            }
         </div>
         @if (Placement == ChatMessagePlacement.Right)
         {
