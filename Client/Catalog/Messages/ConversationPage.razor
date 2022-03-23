@@ -65,6 +65,10 @@
     }
 </style>
 
+<PageTitle>Chat - Catalog</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Chat</MudText>
+
 <MudGrid>
     <MudItem xs="12" sm="12" md="8">
 
@@ -110,11 +114,11 @@
         </div> *@
 
         <MudGrid>
-            <MudItem xs="12" sm="12" md="10">
+            <MudItem xs="12" sm="10" md="10">
                 <MudTextField @bind-Value="text" Variant="Variant.Outlined" Lines="5"></MudTextField>
             </MudItem>
 
-             <MudItem xs="12" sm="12" md="2">
+             <MudItem xs="12" sm="2" md="2">
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.Send" OnClick="Post">Send</MudButton>
             </MudItem>
         </MudGrid>

@@ -9,9 +9,11 @@
 
     <AuthorizeView>
         <MudNavLink Icon="@Icons.Material.Filled.List" Href="/items">@T["Items"]</MudNavLink>
+
+        <MudNavLink Icon="@Icons.Material.Filled.Chat" Href="/conversation">@T["Chat"]</MudNavLink>
     </AuthorizeView>
 
-    <MudNavLink Icon="@Icons.Material.Filled.List" Href="/worker">@T["Worker"]</MudNavLink>
+    <MudNavLink Icon="@Icons.Material.Filled.ListAlt" Href="/worker">@T["Worker"]</MudNavLink>
 
     <AuthorizeView Roles="Administrator,Manager">
         <MudText Typo="Typo.caption" Class="ms-4 mt-4 uppercase" Style="color: gray;"><b>Administration</b></MudText>
