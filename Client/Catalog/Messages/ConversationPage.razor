@@ -37,11 +37,11 @@
         float: right;
     }
 
-    .bubble-group .bubble-group-content > div:first-child > .bubble-right {
+    .bubble-group .bubble-group-content > div:first-of-type > .bubble-right {
         border-top-right-radius: 20px;
     }
 
-    .bubble-group .bubble-group-content > div:last-child > .bubble-right {
+    .bubble-group .bubble-group-content > div:last-of-type > .bubble-right {
         border-bottom-right-radius: 20px;
     }
 
@@ -52,22 +52,32 @@
         border-bottom-right-radius: 20px;
     }
 
-    .bubble-group .bubble-group-content > div:first-child > .bubble-left {
+    .bubble-group .bubble-group-content > div:first-of-type > .bubble-left {
         border-top-left-radius: 20px;
     }
 
-    .bubble-group .bubble-group-content > div:last-child > .bubble-left {
+    .bubble-group .bubble-group-content > div:last-of-type > .bubble-left {
         border-bottom-left-radius: 20px;
     }
 
     .bubble-group {
         margin-bottom: 10px;
     }
+
+    .bottom {
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        position: fixed;
+        padding: 10px; 
+        z-index: 99999; 
+        background-color: white; 
+        border-top: solid #ececec 1px;
+    }
 </style>
 
 <PageTitle>Chat - Catalog</PageTitle>
-
-<MudText Typo="Typo.h3" GutterBottom="true">Chat</MudText>
 
 <MudGrid>
     <MudItem xs="12" sm="12" md="8">
@@ -88,7 +98,7 @@
                                 @{
                                     var nameParts = group.Sender.Split(" ");
                                 }
-                                <MudAvatar Size="Size.Medium">@nameParts[0][0]@nameParts[1][0]</MudAvatar>
+                                <MudAvatar Style="margin-top: -2px" Size="Size.Medium">@nameParts[0][0]@nameParts[1][0]</MudAvatar>
                             </Avatar>
 
                             <ContentTemplate Context="message">
@@ -100,7 +110,7 @@
                                     <Actions>
                                         <MudMenu AnchorOrigin="Origin.BottomLeft">
                                             <ActivatorContent>
-                                                <MudIconButton Style="margin-top: -5px" Icon="@Icons.Filled.MoreVert" Variant="Variant.Text" Color="Color.Secondary" />
+                                                <MudIconButton Style="margin-top: -5px; padding: 10px;" Icon="@Icons.Filled.MoreVert" Variant="Variant.Text" Color="Color.Secondary" />
                                             </ActivatorContent>
                                             <ChildContent>
                                                 <MudMenuItem>Delete</MudMenuItem>
@@ -132,22 +142,24 @@
         @* <div>
             <MudText Typo="Typo.subtitle2" Class="mt-6 mb-4" Align="Align.Center">Conversation ended 11:37</MudText>
         </div> *@
-
-        <MudGrid>
-            <MudItem xs="12" sm="10" md="10">
-                <MudTextField @bind-Value="text" Variant="Variant.Outlined" Lines="5"></MudTextField>
-            </MudItem>
-
-             <MudItem xs="12" sm="2" md="2">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.Send" OnClick="Post">Send</MudButton>
-            </MudItem>
-        </MudGrid>
     </MudItem>
 
     <MudItem xs="12" sm="12" md="4">
 
     </MudItem>
 </MudGrid>
+
+<div class="bottom">
+            <MudGrid>
+            <MudItem xs="10" sm="10" md="11">
+                <MudTextField @bind-Value="text" Variant="Variant.Filled" Lines="1"></MudTextField>
+            </MudItem>
+
+             <MudItem xs="2" sm="2" md="1">
+                <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Filled.Send" Class="mt-2" Style="border-radius: 50%; padding: 15px;" OnClick="Post" />
+            </MudItem>
+        </MudGrid>
+</div>
 
 @code {
     HubConnection hubConnection;

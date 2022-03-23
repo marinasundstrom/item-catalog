@@ -1,14 +1,19 @@
 <style>
     .bubble-actions {
-        display: true;
+
     }
 
     .bubble-row .bubble-actions {
-        visibility: hidden;
+        display: none;
     }
 
     .bubble-row:hover .bubble-actions {
-        visibility: visible;
+        display: block;
+    }
+
+    .bubble-actions .mud-menu:visible {
+        /* Revisit */
+        display: block !important;
     }
 </style>
 <div class="bubble-row d-flex @BubbleRowClasses">
