@@ -37,6 +37,9 @@
     <ProjectReference Include="..\Catalog.Shared\Catalog.Shared.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Microsoft.AspNetCore.SignalR.Client" />

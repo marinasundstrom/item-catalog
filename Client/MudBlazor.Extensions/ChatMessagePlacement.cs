@@ -1,4 +1,4 @@
-namespace Catalog.Messages;
+namespace MudBlazor;
 
 public enum ChatMessagePlacement 
 {

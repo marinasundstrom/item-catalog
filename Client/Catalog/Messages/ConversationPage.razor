@@ -1,5 +1,6 @@
 @page "/conversation"
 @attribute [Authorize]
+@layout ConversationLayout
 @using Microsoft.AspNetCore.SignalR.Client
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
@@ -10,81 +11,6 @@
 @inject IAccessTokenProvider AccessTokenProvider
 @inject Catalog.Shared.Authorization.ICurrentUserService CurrentUserService
 @inject IJSRuntime JSRuntime
-
-<style>
-    body {
-        background-color: #fff !important;
-    }
-
-    .bubble {
-        display: inline-block;
-        padding: 8px 16px;
-        word-break: break-word;
-        border-radius: 4px;
-        margin-bottom: 4px;
-    }
-
-    .bubble-row .bubble {
-        /* max-width: 70%; */
-    }
-
-    .bubble-group-right .bubble-group-header {
-        float: right;
-    }
-
-    .bubble-group-right .bubble-group-footer {
-        float: right;
-    }
-
-    .bubble-right {
-        color: #fff;
-        background-color: #1976d2;
-
-        border-top-left-radius: 20px;
-        border-bottom-left-radius: 20px;
-
-        float: right;
-    }
-
-    .bubble-group .bubble-group-content > div:first-of-type > .bubble-right {
-        border-top-right-radius: 20px;
-    }
-
-    .bubble-group .bubble-group-content > div:last-of-type > .bubble-right {
-        border-bottom-right-radius: 20px;
-    }
-
-    .bubble-left {
-        background-color: #f5f5f5;
-
-        border-top-right-radius: 20px;
-        border-bottom-right-radius: 20px;
-    }
-
-    .bubble-group .bubble-group-content > div:first-of-type > .bubble-left {
-        border-top-left-radius: 20px;
-    }
-
-    .bubble-group .bubble-group-content > div:last-of-type > .bubble-left {
-        border-bottom-left-radius: 20px;
-    }
-
-    .bubble-group {
-        margin-bottom: 10px;
-    }
-
-    .bottom {
-        width: 100%;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        position: fixed;
-        padding: 10px; 
-        z-index: 99999; 
-        background-color: white; 
-        border-top: solid #ececec 1px;
-    }
-</style>
 
 <PageTitle>Chat - Catalog</PageTitle>
 
@@ -162,16 +88,14 @@
     </MudItem>
 </MudGrid>
 
-<div class="bottom">
-            <MudGrid>
-            <MudItem xs="10" sm="10" md="11">
-                <MudTextField @bind-Value="text" Variant="Variant.Filled" Lines="1"></MudTextField>
-            </MudItem>
+<div class="bottom d-flex flex-grow-1 gap-4">
+    <div class="flex-auto d-flex" style="width: 100%">
+        <MudTextField @bind-Value="text" Variant="Variant.Filled" Lines="1"></MudTextField>
 
-             <MudItem xs="2" sm="2" md="1">
-                <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Filled.Send" Class="mt-2" Style="border-radius: 50%; padding: 15px;" OnClick="Post" />
-            </MudItem>
-        </MudGrid>
+    </div>
+    <div class="flex-auto d-flex" style="width: 54px">
+        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Filled.Send" Class="mt-2" Style="border-radius: 50%; padding: 15px;" OnClick="Post" />
+    </div>
 </div>
 
 @code {
@@ -198,7 +122,7 @@
                     return null !;
                 };
             }).WithAutomaticReconnect().Build();
-            
+
             hubConnection.On<MessageDto>("MessageReceived", OnMessageReceived);
 
             hubConnection.Closed += (error) =>
@@ -230,13 +154,13 @@
         }
     }
 
-    async Task OnMessageReceived(MessageDto dto) 
+    async Task OnMessageReceived(MessageDto dto)
     {
         var lastSection = sections.LastOrDefault();
 
-        if(lastSection is null) 
+        if(lastSection is null)
         {
-            lastSection = new Section() 
+            lastSection = new Section()
             {
                 Header = "Today"
             };
@@ -245,9 +169,9 @@
 
         var lastGroup = lastSection.Groups.LastOrDefault();
 
-        if(lastGroup is null) 
+        if(lastGroup is null)
         {
-            lastGroup = new MessageGroup() 
+            lastGroup = new MessageGroup()
             {
                 Sender = dto.SentBy,
                 SenderId = dto.SentById
@@ -281,7 +205,7 @@
         await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
     }
 
-    class MessageDto 
+    class MessageDto
     {
         public string SentBy { get; set; } = null!;
 
@@ -297,7 +221,7 @@
         await hubConnection.DisposeAsync();
     }
 
-    private void Init() 
+    private void Init()
     {
         var yesterdaySection = new Section()
         {
@@ -375,7 +299,7 @@
 
     List<Section> sections = new List<Section>();
 
-    async Task Post() 
+    async Task Post()
     {
         if(string.IsNullOrEmpty(text))
         {

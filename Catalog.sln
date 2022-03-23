@@ -56,6 +56,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications.Client", "Ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications", "Server\Notifications\Notifications\Notifications.csproj", "{4E99409C-0705-4C84-8465-C3700D6762D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MudBlazor.Extensions", "Client\MudBlazor.Extensions\MudBlazor.Extensions.csproj", "{49CBD685-EDC4-48E0-B63D-155D2669DE67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -130,6 +132,10 @@ Global
 		{4E99409C-0705-4C84-8465-C3700D6762D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E99409C-0705-4C84-8465-C3700D6762D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E99409C-0705-4C84-8465-C3700D6762D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49CBD685-EDC4-48E0-B63D-155D2669DE67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49CBD685-EDC4-48E0-B63D-155D2669DE67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49CBD685-EDC4-48E0-B63D-155D2669DE67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49CBD685-EDC4-48E0-B63D-155D2669DE67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,5 +165,6 @@ Global
 		{03EA5E18-1AB5-4AB6-A8E2-F80274F56EA5} = {0835A9D5-FAED-4BE3-94E1-5D9E67ABD85C}
 		{EF70063D-B04D-4D46-9575-C647951501C0} = {03EA5E18-1AB5-4AB6-A8E2-F80274F56EA5}
 		{4E99409C-0705-4C84-8465-C3700D6762D4} = {03EA5E18-1AB5-4AB6-A8E2-F80274F56EA5}
+		{49CBD685-EDC4-48E0-B63D-155D2669DE67} = {0CD6BE3D-ABFE-4626-AB50-D0264076737A}
 	EndGlobalSection
 EndGlobal

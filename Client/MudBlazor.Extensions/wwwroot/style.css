@@ -1,0 +1,70 @@
+﻿
+.bubble {
+    display: inline-block;
+    padding: 8px 16px;
+    word-break: break-word;
+    border-radius: 4px;
+    margin-bottom: 4px;
+}
+
+.bubble-row .bubble {
+    /* max-width: 70%; */
+}
+
+.bubble-group-right .bubble-group-header {
+    float: right;
+}
+
+.bubble-group-right .bubble-group-footer {
+    float: right;
+}
+
+.bubble-right {
+    color: #fff;
+    background-color: #1976d2;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    float: right;
+}
+
+.bubble-group .bubble-group-content > div:first-of-type > .bubble-right {
+    border-top-right-radius: 20px;
+}
+
+.bubble-group .bubble-group-content > div:last-of-type > .bubble-right {
+    border-bottom-right-radius: 20px;
+}
+
+.bubble-left {
+    background-color: #f5f5f5;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.bubble-group .bubble-group-content > div:first-of-type > .bubble-left {
+    border-top-left-radius: 20px;
+}
+
+.bubble-group .bubble-group-content > div:last-of-type > .bubble-left {
+    border-bottom-left-radius: 20px;
+}
+
+.bubble-group {
+    margin-bottom: 10px;
+}
+
+.bubble-actions {
+}
+
+.bubble-row .bubble-actions {
+    display: none;
+}
+
+.bubble-row:hover .bubble-actions {
+    display: block;
+}
+
+.bubble-actions .mud-menu:visible {
+    /* Revisit */
+    display: block !important;
+}
