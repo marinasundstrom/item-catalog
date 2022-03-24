@@ -36,9 +36,10 @@ public class MessageHub : Hub<IMessageClient>
     {
         _currentUserService.SetCurrentUser(this.Context.UserIdentifier!);
 
-        await _mediator.Send(new PostMessageCommand(null!, message));
+        var id = await _mediator.Send(new PostMessageCommand(null!, message));
 
         await Clients.All.MessageReceived(new MessageDto() {
+            Id = id,
             SentBy = this.Context.User!.FindFirst(x => x.Type.EndsWith("name"))!.Value,
             SentById = this.Context.UserIdentifier,
             Content = message,

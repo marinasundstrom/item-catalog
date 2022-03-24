@@ -1,6 +1,6 @@
 namespace MudBlazor;
 
-public enum ChatMessagePlacement 
+public enum MessagePosition 
 {
     Left = 1,
     Right

@@ -25,59 +25,64 @@
                 </Header>
 
                 <ChildContent>
+                    <Virtualize Context="message" Items="@messages" ItemSize="25">
+                        <ItemContent>
+                            @{
+                                int messageIndex = messages.IndexOf(message);
+                                bool isFirst = messageIndex == 0 || message.SenderId != messages[messageIndex - 1].SenderId;
+                                bool isLast = messageIndex == messages.Count - 1 || message.SenderId != messages[messageIndex + 1].SenderId;
+                            }
+                            <MudMessage @key="@message.Id" Position="@(IsFromCurrentUser(message) ? MessagePosition.Right : MessagePosition.Left)">
+                                
+                                    <Header>
+                                        @if (messageIndex == 0 || message.SenderId != messages[messageIndex - 1].SenderId)
+                                        {
+                                            <MudText Typo="Typo.caption" Style="color: gray;">@message.Sender</MudText>
+                                        }
+                                    </Header>
 
-                    @foreach (var group in groups)
-                    {
-                        <MudChatMessage T="Message" Messages="group.Messages" @key="@group.Id" Placement="@(group.SenderId == userId ? ChatMessagePlacement.Right : ChatMessagePlacement.Left)" ShowAvatar="@(group.SenderId != userId)">
-                            <Avatar>
-                                @{
-                                    var nameParts = group.Sender.Split(" ");
-                                }
-                                <MudAvatar Style="margin-top: -2px" Size="Size.Medium">@nameParts[0][0]@nameParts[1][0]</MudAvatar>
-                            </Avatar>
+                                <SideContent>
+                                    @if (!IsFromCurrentUser(message))
+                                    {
+                                        <div class="message-avatar">
+                                            <MudAvatar>@GetInitials(message.Sender)</MudAvatar>
+                                        </div>
+                                    }
+                                </SideContent>
 
-                            @* <Header>
-                                <MudText Typo="Typo.caption" Style="color: gray;">@group.Header</MudText>
-                            </Header> *@
-
-                            <ContentTemplate Context="message">
-                                <MudChatBubble @key="message.Id">
-                                    <ChildContent>
-                                        <p>@message.Content</p>
-                                    </ChildContent>
-
-                                    <Actions>
+                                <Content>
+                                    @message.Content
+                                </Content>
+    @*
+                                <Overlay>
+                                    ❤️
+                                </Overlay>
+    *@
+                                <Actions>
                                         <MudMenu AnchorOrigin="Origin.BottomLeft">
                                             <ActivatorContent>
-                                                <MudIconButton Style="margin-top: -5px; padding: 10px;" Icon="@Icons.Filled.MoreVert" Variant="Variant.Text" Color="Color.Secondary" />
+                                                <MudIconButton Style="margin-top: -5px; padding: 10px;" Icon="@Icons.Filled.MoreVert"
+                                                    Variant="Variant.Text" Color="Color.Secondary" />
                                             </ActivatorContent>
                                             <ChildContent>
                                                 <MudMenuItem>Delete</MudMenuItem>
                                                 <MudMenuItem>Report</MudMenuItem>
                                             </ChildContent>
                                         </MudMenu>
-                                    </Actions>
-                                </MudChatBubble>
-                            </ContentTemplate>
+                                </Actions>
+                            </MudMessage>
+                        </ItemContent>
 
-                            @* <Content>
-                                @foreach (var message in group.Messages)
-                                {
-                                    <MudChatBubble @key="@message.Id">
-                                        <p>@message.Content</p>
-                                    </MudChatBubble>
-                                }
-                            </Content> *@
-
-                            <Footer>
-                                <MudText Typo="Typo.caption" Style="color: gray;">@group.Footer</MudText>
-                            </Footer>
-                        </MudChatMessage>
-                    }
+                        <Placeholder>
+                             <p>
+                                Loading&hellip;
+                            </p>
+                        </Placeholder>
+                    </Virtualize>
                 </ChildContent>
             </MudChatSection>
 
-            <div style="height: 50px"></div>
+            <div style="height: 90px"></div>
 
         @* <div>
             <MudText Typo="Typo.subtitle2" Class="mt-6 mb-4" Align="Align.Center">Conversation ended 11:37</MudText>
@@ -103,8 +108,19 @@
 
     string userId;
 
-    List<MessageGroup> groups = new List<MessageGroup>();
+    List<Message> messages = new List<Message>();
 
+    string GetInitials(string name) 
+    {
+        var nameParts = name.Split(" ");
+        return $"{nameParts[0][0]}{nameParts[1][0]}";
+    }
+
+
+    bool IsFromCurrentUser(Message message) 
+    {
+        return message.SenderId == userId;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -159,6 +175,8 @@
         }
 
         await LoadItems();
+
+        await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
     }
 
     void OnUserJoined(UserDto2 dto)
@@ -177,37 +195,12 @@
 
     async Task OnMessageReceived(MessageDto dto)
     {
-        var lastGroup = groups.LastOrDefault();
-
-        if(lastGroup is null)
-        {
-            lastGroup = new MessageGroup()
-            {
-                Sender = dto.SentBy,
-                SenderId = dto.SentById
-            };
-            groups.Add(lastGroup);
-        }
-
-        if(lastGroup.SenderId != dto.SentById) {
-            lastGroup = new MessageGroup() {
-                Sender = dto.SentBy,
-                SenderId = dto.SentById
-            };
-
-            groups.Add(lastGroup);
-
-            lastGroup.Header = $"{DateTime.Now.TimeOfDay}";
-            lastGroup.Footer = $"Received {DateTime.Now.Humanize()}";
-        }
-        else
-        {
-            lastGroup.Header = $"{DateTime.Now.TimeOfDay}";
-            lastGroup.Footer = $"Read {DateTime.Now.Humanize()}";
-        }
-
-        lastGroup.Messages.Add(new Message() {
-            Content = dto.Content!
+        messages.Add(new Message() {
+            Id = dto.Id!,
+            Sender = dto.SentBy,
+            SenderId = dto.SentById,
+            Content = dto.Content!,
+            DateSent = dto.DateSent
         });
 
         StateHasChanged();
@@ -225,21 +218,17 @@
     {
         var results = await MessagesClient.GetMessagesAsync(skip, 10, null!, null);
 
-        foreach(var result in results.Items)
+        foreach(var dto in results.Items)
         {
-            var group = new MessageGroup()
-            {
-                SenderId = result.CreatedBy.Id,
-                Sender = result.CreatedBy.FirstName + " " + result.CreatedBy.LastName
+            var message = new Message() {
+                Id = dto.Id,
+                Sender = dto.CreatedBy.FirstName + " " + dto.CreatedBy.LastName,
+                SenderId = dto.CreatedBy.Id,
+                Content = dto.Text!,
+                DateSent = dto.Created.DateTime
             };
 
-            group.Messages.Add(new Message()
-            {
-                Id = result.Id,
-                Content = result.Text
-            });
-
-            groups.Insert(0, group);
+            messages.Insert(0, message);
         }
 
         StateHasChanged();
@@ -247,6 +236,8 @@
 
     class MessageDto
     {
+        public string? Id { get; set; }
+
         public string SentBy { get; set; } = null!;
 
         public string SentById { get; set; } = null!;
@@ -266,84 +257,6 @@
     {
         await hubConnection.DisposeAsync();
     }
-
-    private void Init()
-    {
-        var yesterdaySection = new Section()
-        {
-            Header = "Yesterday",
-        };
-
-        var group = new MessageGroup()
-        {
-            Sender = "BS",
-            Footer = "Received 11:26"
-        };
-
-        group.Messages.Add(new Message()
-        {
-            Content = "Hi Alice, How r u today?"
-        });
-
-        group.Messages.Add(new Message()
-        {
-            Content = "Did you train yesterday?"
-        });
-
-        group.Messages.Add(new Message()
-        {
-            Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Volutpat lacus laoreet non curabitur gravida."
-        });
-
-        yesterdaySection.Groups.Add(group);
-
-        sections.Add(yesterdaySection);
-
-        var todaySection = new Section()
-        {
-            Header = "Today",
-        };
-
-        group = new MessageGroup()
-        {
-            Sender = "AS",
-            Footer = "Read 11:32"
-        };
-
-        group.Messages.Add(new Message()
-        {
-            Content = "Great! What's about you?"
-        });
-
-        group.Messages.Add(new Message()
-        {
-            Content = "Of course I did. Speaking of which check this out"
-        });
-
-        todaySection.Groups.Add(group);
-
-        group = new MessageGroup()
-        {
-            Sender = "BS",
-            Footer = "Received 11:37"
-        };
-
-        group.Messages.Add(new Message()
-        {
-            Content = "I'm well"
-        });
-
-        group.Messages.Add(new Message()
-        {
-            Content = "See u later. ❤️"
-        });
-
-        todaySection.Groups.Add(group);
-
-        sections.Add(todaySection);
-    }
-
-    List<Section> sections = new List<Section>();
 
     async Task Post()
     {
@@ -365,27 +278,20 @@
 
         public string? Header { get; set; }
 
-        public List<MessageGroup> Groups { get; set; } = new List<MessageGroup>();
-    }
-
-    public class MessageGroup
-    {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-
-        public string Sender { get; set; } = null!;
-        public string SenderId { get; set; } = null!;
-
         public List<Message> Messages { get; set; } = new List<Message>();
-
-        public string Header { get; set; } = null!;
-
-        public string Footer { get; set; } = null!;
     }
+
 
     public class Message
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
+        public string Sender { get; set; } = null!;
+
+        public string SenderId { get; set; } = null!;
+
         public string Content { get; set; } = null!;
+
+        public DateTime? DateSent { get; set; }
     }
 }

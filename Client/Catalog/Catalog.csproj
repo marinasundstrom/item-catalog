@@ -11,10 +11,22 @@
     <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <!-- outputstyle option -->
+    <DartSassOutputStyle>compressed</DartSassOutputStyle>
+    <DartSassOutputStyle Condition="'$(Configuration)' == 'Debug'">expanded</DartSassOutputStyle>
+    <!-- level option -->
+    <DartSassOutputLevel>verbose</DartSassOutputLevel>
+    <!-- msbuild output level -->
+    <DartSassMessageLevel>High</DartSassMessageLevel>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Portal' ">
     <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="DartSassBuilder" Version="0.2.2-beta" />
+    <PackageReference Include="Microsoft.ClearScript.V8.Native.osx-arm64" Version="7.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.2" />
@@ -40,8 +52,5 @@
     <ProjectReference Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Microsoft.AspNetCore.SignalR.Client" />
   </ItemGroup>
 </Project>

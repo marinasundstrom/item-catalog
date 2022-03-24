@@ -5,7 +5,7 @@
     right: 0;
     position: fixed;
     padding: 10px;
-    z-index: 99999;
+    z-index: 999;
     background-color: white;
     border-top: solid #ececec 1px;
 }
