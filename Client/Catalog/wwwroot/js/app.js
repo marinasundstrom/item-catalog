@@ -12,10 +12,20 @@ window.helpers = {
         const element = document.getElementById(id);
         if (element)
         {
-            element.scrollIntoView();
+            element.scrollIntoView({
+                behavior: 'smooth'
+            });
         }
     },
     scrollToBottom : function() {
-        window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
+        return new Promise((resolve, reject) => { 
+            window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" }); 
+            resolve(); 
+        });
+    },
+    attachScrollEventHandler: function(objRef) {
+        window.addEventListener("scroll", () => {
+            return objRef.invokeMethodAsync('OnScroll', { X: window.scrollX , Y: window.scrollY });
+        });
     }
 }

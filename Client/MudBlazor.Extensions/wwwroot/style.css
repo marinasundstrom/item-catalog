@@ -85,3 +85,20 @@
     background-color: #f5f5f5;
     border-radius: 20px;
 }
+
+.message .row {
+    margin-top: 5px;
+}
+
+.message .row .time {
+    float: right;
+    margin-top: 2px;
+}
+
+.message.message-right .row {
+    flex-direction: row-reverse !important;
+}
+
+.message.message-right .row .time {
+    float: right;
+}

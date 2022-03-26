@@ -21,37 +21,62 @@
 
             <MudChatSection>
                 <Header>
-                    <MudText Typo="Typo.h6" Class="mt-6 mb-4" Align="Align.Center">Today</MudText>
+                    <MudText Typo="Typo.h6" Class="mt-6 mb-4" Align="Align.Center">Conversation</MudText>
                 </Header>
 
                 <ChildContent>
-                    <Virtualize Context="message" Items="@messages" ItemSize="25">
-                        <ItemContent>
-                            @{
+                    @foreach (var message in messages) 
+                    {
                                 int messageIndex = messages.IndexOf(message);
-                                bool isFirst = messageIndex == 0 || message.SenderId != messages[messageIndex - 1].SenderId;
-                                bool isLast = messageIndex == messages.Count - 1 || message.SenderId != messages[messageIndex + 1].SenderId;
-                            }
+                                Message? previousMessage = null;
+                                Message? nextMessage = null;
+                                if(messageIndex > 0) 
+                                {
+                                    previousMessage = messages[messageIndex - 1];
+                                }
+                                if(messageIndex < messages.Count - 1) 
+                                {
+                                    nextMessage = messages[messageIndex + 1];
+                                }
+
+                                bool isFirst = previousMessage == null || !FromSameSender(message, previousMessage);
+                                bool isLast = nextMessage == null || !IsSameTime(message, nextMessage) || !FromSameSender(message, nextMessage);
+                                bool isSameSenderAsPrevious = previousMessage == null || FromSameSender(message, previousMessage);
+                                
+                                bool sameMinutesAsLast = previousMessage == null || IsSameTime(message, previousMessage);
+
                             <MudMessage @key="@message.Id" Position="@(IsFromCurrentUser(message) ? MessagePosition.Right : MessagePosition.Left)">
                                 
-                                    <Header>
-                                        @if (messageIndex == 0 || message.SenderId != messages[messageIndex - 1].SenderId)
+                                    <Footer>
+                                        @*
+                                        @if (isLast)
                                         {
-                                            <MudText Typo="Typo.caption" Style="color: gray;">@message.Sender</MudText>
+                                            <MudText Typo="Typo.caption" Style="color: gray;">@message.DateSent.GetValueOrDefault().ToString("HH:mm")</MudText>
                                         }
-                                    </Header>
+                                        *@
+                                    </Footer>
 
                                 <SideContent>
                                     @if (!IsFromCurrentUser(message))
                                     {
-                                        <div class="message-avatar">
-                                            <MudAvatar Size="Size.Small">@GetInitials(message.Sender)</MudAvatar>
-                                        </div>
+                                        if(!isSameSenderAsPrevious || isFirst || sameMinutesAsLast) 
+                                        {
+                                            <div class="message-avatar">
+                                                <MudAvatar Size="Size.Small">@GetInitials(message.Sender)</MudAvatar>
+                                            </div>
+                                        }
                                     }
                                 </SideContent>
 
                                 <Content>
                                     @message.Content
+                                    <div class="row d-flex flex-row flex-grow-1 gap-2">
+                                        @if(IsFromCurrentUser(message)) 
+                                        {
+                                            <MudIcon Icon="@Icons.Filled.CheckCircle" Size="Size.Small" />
+                                        }
+                                        <small class="time">@message.DateSent.GetValueOrDefault().ToString("HH:mm")</small>
+                                    </div>
                                 </Content>
     @*
                                 <Overlay>
@@ -71,14 +96,7 @@
                                         </MudMenu>
                                 </Actions>
                             </MudMessage>
-                        </ItemContent>
-
-                        <Placeholder>
-                             <p>
-                                Loading&hellip;
-                            </p>
-                        </Placeholder>
-                    </Virtualize>
+                        }
                 </ChildContent>
             </MudChatSection>
 
@@ -116,10 +134,20 @@
         return $"{nameParts[0][0]}{nameParts[1][0]}";
     }
 
-
     bool IsFromCurrentUser(Message message) 
     {
         return message.SenderId == userId;
+    }
+
+    bool FromSameSender(Message m1, Message m2) 
+    {
+        return m1.SenderId == m2.SenderId;
+    }
+
+    bool IsSameTime(Message m1, Message m2) 
+    {
+        return (m1.DateSent.GetValueOrDefault().Hour == m2.DateSent.GetValueOrDefault().Hour
+                && m1.DateSent.GetValueOrDefault().Minute == m2.DateSent.GetValueOrDefault().Minute);
     }
 
     protected override async Task OnInitializedAsync()
@@ -174,8 +202,10 @@
             Snackbar.Add(exc.Message.ToString(), Severity.Error);
         }
 
-        await LoadItems();
+        await LoadItems(30);
 
+        await JSRuntime.InvokeVoidAsync("helpers.attachScrollEventHandler", DotNetObjectReference.Create(this));
+        
         await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
     }
 
@@ -203,20 +233,55 @@
             DateSent = dto.DateSent
         });
 
-        StateHasChanged();
+        this.skip++;
 
+        StateHasChanged();
+        
         await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
     }
 
-    async Task LoadItems()
+    public record Point(double X, double Y);
+
+    double lastY = 9999;
+    double threshold = 900;
+
+    [JSInvokable("OnScroll")]
+    public async Task OnScroll(Point args)
     {
-        await LoadItems(0);
+        if(Math.Round(args.Y) % 10 != 0)
+        {
+            return;
+        }
+
+        if(args.Y < lastY) 
+        {
+            Console.WriteLine(args);
+
+            if(args.Y <= threshold) 
+            {
+                await LoadItemsIncr(30);
+            }
+        }
+        
+        lastY = args.Y;
     }
 
+    int skip = 0;
+    int total = 0;
 
-    async Task LoadItems(int skip)
+    async Task LoadItems(int take = 10)
     {
-        var results = await MessagesClient.GetMessagesAsync(skip, 10, null!, null);
+        messages.Clear();
+
+        this.skip = 0;
+        await LoadItemsCore(take);
+    }
+
+    async Task LoadItemsCore(int take = 10)
+    {
+        var results = await MessagesClient.GetMessagesAsync(this.skip, take, null!, null);
+        total = results.TotalCount;
+        this.skip += results.Items.Count;
 
         foreach(var dto in results.Items)
         {
@@ -233,6 +298,35 @@
 
         StateHasChanged();
     }
+
+    bool loading;
+
+    async Task LoadItemsIncr(int take = 10)
+    {
+        if(loading)
+        {
+            return;
+        }
+
+        try 
+        {
+            loading = true;
+
+            if(messages.Count == total) 
+            {
+                return;
+            }
+
+            Console.WriteLine(total);
+            Console.WriteLine(skip);
+
+            await LoadItemsCore(take);
+        }
+        finally
+        {
+            loading = false;
+        }
+    } 
 
     class MessageDto
     {
