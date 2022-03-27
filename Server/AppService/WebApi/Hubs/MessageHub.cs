@@ -47,6 +47,25 @@ public class MessageHub : Hub<IMessageClient>
         });
     }
 
+    public async Task EditMessage(string id, string message) 
+    {
+        _currentUserService.SetCurrentUser(this.Context.UserIdentifier!);
+
+        await _mediator.Send(new UpdateMessageCommand(id, message));
+        await Clients.All.MessageEdited(new MessageEditedDto {
+            Id = id
+        });
+    }
+
+    public async Task DeleteMessage(string id) 
+    {
+        _currentUserService.SetCurrentUser(this.Context.UserIdentifier!);
+
+        await _mediator.Send(new DeleteMessageCommand(id));
+        await Clients.All.MessageDeleted(new MessageDeletedDto {
+            Id = id
+        });
+    }
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
         await Clients.All.UserLeft(new UserDto2()

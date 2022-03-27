@@ -43,6 +43,7 @@ public class GetMessagesIncrQuery : IRequest<Results<MessageDto>>
                 .Include(c => c.LastModifiedBy)
                 //.Where(c => c.Item.Id == request.ItemId)
                 .OrderByDescending(c => c.Created)
+                //.IgnoreQueryFilters()
                 .AsSplitQuery()
                 .AsQueryable();
 

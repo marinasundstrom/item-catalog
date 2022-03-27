@@ -6,7 +6,22 @@ public interface IMessageClient
 
     Task MessageReceived(MessageDto message);
 
+    Task MessageDeleted(MessageDeletedDto dto);
+
+    Task MessageEdited(MessageEditedDto dto);
+
     Task UserLeft(UserDto2 user);
+}
+
+public class MessageDeletedDto
+{
+    public string? Id { get; set; }
+}
+
+
+public class MessageEditedDto
+{
+    public string? Id { get; set; }
 }
 
 public class MessageDto

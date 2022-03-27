@@ -12,9 +12,12 @@
     }
 
     <div class="message-inner d-flex flex-row flex-grow-1 gap-4">
-        <div class="flex-none message-side">
-            @SideContent
-        </div>
+        @if(SideContent is not null && IsSideContentVisible) 
+        {
+            <div class="flex-none message-side">
+                @SideContent
+            </div>
+        }
         <div class="message-content">
             <div class="bubble">
                 @Content
@@ -47,6 +50,9 @@
 </div>
 
 @code {
+    [Parameter]
+    public bool IsSideContentVisible { get; set; }
+
     [Parameter]
     public RenderFragment SideContent { get; set; }
 
