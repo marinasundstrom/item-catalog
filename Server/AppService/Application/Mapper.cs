@@ -27,6 +27,6 @@ public static class Mapper
 
     public static Messages.MessageDto ToDto(this Domain.Entities.Message message)
     {
-        return new Messages.MessageDto(message.Id, message.Text, message.Created, message.CreatedBy?.ToDto(), message.LastModified, message.LastModifiedBy?.ToDto());
+        return new Messages.MessageDto(message.Id, message.Text, message.Created, message.CreatedBy?.ToDto(), message.LastModified, message.LastModifiedBy?.ToDto(), message.Deleted, message.DeletedBy?.ToDto());
     }
 }

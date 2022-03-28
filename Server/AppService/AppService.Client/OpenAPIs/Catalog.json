@@ -1318,6 +1318,19 @@
                 "$ref": "#/components/schemas/UserDto"
               }
             ]
+          },
+          "deleted": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "deletedBy": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserDto"
+              }
+            ]
           }
         }
       },

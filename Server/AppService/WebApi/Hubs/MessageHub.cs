@@ -25,7 +25,7 @@ public class MessageHub : Hub<IMessageClient>
     {
         await base.OnConnectedAsync();
 
-        await Clients.All.UserJoined(new UserDto2()
+        await Clients.Others.UserJoined(new UserDto2()
         {
             User = this.Context.User!.FindFirst(x => x.Type.EndsWith("name"))!.Value,
             UserId = this.Context.UserIdentifier
@@ -68,7 +68,7 @@ public class MessageHub : Hub<IMessageClient>
     }
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        await Clients.All.UserLeft(new UserDto2()
+        await Clients.Others.UserLeft(new UserDto2()
         {
             User = this.Context.User!.FindFirst(x => x.Type.EndsWith("name"))!.Value,
             UserId = this.Context.UserIdentifier

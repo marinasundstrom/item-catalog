@@ -19,7 +19,7 @@
             </div>
         }
         <div class="message-content">
-            <div class="bubble">
+            <div class="bubble @ContentClass" style="@ContentStyle">
                 @Content
             </div>
             @if(Overlay is not null) 
@@ -75,8 +75,14 @@
     public MessagePosition Position { get; set; }
 
     [Parameter]
-    public string Class { get; set; }
+    public string? Class { get; set; }
 
     [Parameter]
-    public string Style { get; set; }
+    public string? Style { get; set; }
+
+    [Parameter]
+    public string? ContentClass { get; set; }
+
+    [Parameter]
+    public string? ContentStyle { get; set; }
 }

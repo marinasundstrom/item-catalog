@@ -32,6 +32,7 @@ public record DeleteMessageCommand(string MessageId) : IRequest
                 throw new UnauthorizedAccessException("Unauthorized");
             }
 
+            message.Text = string.Empty;
             context.Messages.Remove(message);
 
             await context.SaveChangesAsync(cancellationToken);

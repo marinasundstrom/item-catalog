@@ -49,7 +49,8 @@
                                 
                                 bool sameMinutesAsLast = previousMessage == null || IsSameTime(message, previousMessage);
 
-                            <MudMessage @key="@message.Id" IsSideContentVisible="@(!IsFromCurrentUser(message))" Position="@(IsFromCurrentUser(message) ? MessagePosition.Right : MessagePosition.Left)">
+                            <MudMessage @key="@message.Id" IsSideContentVisible="@(!IsFromCurrentUser(message))" Position="@(IsFromCurrentUser(message) ? MessagePosition.Right : MessagePosition.Left)"
+                                ContentClass="@(message.DateDeleted is not null ? "deleted" : string.Empty)">
                                 
                                     <Footer>
                                         @*
@@ -73,14 +74,21 @@
                                 </SideContent>
 
                                 <Content>
-                                    @message.Content
-                                    <div class="row d-flex flex-row flex-grow-1 gap-2">
-                                        @if(IsFromCurrentUser(message)) 
-                                        {
-                                            <MudIcon Icon="@Icons.Filled.CheckCircle" Size="Size.Small" Style="height: 0.8em; margin-top: 2px;" />
-                                        }
-                                        <small class="time">@message.DateSent.GetValueOrDefault().ToString("HH:mm")</small>
-                                    </div>
+                                    @if(message.DateDeleted is not null)
+                                    {
+                                        <p>Message was deleted.</p>
+                                    }
+                                    else
+                                    {
+                                        @message.Content
+                                        <div class="row d-flex flex-row flex-grow-1 gap-2">
+                                            @if(IsFromCurrentUser(message)) 
+                                            {
+                                                <MudIcon Icon="@Icons.Filled.CheckCircle" Size="Size.Small" Style="height: 0.8em; margin-top: 2px;" />
+                                            }
+                                            <small class="time">@message.DateSent.GetValueOrDefault().ToString("HH:mm")</small>
+                                        </div>
+                                    }
                                 </Content>
     @*
                                 <Overlay>
@@ -88,30 +96,32 @@
                                 </Overlay>
     *@
                                 <Actions>
+                                    @if (message.DateDeleted is null)
+                                    {
                                         <MudMenu AnchorOrigin="Origin.BottomLeft">
                                             <ActivatorContent>
                                                 <MudIconButton Style="margin-top: -5px; padding: 10px;" Icon="@Icons.Filled.MoreVert"
                                                     Variant="Variant.Text" Color="Color.Secondary" />
                                             </ActivatorContent>
                                             <ChildContent>
-                                                @if(isAuthorizedToEdit) 
-                                                {
+                                                @if (isAuthorizedToEdit)
+                                                    {
                                                     <MudMenuItem>
                                                         <div class="d-flex flex-row flex-grow-1 gap-2">
                                                             <MudIcon Icon="@Icons.Filled.Edit" Size="Size.Medium" />
                                                             Edit
                                                         </div>
                                                     </MudMenuItem>
-                                                }
-                                                @if(isAuthorizedToDelete) 
-                                                {
+                                                    }
+                                                @if (isAuthorizedToDelete)
+                                                    {
                                                     <MudMenuItem OnClick="async () => await DeleteMessage(message)">
                                                         <div class="d-flex flex-row flex-grow-1 gap-2">
                                                             <MudIcon Icon="@Icons.Filled.Delete" Size="Size.Medium" />
                                                             Delete
                                                         </div>
                                                     </MudMenuItem>
-                                                }
+                                                    }
                                                 <MudMenuItem>
                                                     <div class="d-flex flex-row flex-grow-1 gap-2">
                                                         <MudIcon Icon="@Icons.Filled.Report" Size="Size.Medium" />
@@ -120,6 +130,7 @@
                                                 </MudMenuItem>
                                             </ChildContent>
                                         </MudMenu>
+                                    }
                                 </Actions>
                             </MudMessage>
                         }
@@ -280,7 +291,14 @@
 
     async Task OnMessageEdited(MessageEditedDto dto)
     {
-        
+        var message = messages.FirstOrDefault(x => x.Id == dto.Id);
+
+        if(message is not null) 
+        {
+            message.Content = dto.Text;
+
+            StateHasChanged();
+        }     
     }
 
     void OnMessageDeleted(MessageDeletedDto dto)
@@ -289,9 +307,12 @@
 
         if(message is not null) 
         {
-            messages.Remove(message);
+            message.Content = String.Empty;
+            message.DateDeleted = DateTime.Now;
 
-            this.skip--;
+            //messages.Remove(message);
+
+            //this.skip--;
 
             StateHasChanged();
         }
@@ -347,7 +368,8 @@
                 Sender = dto.CreatedBy.FirstName + " " + dto.CreatedBy.LastName,
                 SenderId = dto.CreatedBy.Id,
                 Content = dto.Text!,
-                DateSent = dto.Created.DateTime
+                DateSent = dto.Created.DateTime,
+                DateDeleted = dto.Deleted?.DateTime
             };
 
             messages.Insert(0, message);
@@ -396,6 +418,8 @@
         public string? Content { get; set; }
 
         public DateTime DateSent { get; set; }
+
+        public DateTime? DateDeleted { get; set; }
     }
 
     public class UserDto2
@@ -412,6 +436,8 @@
     public class MessageEditedDto
     {
         public string? Id { get; set; }
+
+        public string Text { get; set; }
     }
 
     public async ValueTask DisposeAsync()
@@ -454,5 +480,7 @@
         public string Content { get; set; } = null!;
 
         public DateTime? DateSent { get; set; }
+
+        public DateTime? DateDeleted { get; set; }
     }
 }

@@ -86,6 +86,12 @@
     border-radius: 20px;
 }
 
+.message .bubble.deleted {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #dddddd;
+}
+
 .message .row {
     /* margin-top: 5px; */
 }
