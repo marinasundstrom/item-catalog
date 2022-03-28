@@ -1299,6 +1299,12 @@
             "type": "string",
             "nullable": true
           },
+          "receipts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReceiptDto"
+            }
+          },
           "created": {
             "type": "string",
             "format": "date-time"
@@ -1331,6 +1337,19 @@
                 "$ref": "#/components/schemas/UserDto"
               }
             ]
+          }
+        }
+      },
+      "ReceiptDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },

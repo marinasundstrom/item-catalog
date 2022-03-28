@@ -81,13 +81,20 @@
                                     else
                                     {
                                         @message.Content
-                                        <div class="row d-flex flex-row flex-grow-1 gap-2">
-                                            @if(IsFromCurrentUser(message)) 
-                                            {
-                                                <MudIcon Icon="@Icons.Filled.CheckCircle" Size="Size.Small" Style="height: 0.8em; margin-top: 2px;" />
-                                            }
-                                            <small class="time">@message.DateSent.GetValueOrDefault().ToString("HH:mm")</small>
-                                        </div>
+                                <div class="row d-flex flex-row flex-grow-1 gap-2">
+                                    @if (IsFromCurrentUser(message))
+                                    {
+                                        @if (message.Receipts.Any(x => x.User != userId))
+                                        {
+                                            <MudIcon Icon="@Icons.Filled.CheckCircle" Size="Size.Small" Style="height: 0.8em; margin-top: 2px;" />
+                                        }
+                                        else
+                                        {
+                                            <MudIcon Icon="@Icons.Filled.CheckCircleOutline" Size="Size.Small" Style="height: 0.8em; margin-top: 2px;" />
+                                        }
+                                    }
+                                    <small class="time">@message.DateSent.GetValueOrDefault().ToString("HH:mm")</small>
+                                </div>
                                     }
                                 </Content>
     @*
@@ -165,29 +172,29 @@
 
     List<Message> messages = new List<Message>();
 
-    string GetInitials(string name) 
+    string GetInitials(string name)
     {
         var nameParts = name.Split(" ");
         return $"{nameParts[0][0]}{nameParts[1][0]}";
     }
 
-    bool IsFromCurrentUser(Message message) 
+    bool IsFromCurrentUser(Message message)
     {
         return message.SenderId == userId;
     }
 
-    bool FromSameSender(Message m1, Message m2) 
+    bool FromSameSender(Message m1, Message m2)
     {
         return m1.SenderId == m2.SenderId;
     }
 
-    bool IsSameTime(Message m1, Message m2) 
+    bool IsSameTime(Message m1, Message m2)
     {
         return (m1.DateSent.GetValueOrDefault().Hour == m2.DateSent.GetValueOrDefault().Hour
                 && m1.DateSent.GetValueOrDefault().Minute == m2.DateSent.GetValueOrDefault().Minute);
     }
 
-    async Task DeleteMessage(Message message) 
+    async Task DeleteMessage(Message message)
     {
         await hubConnection.SendAsync("DeleteMessage", message.Id);
         //await MessagesClient.DeleteMessageAsync(message.Id);
@@ -220,6 +227,7 @@
             hubConnection.On<UserDto2>("UserJoined", OnUserJoined);
             hubConnection.On<MessageDto>("MessageReceived", OnMessageReceived);
             hubConnection.On<MessageEditedDto>("MessageEdited", OnMessageEdited);
+            hubConnection.On<MessageReadDto>("MessageRead", OnMessageRead);
             hubConnection.On<MessageDeletedDto>("MessageDeleted", OnMessageDeleted);
             hubConnection.On<UserDto2>("UserLeft", OnUserLeft);
 
@@ -254,7 +262,7 @@
         await LoadItems(30);
 
         await JSRuntime.InvokeVoidAsync("helpers.attachScrollEventHandler", DotNetObjectReference.Create(this));
-        
+
         await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
     }
 
@@ -279,13 +287,23 @@
             Sender = dto.SentBy,
             SenderId = dto.SentById,
             Content = dto.Content!,
+            /*Receipts = dto.Receipts.Select(x => new Receipt
+            {
+                User = $"{x.User.FirstName} {x.User.LastName}",
+                Date = x.Date
+            }).ToList(),*/
             DateSent = dto.DateSent
         });
 
         this.skip++;
 
+        if(dto.SentById != userId)
+        {
+            await hubConnection.SendAsync("MessageRead", dto.Id);
+        }
+
         StateHasChanged();
-        
+
         await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
     }
 
@@ -293,19 +311,37 @@
     {
         var message = messages.FirstOrDefault(x => x.Id == dto.Id);
 
-        if(message is not null) 
+        if(message is not null)
         {
             message.Content = dto.Text;
 
             StateHasChanged();
-        }     
+        }
+    }
+
+    async Task OnMessageRead(MessageReadDto dto)
+    {
+        Console.WriteLine("message read");
+
+        var message = messages.FirstOrDefault(x => x.Id == dto.Id);
+
+        if (message is not null)
+        {
+            message.Receipts.Add(new Receipt()
+            {
+                User = dto.ReadById, //$"{x.User.FirstName} {x.User.LastName}",
+                Date = dto.Date
+            });
+
+            StateHasChanged();
+        }
     }
 
     void OnMessageDeleted(MessageDeletedDto dto)
     {
         var message = messages.FirstOrDefault(x => x.Id == dto.Id);
 
-        if(message is not null) 
+        if(message is not null)
         {
             message.Content = String.Empty;
             message.DateDeleted = DateTime.Now;
@@ -331,16 +367,16 @@
             return;
         }
 
-        if(args.Y < lastY) 
+        if(args.Y < lastY)
         {
             Console.WriteLine(args);
 
-            if(args.Y <= threshold) 
+            if(args.Y <= threshold)
             {
                 await LoadItemsIncr(30);
             }
         }
-        
+
         lastY = args.Y;
     }
 
@@ -368,11 +404,21 @@
                 Sender = dto.CreatedBy.FirstName + " " + dto.CreatedBy.LastName,
                 SenderId = dto.CreatedBy.Id,
                 Content = dto.Text!,
+                Receipts = dto.Receipts.Select(x => new Receipt
+                {
+                    User = x.User.Id, // $"{x.User.FirstName} {x.User.LastName}",
+                    Date = x.Date.DateTime
+                }).ToList(),
                 DateSent = dto.Created.DateTime,
                 DateDeleted = dto.Deleted?.DateTime
             };
 
             messages.Insert(0, message);
+
+            if (dto.CreatedBy.Id != userId && !message.Receipts.Any(x => x.User == userId))
+            {
+                await hubConnection.SendAsync("MessageRead", dto.Id);
+            }
         }
 
         StateHasChanged();
@@ -387,11 +433,11 @@
             return;
         }
 
-        try 
+        try
         {
             loading = true;
 
-            if(messages.Count == total) 
+            if(messages.Count == total)
             {
                 return;
             }
@@ -405,7 +451,7 @@
         {
             loading = false;
         }
-    } 
+    }
 
     class MessageDto
     {
@@ -438,6 +484,15 @@
         public string? Id { get; set; }
 
         public string Text { get; set; }
+    }
+
+    public class MessageReadDto
+    {
+        public string Id { get; set; } = null!;
+
+        public string ReadById { get; set; } = null!;
+
+        public DateTime Date { get; set; }
     }
 
     public async ValueTask DisposeAsync()
@@ -479,8 +534,17 @@
 
         public string Content { get; set; } = null!;
 
+        public List<Receipt> Receipts { get; set; } = new List<Receipt>();
+
         public DateTime? DateSent { get; set; }
 
         public DateTime? DateDeleted { get; set; }
+    }
+
+    public class Receipt
+    {
+        public string User { get; set; }
+
+        public DateTime Date { get; set; }
     }
 }

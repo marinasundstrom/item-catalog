@@ -47,6 +47,20 @@ public class MessageHub : Hub<IMessageClient>
         });
     }
 
+    public async Task MessageRead(string id)
+    {
+        _currentUserService.SetCurrentUser(this.Context.UserIdentifier!);
+
+        await _mediator.Send(new SendMessageRecieptCommand(id));
+
+        await Clients.All.MessageRead(new MessageReadDto()
+        {
+            Id = id,
+            ReadById = this.Context.UserIdentifier!,
+            Date = DateTime.Now
+        });
+    }
+
     public async Task EditMessage(string id, string message) 
     {
         _currentUserService.SetCurrentUser(this.Context.UserIdentifier!);

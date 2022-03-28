@@ -42,6 +42,8 @@ public class GetMessagesIncrQuery : IRequest<Results<MessageDto>>
                 .Include(c => c.CreatedBy)
                 .Include(c => c.LastModifiedBy)
                 .Include(c => c.DeletedBy)
+                .Include(c => c.Receipts)
+                .ThenInclude(r => r.CreatedBy)
                 //.Where(c => c.Item.Id == request.ItemId)
                 .OrderByDescending(c => c.Created)
                 .IgnoreQueryFilters()

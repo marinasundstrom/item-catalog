@@ -20,29 +20,11 @@ public class Message : AuditableEntity, ISoftDelete, IHasDomainEvent
 
     public string Text { get; set; } = null!;
 
-    public DateTime? Deleted { get; set; }
-    public string? DeletedById { get; set; }
-    public User? DeletedBy { get; set; }
+    public List<MessageReceipt> Receipts { get; set; } = new List<MessageReceipt>();
 
-    public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
-}
-
-public class MessageGroup : AuditableEntity, ISoftDelete, IHasDomainEvent
-{
-    protected MessageGroup()
-    {
-
-    }
-
-    public MessageGroup(string text)
-    {
-        Id = Guid.NewGuid().ToString();
-        Text = text;
-    }
-
-    public string Id { get; private set; } = null!;
-
-    public string Text { get; set; } = null!;
+    public Message? ReplyTo { get; set; }
+    public string? ReplyToId { get; set; }
+    public List<Message> Replies = new List<Message>();
 
     public DateTime? Deleted { get; set; }
     public string? DeletedById { get; set; }

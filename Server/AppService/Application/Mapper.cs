@@ -22,11 +22,16 @@ public static class Mapper
 
     public static CommentDto ToDto(this Domain.Entities.Comment comment)
     {
-        return new CommentDto(comment.Id, comment.Text, comment.Created, comment.CreatedBy?.ToDto(), comment.LastModified, comment.LastModifiedBy?.ToDto());
+        return new CommentDto(comment.Id, comment.Text, comment.Created, comment.CreatedBy!.ToDto(), comment.LastModified, comment.LastModifiedBy?.ToDto());
     }
 
     public static Messages.MessageDto ToDto(this Domain.Entities.Message message)
     {
-        return new Messages.MessageDto(message.Id, message.Text, message.Created, message.CreatedBy?.ToDto(), message.LastModified, message.LastModifiedBy?.ToDto(), message.Deleted, message.DeletedBy?.ToDto());
+        return new Messages.MessageDto(message.Id, message.Text, message.Receipts.Select(r => r.ToDto()), message.Created, message.CreatedBy!.ToDto(), message.LastModified, message.LastModifiedBy?.ToDto(), message.Deleted, message.DeletedBy?.ToDto());
+    }
+
+    public static Messages.ReceiptDto ToDto(this Domain.Entities.MessageReceipt receipt)
+    {
+        return new Messages.ReceiptDto(receipt.CreatedBy!.ToDto(), receipt.Created);
     }
 }
