@@ -1,7 +1,7 @@
-<div class="@Class message message-@(Position == MessagePosition.Right ? "right" : "left")" style="@Style">
+<div class="message message-@(Position == MessagePosition.Right ? "right" : "left") @Class" style="@Style">
     @if(Header is not null) 
     {
-        <div class="message-header d-flex flex-row flex-grow-1 gap-4">
+        <div class="message-header d-flex flex-row flex-grow-1">
             <div>
                 
             </div>
@@ -19,15 +19,7 @@
             </div>
         }
         <div class="message-content">
-            <div class="bubble @ContentClass" style="@ContentStyle">
-                @Content
-            </div>
-            @if(Overlay is not null) 
-            {
-                <div class="message-content-overlay">
-                    @Overlay
-                </div>
-            }
+            @Content
         </div>
         <div class="flex-none message-side message-actions">
             <div class="message-actions-container">
@@ -36,9 +28,9 @@
         </div>
     </div>
 
-    @if(Footer is not null) 
+    @if(Footer is not null && IsFooterVisible) 
     {
-        <div class="message-footer d-flex flex-row flex-grow-1 gap-4">
+        <div class="message-footer d-flex flex-row flex-grow-1">
             <div>
 
             </div>
@@ -54,6 +46,9 @@
     public bool IsSideContentVisible { get; set; }
 
     [Parameter]
+    public bool IsFooterVisible { get; set; }
+
+    [Parameter]
     public RenderFragment SideContent { get; set; }
 
     [Parameter]
@@ -66,9 +61,6 @@
     public RenderFragment Content { get; set; }
 
     [Parameter]
-    public RenderFragment Overlay { get; set; }
-
-    [Parameter]
     public RenderFragment Actions { get; set; }
 
     [Parameter]
@@ -79,10 +71,4 @@
 
     [Parameter]
     public string? Style { get; set; }
-
-    [Parameter]
-    public string? ContentClass { get; set; }
-
-    [Parameter]
-    public string? ContentStyle { get; set; }
 }

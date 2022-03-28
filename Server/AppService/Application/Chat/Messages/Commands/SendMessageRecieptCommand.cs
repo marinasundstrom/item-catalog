@@ -7,22 +7,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Messages.Commands;
 
-public record SendMessageRecieptCommand(string MessageId) : IRequest
+public record SendMessageReceiptCommand(string MessageId) : IRequest
 {
-    public class SendMessageRecieptCommandHandler : IRequestHandler<SendMessageRecieptCommand>
+    public class SendMessageReceiptCommandHandler : IRequestHandler<SendMessageReceiptCommand>
     {
         private readonly ICatalogContext context;
+        private readonly ICurrentUserService _currentUserService;
 
-        public SendMessageRecieptCommandHandler(ICatalogContext context)
+        public SendMessageReceiptCommandHandler(ICatalogContext context, ICurrentUserService currentUserService)
         {
             this.context = context;
+            _currentUserService = currentUserService;
         }
 
-        public async Task<Unit> Handle(SendMessageRecieptCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(SendMessageReceiptCommand request, CancellationToken cancellationToken)
         {
+            var userId = _currentUserService.UserId;
+
             var message = await context
                 .Messages
-                .Include(x => x.Receipts)
+                .Include(x => x.Receipts.Where(i => i.CreatedById != userId))
+                .IgnoreQueryFilters()
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(i => i.Id == request.MessageId, cancellationToken);
 

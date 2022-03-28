@@ -51,7 +51,7 @@ public class MessageHub : Hub<IMessageClient>
     {
         _currentUserService.SetCurrentUser(this.Context.UserIdentifier!);
 
-        await _mediator.Send(new SendMessageRecieptCommand(id));
+        await _mediator.Send(new SendMessageReceiptCommand(id));
 
         await Clients.All.MessageRead(new MessageReadDto()
         {

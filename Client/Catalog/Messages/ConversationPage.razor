@@ -49,22 +49,40 @@
                                 
                                 bool sameMinutesAsLast = previousMessage == null || IsSameTime(message, previousMessage);
 
-                            <MudMessage @key="@message.Id" IsSideContentVisible="@(!IsFromCurrentUser(message))" Position="@(IsFromCurrentUser(message) ? MessagePosition.Right : MessagePosition.Left)"
-                                ContentClass="@(message.DateDeleted is not null ? "deleted" : string.Empty)">
+                            <MudMessage @key="@message.Id" Class="@($"{(isFirst || !sameMinutesAsLast ? "first" : String.Empty)} {(isLast ? "last" : string.Empty)}")" IsFooterVisible="@isLast" IsSideContentVisible="@(!IsFromCurrentUser(message))" Position="@(IsFromCurrentUser(message) ? MessagePosition.Right : MessagePosition.Left)">                           
                                 
-                                    <Footer>
-                                        @*
-                                        @if (isLast)
+                                <Footer>
+                                    @if (isLast)
+                                    {
+                                        if (IsFromCurrentUser(message))
                                         {
-                                            <MudText Typo="Typo.caption" Style="color: gray;">@message.DateSent.GetValueOrDefault().ToString("HH:mm")</MudText>
+                                            if (message.Receipts.Any(x => x.User != userId))
+                                            {
+                                                @*
+                    <MudTooltip Text="@("Read by " + string.Join(", ", message.Receipts.Select(x => x.User)))">
+                        <MudIcon Icon="@Icons.Filled.CheckCircle" Size="Size.Small" Style="height: 0.8em; margin-top: 2px;" />
+                    </MudTooltip>
+                                                *@
+                                                 <MudTooltip Text="@("Read by " + string.Join(", ", message.Receipts.Select(x => x.User)))">
+                                                    @foreach (var receipt in message.Receipts)
+                                                    {
+                                                        <MudAvatar Size="Size.Small" Style="height: 1.2em; width: 1.2em; margin-top: 2px; margin-left: 2px; margin-right: 2px">@GetInitials(message.Sender)</MudAvatar>
+                                                    }
+                                                </MudTooltip>
+                                            }
+                                            else
+                                            {
+                                                <MudIcon Icon="@Icons.Filled.CheckCircle" Size="Size.Small" Style="height: 0.8em; margin-top: 2px;" />
+                                            }
                                         }
-                                        *@
-                                    </Footer>
+                                        <small class="time">@message.DateSent.GetValueOrDefault().ToString("HH:mm")</small>
+                                    }
+                                </Footer>
 
                                 <SideContent>
                                     @if (!IsFromCurrentUser(message))
                                     {
-                                        if(!isSameSenderAsPrevious || isFirst || sameMinutesAsLast) 
+                                        if(isFirst || !sameMinutesAsLast) 
                                         {
                                             <div class="message-avatar">
                                                 <MudAvatar Size="Size.Small">@GetInitials(message.Sender)</MudAvatar>
@@ -74,28 +92,25 @@
                                 </SideContent>
 
                                 <Content>
-                                    @if(message.DateDeleted is not null)
-                                    {
-                                        <p>Message was deleted.</p>
-                                    }
-                                    else
-                                    {
-                                        @message.Content
-                                <div class="row d-flex flex-row flex-grow-1 gap-2">
-                                    @if (IsFromCurrentUser(message))
-                                    {
-                                        @if (message.Receipts.Any(x => x.User != userId))
+                                    <MudBubble Class="@(message.DateDeleted is not null ? "deleted" : string.Empty)">
+                                        @if (message.DateDeleted is not null)
                                         {
-                                            <MudIcon Icon="@Icons.Filled.CheckCircle" Size="Size.Small" Style="height: 0.8em; margin-top: 2px;" />
+                                            <p>Message was deleted.</p>
                                         }
                                         else
                                         {
-                                            <MudIcon Icon="@Icons.Filled.CheckCircleOutline" Size="Size.Small" Style="height: 0.8em; margin-top: 2px;" />
+                                            @((MarkupString)message.Content.Replace("\n", "<br />"))
+
                                         }
+                                    </MudBubble>
+                                    @*
+                                    @if (Overlay is not null)
+                                    {
+                                        <div class="message-content-overlay">
+                                            @Overlay
+                                        </div>
                                     }
-                                    <small class="time">@message.DateSent.GetValueOrDefault().ToString("HH:mm")</small>
-                                </div>
-                                    }
+                                    *@
                                 </Content>
     @*
                                 <Overlay>
@@ -158,10 +173,10 @@
 
 <div class="bottom d-flex flex-grow-1 gap-4">
     <div class="flex-auto d-flex" style="width: 100%">
-        <MudTextField @bind-Value="text" Variant="Variant.Filled" Class="rounded-lg" Lines="1"></MudTextField>
+        <MudTextField @bind-Value="text" Variant="Variant.Filled" Class="rounded-lg" Lines="2"></MudTextField>
     </div>
-    <div class="flex-auto d-flex" style="width: 54px">
-        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Filled.Send" Class="mt-2" Style="border-radius: 50%; padding: 15px;" OnClick="Post" />
+    <div class="flex-auto d-flex" style="width: 81px">
+        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Filled.Send" Class="mt-2" Style="border-radius: 50%; padding: 15px; height: 70px; width: 70px;" OnClick="Post" />
     </div>
 </div>
 
