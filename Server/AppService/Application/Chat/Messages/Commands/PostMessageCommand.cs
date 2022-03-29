@@ -33,6 +33,19 @@ public record PostMessageCommand(string ItemId, string Text) : IRequest<MessageD
 
             await context.SaveChangesAsync(cancellationToken);
 
+
+            message = await context.Messages
+                .Include(c => c.CreatedBy)
+                .Include(c => c.LastModifiedBy)
+                .Include(c => c.DeletedBy)
+                .Include(c => c.Receipts)
+                .ThenInclude(r => r.CreatedBy)
+                //.Where(c => c.Item.Id == request.ItemId)
+                .OrderByDescending(c => c.Created)
+                .IgnoreQueryFilters()
+                .AsSplitQuery()
+                .FirstAsync(x => x.Id == message.Id);
+
             return message.ToDto();
         }
     }

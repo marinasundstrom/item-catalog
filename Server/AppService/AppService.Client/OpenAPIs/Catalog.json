@@ -1347,6 +1347,9 @@
           "id": {
             "type": "string"
           },
+          "messageId": {
+            "type": "string"
+          },
           "user": {
             "$ref": "#/components/schemas/UserDto"
           },

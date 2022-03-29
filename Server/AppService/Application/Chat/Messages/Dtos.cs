@@ -7,4 +7,4 @@ public record MessageDto(
     IEnumerable<ReceiptDto> Receipts,
     DateTime Sent, UserDto SentBy, DateTime? LastModified, UserDto? LastModifiedBy, DateTime? Deleted, UserDto? DeletedBy);
 
-public record ReceiptDto(string Id, UserDto User, DateTime Date);
+public record ReceiptDto(string Id, string MessageId, UserDto User, DateTime Date);

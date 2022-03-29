@@ -42,6 +42,13 @@ public record SendMessageReceiptCommand(string MessageId) : IRequest<ReceiptDto>
 
             await context.SaveChangesAsync(cancellationToken);
 
+            receipt = await context
+                .MessageReceipts
+                .Include(x => x.CreatedBy)
+                .IgnoreQueryFilters()
+                .AsSplitQuery()
+                .FirstAsync(i => i.Id == receipt.Id, cancellationToken);
+
             return receipt.ToDto();
         }
     }

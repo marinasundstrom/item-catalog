@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.SignalR.Client
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Diagnostics
 @using Catalog.Client
 @using Humanizer
 @implements IAsyncDisposable
@@ -27,7 +28,7 @@
                 <ChildContent>
                     @foreach (var message in messages) 
                     {
-                        bool isAuthorCurrentUser = userId == message?.SenderId;
+                        bool isAuthorCurrentUser = userId == message?.SentBy.Id;
                         bool isAuthorizedToEdit = isAuthorCurrentUser;
                         bool isAuthorizedToDelete = isAuthorCurrentUser || isCurrentUserAdmin;
 
@@ -56,17 +57,12 @@
                                     {
                                         if (IsFromCurrentUser(message))
                                         {
-                                            if (message.Receipts.Any(x => x.User != userId))
+                                            if (message.Receipts.Any(x => x.User.Id != userId))
                                             {
-                                                @*
-                    <MudTooltip Text="@("Read by " + string.Join(", ", message.Receipts.Select(x => x.User)))">
-                        <MudIcon Icon="@Icons.Filled.CheckCircle" Size="Size.Small" Style="height: 0.8em; margin-top: 2px;" />
-                    </MudTooltip>
-                                                *@
-                                                <MudTooltip Text="@("Read by " + string.Join(", ", message.Receipts.Select(x => x.User)))">
+                                                <MudTooltip Text="@(string.Join("\n", message.Receipts.Select(x => x.User.GetDisplayName())))">
                                                     @foreach (var receipt in message.Receipts)
                                                     {
-                                                        <MudAvatar Size="Size.Small" Style="height: 1.2em; width: 1.2em; margin-top: 2px; margin-left: 2px; margin-right: 2px">@GetInitials(message.Sender)</MudAvatar>
+                                                        <MudAvatar Size="Size.Small" Style="height: 1.2em; width: 1.2em; margin-top: 2px; margin-left: 2px; margin-right: 2px">@receipt.User.GetDisplayName().GetInitials()</MudAvatar>
                                                     }
                                                 </MudTooltip>
                                             }
@@ -76,8 +72,8 @@
                                             }
                                         }
      
-                                        var dateSent = message.DateSent.GetValueOrDefault();
-                                        var timeSince = DateTime.Now - dateSent;
+                                        var Sent = message.Sent.GetValueOrDefault();
+                                        var timeSince = DateTime.Now - Sent;
                                      
                                         if (timeSince.TotalMinutes < 30)
                                         {
@@ -96,7 +92,7 @@
                                         }
                                         else
                                         {
-                                            <small>@dateSent.ToString("HH:mm")</small>
+                                            <small>@Sent.ToString("HH:mm")</small>
                                         }
                                     }
                                 </Footer>
@@ -107,21 +103,21 @@
                                         if(isFirst || !sameMinutesAsLast) 
                                         {
                                             <div class="message-avatar">
-                                                <MudAvatar Size="Size.Small">@GetInitials(message.Sender)</MudAvatar>
+                                                <MudAvatar Size="Size.Small">@message.SentBy.GetDisplayName().GetInitials()</MudAvatar>
                                             </div>
                                         }
                                     }
                                 </SideContent>
 
                                 <Content>
-                                    <MudBubble Class="@(message.DateDeleted is not null ? "deleted" : string.Empty)">
-                                        @if (message.DateDeleted is not null)
+                                    <MudBubble Class="@(message.Deleted is not null ? "deleted" : string.Empty)">
+                                        @if (message.Deleted is not null)
                                         {
                                             <p>Message was deleted.</p>
                                         }
                                         else
                                         {
-                                            @((MarkupString)message.Content.Replace("\n", "<br />"))
+                                            @((MarkupString)message.Text.Replace("\n", "<br />"))
 
                                         }
                                     </MudBubble>
@@ -129,7 +125,7 @@
                                 </Content>
 
                                 <Actions>
-                                    @if (message.DateDeleted is null)
+                                    @if (message.Deleted is null)
                                     {
                                         <MudMenu AnchorOrigin="Origin.BottomLeft">
                                             <ActivatorContent>
@@ -198,26 +194,20 @@
 
     List<Message> messages = new List<Message>();
 
-    string GetInitials(string name)
-    {
-        var nameParts = name.Split(" ");
-        return $"{nameParts[0][0]}{nameParts[1][0]}";
-    }
-
     bool IsFromCurrentUser(Message message)
     {
-        return message.SenderId == userId;
+        return message.SentBy.Id == userId;
     }
 
     bool FromSameSender(Message m1, Message m2)
     {
-        return m1.SenderId == m2.SenderId;
+        return m1.SentBy.Id == m2.SentBy.Id;
     }
 
     bool IsSameTime(Message m1, Message m2)
     {
-        return (m1.DateSent.GetValueOrDefault().Hour == m2.DateSent.GetValueOrDefault().Hour
-                && m1.DateSent.GetValueOrDefault().Minute == m2.DateSent.GetValueOrDefault().Minute);
+        return (m1.Sent.GetValueOrDefault().Hour == m2.Sent.GetValueOrDefault().Hour
+                && m1.Sent.GetValueOrDefault().Minute == m2.Sent.GetValueOrDefault().Minute);
     }
 
     async Task DeleteMessage(Message message)
@@ -310,21 +300,18 @@
     {
         messages.Add(new Message() {
             Id = dto.Id!,
-            Sender = $"{dto.SentBy.FirstName} {dto.SentBy.LastName}",
-            SenderId = dto.SentBy.Id,
-            Content = dto.Text!,
-            /*Receipts = dto.Receipts.Select(x => new Receipt
-            {
-                User = $"{x.User.FirstName} {x.User.LastName}",
-                Date = x.Date
-            }).ToList(),*/
-            DateSent = dto.Sent.DateTime
+            SentBy = dto.SentBy,
+            Text = dto.Text!,
+            Receipts = dto.Receipts.ToList(),
+            Sent = dto.Sent.DateTime
         });
 
         this.skip++;
 
         if(dto.SentBy.Id != userId)
         {
+            Console.WriteLine("Send message read");
+
             await hubConnection.SendAsync("MessageRead", dto.Id);
         }
 
@@ -339,7 +326,7 @@
 
         if(message is not null)
         {
-            message.Content = dto.Text;
+            message.Text = dto.Text;
 
             StateHasChanged();
         }
@@ -347,17 +334,15 @@
 
     async Task OnMessageRead(ReceiptDto dto)
     {
-        Console.WriteLine("message read");
+        Console.WriteLine("Receive message read");
 
-        var message = messages.FirstOrDefault(x => x.Id == dto.Id);
+        var message = messages.FirstOrDefault(x => x.Id == dto.MessageId);
 
         if (message is not null)
         {
-            message.Receipts.Add(new Receipt()
-            {
-                User = dto.User.Id, //$"{x.User.FirstName} {x.User.LastName}",
-                Date = dto.Date.DateTime
-            });
+            Console.WriteLine("Add message read");
+
+            message.Receipts.Add(dto);
 
             StateHasChanged();
         }
@@ -369,8 +354,8 @@
 
         if(message is not null)
         {
-            message.Content = String.Empty;
-            message.DateDeleted = DateTime.Now;
+            message.Text = String.Empty;
+            message.Deleted = DateTime.Now;
 
             //messages.Remove(message);
 
@@ -395,7 +380,7 @@
 
         if(args.Y < lastY)
         {
-            Console.WriteLine(args);
+            Debug.WriteLine(args);
 
             if(args.Y <= threshold)
             {
@@ -427,21 +412,16 @@
         {
             var message = new Message() {
                 Id = dto.Id,
-                Sender = $"{dto.SentBy.FirstName} {dto.SentBy.LastName}",
-                SenderId = dto.SentBy.Id,
-                Content = dto.Text!,
-                Receipts = dto.Receipts.Select(x => new Receipt
-                {
-                    User = x.User.Id, // $"{x.User.FirstName} {x.User.LastName}",
-                    Date = x.Date.DateTime
-                }).ToList(),
-                DateSent = dto.Sent.DateTime,
-                DateDeleted = dto.Deleted?.DateTime
+                SentBy = dto.SentBy,
+                Text = dto.Text!,
+                Receipts = dto.Receipts.ToList(),
+                Sent = dto.Sent.DateTime,
+                Deleted = dto.Deleted?.DateTime
             };
 
             messages.Insert(0, message);
 
-            if (dto.SentBy.Id != userId && !message.Receipts.Any(x => x.User == userId))
+            if (dto.SentBy.Id != userId && !message.Receipts.Any(x => x.User.Id == userId))
             {
                 await hubConnection.SendAsync("MessageRead", dto.Id);
             }
@@ -468,8 +448,8 @@
                 return;
             }
 
-            Console.WriteLine(total);
-            Console.WriteLine(skip);
+            Debug.WriteLine(total);
+            Debug.WriteLine(skip);
 
             await LoadItemsCore(take);
         }
@@ -518,7 +498,7 @@
 
     public class Section
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Id { get; set; } = null!;
 
         public string? Header { get; set; }
 
@@ -528,25 +508,18 @@
 
     public class Message
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Id { get; set; } = null!;
 
-        public string Sender { get; set; } = null!;
+        public UserDto SentBy { get; set; } = null!;
 
-        public string SenderId { get; set; } = null!;
+        public string Text { get; set; } = null!;
 
-        public string Content { get; set; } = null!;
+        public List<ReceiptDto> Receipts { get; set; } = new List<ReceiptDto>();
 
-        public List<Receipt> Receipts { get; set; } = new List<Receipt>();
+        public DateTime? Sent { get; set; }
 
-        public DateTime? DateSent { get; set; }
+        public DateTime? Deleted { get; set; }
 
-        public DateTime? DateDeleted { get; set; }
-    }
-
-    public class Receipt
-    {
-        public string User { get; set; }
-
-        public DateTime Date { get; set; }
+        public DateTime? Edited { get; set; }
     }
 }
