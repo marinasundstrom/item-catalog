@@ -63,7 +63,7 @@
                         <MudIcon Icon="@Icons.Filled.CheckCircle" Size="Size.Small" Style="height: 0.8em; margin-top: 2px;" />
                     </MudTooltip>
                                                 *@
-                                                 <MudTooltip Text="@("Read by " + string.Join(", ", message.Receipts.Select(x => x.User)))">
+                                                <MudTooltip Text="@("Read by " + string.Join(", ", message.Receipts.Select(x => x.User)))">
                                                     @foreach (var receipt in message.Receipts)
                                                     {
                                                         <MudAvatar Size="Size.Small" Style="height: 1.2em; width: 1.2em; margin-top: 2px; margin-left: 2px; margin-right: 2px">@GetInitials(message.Sender)</MudAvatar>
@@ -75,7 +75,29 @@
                                                 <MudIcon Icon="@Icons.Filled.CheckCircle" Size="Size.Small" Style="height: 0.8em; margin-top: 2px;" />
                                             }
                                         }
-                                        <small class="time">@message.DateSent.GetValueOrDefault().ToString("HH:mm")</small>
+     
+                                        var dateSent = message.DateSent.GetValueOrDefault();
+                                        var timeSince = DateTime.Now - dateSent;
+                                     
+                                        if (timeSince.TotalMinutes < 30)
+                                        {
+                                            <TimerView Interval="TimeSpan.FromSeconds(1)">
+                                                <small class="time">
+                                                    @if(timeSince.TotalMinutes >= 1)
+                                                    {  
+                                                        <text>@timeSince.Humanize(minUnit: TimeUnit.Minute) ago</text>
+                                                    }
+                                                    else
+                                                    {
+                                                        <text>Now</text>
+                                                    }
+                                                </small>
+                                            </TimerView>
+                                        }
+                                        else
+                                        {
+                                            <small>@dateSent.ToString("HH:mm")</small>
+                                        }
                                     }
                                 </Footer>
 
@@ -103,20 +125,9 @@
 
                                         }
                                     </MudBubble>
-                                    @*
-                                    @if (Overlay is not null)
-                                    {
-                                        <div class="message-content-overlay">
-                                            @Overlay
-                                        </div>
-                                    }
-                                    *@
+
                                 </Content>
-    @*
-                                <Overlay>
-                                    ❤️
-                                </Overlay>
-    *@
+
                                 <Actions>
                                     @if (message.DateDeleted is null)
                                     {
