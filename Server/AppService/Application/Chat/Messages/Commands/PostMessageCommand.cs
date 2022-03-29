@@ -10,9 +10,9 @@ using Notifications.Client;
 
 namespace Catalog.Application.Messages.Commands;
 
-public record PostMessageCommand(string ItemId, string Text) : IRequest<string>
+public record PostMessageCommand(string ItemId, string Text) : IRequest<MessageDto>
 {
-    public class PostMessageCommandHandler : IRequestHandler<PostMessageCommand, string>
+    public class PostMessageCommandHandler : IRequestHandler<PostMessageCommand, MessageDto>
     {
         private readonly ICatalogContext context;
 
@@ -21,7 +21,7 @@ public record PostMessageCommand(string ItemId, string Text) : IRequest<string>
             this.context = context;
         }
 
-        public async Task<string> Handle(PostMessageCommand request, CancellationToken cancellationToken)
+        public async Task<MessageDto> Handle(PostMessageCommand request, CancellationToken cancellationToken)
         {
             //var item = await context.Items.FirstOrDefaultAsync(i => i.Id == request.ItemId, cancellationToken);
 
@@ -33,7 +33,7 @@ public record PostMessageCommand(string ItemId, string Text) : IRequest<string>
 
             await context.SaveChangesAsync(cancellationToken);
 
-            return message.Id;
+            return message.ToDto();
         }
     }
 }

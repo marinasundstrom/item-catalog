@@ -1,5 +1,6 @@
 ﻿
 using Catalog.Application.Common.Interfaces;
+using Catalog.Application.Messages;
 using Catalog.Application.Messages.Commands;
 
 using MediatR;
@@ -32,33 +33,22 @@ public class MessageHub : Hub<IMessageClient>
         });
     }
 
-    public async Task SendMessage(string message) 
+    public async Task SendMessage(string text) 
     {
         _currentUserService.SetCurrentUser(this.Context.UserIdentifier!);
 
-        var id = await _mediator.Send(new PostMessageCommand(null!, message));
+        var message = await _mediator.Send(new PostMessageCommand(null!, text));
 
-        await Clients.All.MessageReceived(new MessageDto() {
-            Id = id,
-            SentBy = this.Context.User!.FindFirst(x => x.Type.EndsWith("name"))!.Value,
-            SentById = this.Context.UserIdentifier,
-            Content = message,
-            DateSent = DateTime.Now
-        });
+        await Clients.All.MessageReceived(message);
     }
 
     public async Task MessageRead(string id)
     {
         _currentUserService.SetCurrentUser(this.Context.UserIdentifier!);
 
-        await _mediator.Send(new SendMessageReceiptCommand(id));
+        ReceiptDto receipt = await _mediator.Send(new SendMessageReceiptCommand(id));
 
-        await Clients.All.MessageRead(new MessageReadDto()
-        {
-            Id = id,
-            ReadById = this.Context.UserIdentifier!,
-            Date = DateTime.Now
-        });
+        await Clients.All.MessageRead(receipt);
     }
 
     public async Task EditMessage(string id, string message) 

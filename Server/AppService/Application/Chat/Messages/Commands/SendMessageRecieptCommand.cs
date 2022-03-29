@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Messages.Commands;
 
-public record SendMessageReceiptCommand(string MessageId) : IRequest
+public record SendMessageReceiptCommand(string MessageId) : IRequest<ReceiptDto>
 {
-    public class SendMessageReceiptCommandHandler : IRequestHandler<SendMessageReceiptCommand>
+    public class SendMessageReceiptCommandHandler : IRequestHandler<SendMessageReceiptCommand, ReceiptDto>
     {
         private readonly ICatalogContext context;
         private readonly ICurrentUserService _currentUserService;
@@ -20,7 +20,7 @@ public record SendMessageReceiptCommand(string MessageId) : IRequest
             _currentUserService = currentUserService;
         }
 
-        public async Task<Unit> Handle(SendMessageReceiptCommand request, CancellationToken cancellationToken)
+        public async Task<ReceiptDto> Handle(SendMessageReceiptCommand request, CancellationToken cancellationToken)
         {
             var userId = _currentUserService.UserId;
 
@@ -33,14 +33,16 @@ public record SendMessageReceiptCommand(string MessageId) : IRequest
 
             if (message is null) throw new Exception();
 
-            message.Receipts.Add(new Domain.Entities.MessageReceipt()
+            var receipt = new Domain.Entities.MessageReceipt()
             {
                 Id = Guid.NewGuid().ToString()
-            });
+            };
+
+            message.Receipts.Add(receipt);
 
             await context.SaveChangesAsync(cancellationToken);
 
-            return Unit.Value;
+            return receipt.ToDto();
         }
     }
 }

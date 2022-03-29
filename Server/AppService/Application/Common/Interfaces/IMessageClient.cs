@@ -1,3 +1,5 @@
+using Catalog.Application.Messages;
+
 namespace Catalog.Application.Common.Interfaces;
 
 public interface IMessageClient
@@ -6,7 +8,7 @@ public interface IMessageClient
 
     Task MessageReceived(MessageDto message);
 
-    Task MessageRead(MessageReadDto dto);
+    Task MessageRead(ReceiptDto receipt);
 
     Task MessageDeleted(MessageDeletedDto dto);
 
@@ -24,28 +26,6 @@ public class MessageDeletedDto
 public class MessageEditedDto
 {
     public string? Id { get; set; }
-}
-
-public class MessageReadDto
-{
-    public string Id { get; set; } = null!;
-
-    public string ReadById { get; set; } = null!;
-
-    public DateTime Date { get; set; }
-}
-
-public class MessageDto
-{
-    public string? Id { get; set; }
-    
-    public string SentBy { get; set; } = null!;
-
-    public string SentById { get; set; } = null!;
-
-    public string? Content { get; set; }
-
-    public DateTime DateSent { get; set; }
 }
 
 public class UserDto2

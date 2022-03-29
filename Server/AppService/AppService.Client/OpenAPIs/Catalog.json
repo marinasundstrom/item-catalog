@@ -1305,11 +1305,11 @@
               "$ref": "#/components/schemas/ReceiptDto"
             }
           },
-          "created": {
+          "sent": {
             "type": "string",
             "format": "date-time"
           },
-          "createdBy": {
+          "sentBy": {
             "$ref": "#/components/schemas/UserDto"
           },
           "lastModified": {
@@ -1344,6 +1344,9 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "id": {
+            "type": "string"
+          },
           "user": {
             "$ref": "#/components/schemas/UserDto"
           },

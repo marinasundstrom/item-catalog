@@ -32,6 +32,6 @@ public static class Mapper
 
     public static Messages.ReceiptDto ToDto(this Domain.Entities.MessageReceipt receipt)
     {
-        return new Messages.ReceiptDto(receipt.CreatedBy!.ToDto(), receipt.Created);
+        return new Messages.ReceiptDto(receipt.Id, receipt.CreatedBy!.ToDto(), receipt.Created);
     }
 }
