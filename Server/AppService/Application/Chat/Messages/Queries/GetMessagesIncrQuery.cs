@@ -48,6 +48,7 @@ public class GetMessagesIncrQuery : IRequest<Results<MessageDto>>
                 .OrderByDescending(c => c.Created)
                 .IgnoreQueryFilters()
                 .AsSplitQuery()
+                .AsNoTracking()
                 .AsQueryable();
 
             var totalCount = await query.CountAsync(cancellationToken);
@@ -60,10 +61,11 @@ public class GetMessagesIncrQuery : IRequest<Results<MessageDto>>
             }
 
             query = query
-            .Skip(request.Skip)
+                .Skip(request.Skip)
                 .Take(request.Take).AsQueryable();
 
-            var messages = await query.ToListAsync(cancellationToken);
+            var messages = await query
+                .ToListAsync(cancellationToken);
 
             return new Results<MessageDto>(
                 messages.Select(message => message.ToDto()),

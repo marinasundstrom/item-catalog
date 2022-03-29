@@ -74,7 +74,7 @@
     flex-direction: row-reverse !important;
 }
 
-.message .bubble {
+.bubble {
     display: inline-block;
     padding: 8px 16px;
     word-break: break-word;

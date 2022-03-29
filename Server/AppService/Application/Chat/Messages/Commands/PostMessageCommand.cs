@@ -10,7 +10,7 @@ using Notifications.Client;
 
 namespace Catalog.Application.Messages.Commands;
 
-public record PostMessageCommand(string ItemId, string Text) : IRequest<MessageDto>
+public record PostMessageCommand(string ItemId, string Text, string ReplyToId) : IRequest<MessageDto>
 {
     public class PostMessageCommandHandler : IRequestHandler<PostMessageCommand, MessageDto>
     {
@@ -27,12 +27,11 @@ public record PostMessageCommand(string ItemId, string Text) : IRequest<MessageD
 
             //if (item is null) throw new Exception();
 
-            var message = new Message(request.Text);
+            var message = new Message(request.Text, request.ReplyToId);
 
             context.Messages.Add(message);
 
             await context.SaveChangesAsync(cancellationToken);
-
 
             message = await context.Messages
                 .Include(c => c.CreatedBy)

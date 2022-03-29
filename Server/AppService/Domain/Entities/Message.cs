@@ -10,10 +10,11 @@ public class Message : AuditableEntity, ISoftDelete, IHasDomainEvent
 
     }
 
-    public Message(string text)
+    public Message(string text, string? replyToId)
     {
         Id = Guid.NewGuid().ToString();
         Text = text;
+        ReplyToId = replyToId;
     }
 
     public string Id { get; private set; } = null!;

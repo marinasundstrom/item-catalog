@@ -54,4 +54,7 @@
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Messages\Message.razor" />
+  </ItemGroup>
 </Project>

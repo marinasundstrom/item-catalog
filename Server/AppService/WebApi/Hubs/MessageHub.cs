@@ -33,11 +33,11 @@ public class MessageHub : Hub<IMessageClient>
         });
     }
 
-    public async Task SendMessage(string text) 
+    public async Task SendMessage(string text, string? replyToId) 
     {
         _currentUserService.SetCurrentUser(this.Context.UserIdentifier!);
 
-        var message = await _mediator.Send(new PostMessageCommand(null!, text));
+        var message = await _mediator.Send(new PostMessageCommand(null!, text, replyToId));
 
         await Clients.All.MessageReceived(message);
     }

@@ -1299,10 +1299,21 @@
             "type": "string",
             "nullable": true
           },
+          "replyToId": {
+            "type": "string",
+            "nullable": true
+          },
           "receipts": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ReceiptDto"
+            }
+          },
+          "replies": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/MessageDto"
             }
           },
           "sent": {

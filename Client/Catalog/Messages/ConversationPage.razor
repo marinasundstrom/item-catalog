@@ -33,8 +33,8 @@
                         bool isAuthorizedToDelete = isAuthorCurrentUser || isCurrentUserAdmin;
 
                                 int messageIndex = messages.IndexOf(message);
-                                Message? previousMessage = null;
-                                Message? nextMessage = null;
+                                MessageModel? previousMessage = null;
+                                MessageModel? nextMessage = null;
                                 if(messageIndex > 0) 
                                 {
                                     previousMessage = messages[messageIndex - 1];
@@ -72,7 +72,7 @@
                                             }
                                         }
      
-                                        var Sent = message.Sent.GetValueOrDefault();
+                                        var Sent = message.Sent;
                                         var timeSince = DateTime.Now - Sent;
                                      
                                         if (timeSince.TotalMinutes < 30)
@@ -133,24 +133,30 @@
                                                     Variant="Variant.Text" Color="Color.Secondary" />
                                             </ActivatorContent>
                                             <ChildContent>
+                                                <MudMenuItem OnClick="() => ReplyToMessage(message)">
+                                                    <div class="d-flex flex-row flex-grow-1 gap-2">
+                                                        <MudIcon Icon="@Icons.Filled.Reply" Size="Size.Medium" />
+                                                        Reply to
+                                                    </div>
+                                                </MudMenuItem>
                                                 @if (isAuthorizedToEdit)
-                                                    {
-                                                    <MudMenuItem>
+                                                {
+                                                    <MudMenuItem OnClick="() => EditMessage(message)">
                                                         <div class="d-flex flex-row flex-grow-1 gap-2">
                                                             <MudIcon Icon="@Icons.Filled.Edit" Size="Size.Medium" />
                                                             Edit
                                                         </div>
                                                     </MudMenuItem>
-                                                    }
+                                                }
                                                 @if (isAuthorizedToDelete)
-                                                    {
+                                                {
                                                     <MudMenuItem OnClick="async () => await DeleteMessage(message)">
                                                         <div class="d-flex flex-row flex-grow-1 gap-2">
                                                             <MudIcon Icon="@Icons.Filled.Delete" Size="Size.Medium" />
                                                             Delete
                                                         </div>
                                                     </MudMenuItem>
-                                                    }
+                                                }
                                                 <MudMenuItem>
                                                     <div class="d-flex flex-row flex-grow-1 gap-2">
                                                         <MudIcon Icon="@Icons.Filled.Report" Size="Size.Medium" />
@@ -162,6 +168,11 @@
                                     }
                                 </Actions>
                             </MudMessage>
+
+                            @foreach(var replyMessage in message.Replies)
+                            {
+                                <p>@replyMessage.Id</p>
+                            }
                         }
                 </ChildContent>
             </MudChatSection>
@@ -178,12 +189,31 @@
     </MudItem>
 </MudGrid>
 
-<div class="bottom d-flex flex-grow-1 gap-4">
-    <div class="flex-auto d-flex" style="width: 100%">
-        <MudTextField @bind-Value="text" Variant="Variant.Filled" Class="rounded-lg" Lines="2"></MudTextField>
+<div class="bottom">
+    @if (replyToMessage is not null)
+    {
+    <div>
+        <MudText Typo="Typo.h6">Replying to</MudText>
+        <div class="d-flex">
+            <div class="message message-right first last">
+                <div class="bubble">@replyToMessage.Text</div>
+            </div>
+        </div>
     </div>
-    <div class="flex-auto d-flex" style="width: 81px">
-        <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Filled.Send" Class="mt-2" Style="border-radius: 50%; padding: 15px; height: 70px; width: 70px;" OnClick="Post" />
+    }
+    @if (editMessage is not null)
+    {
+        <div>
+            <MudText Typo="Typo.h6">Editing</MudText>
+        </div>
+    }
+    <div class="d-flex flex-grow-1 gap-4">
+        <div class="flex-auto d-flex" style="width: 100%">
+            <MudTextField @bind-Value="text" Variant="Variant.Filled" Class="rounded-lg" Lines="2"></MudTextField>
+        </div>
+        <div class="flex-auto d-flex" style="width: 81px">
+            <MudIconButton Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Filled.Send" Class="mt-2" Style="border-radius: 50%; padding: 15px; height: 70px; width: 70px;" OnClick="Post" />
+        </div>
     </div>
 </div>
 
@@ -191,29 +221,46 @@
     HubConnection hubConnection;
 
     string userId;
+    MessageModel? replyToMessage;
+    MessageModel? editMessage;
 
-    List<Message> messages = new List<Message>();
+    List<MessageModel> messages = new List<MessageModel>();
+    List<MessageModel> allMessages = new List<MessageModel>();
 
-    bool IsFromCurrentUser(Message message)
+    bool IsFromCurrentUser(MessageModel message)
     {
         return message.SentBy.Id == userId;
     }
 
-    bool FromSameSender(Message m1, Message m2)
+    bool FromSameSender(MessageModel m1, MessageModel m2)
     {
         return m1.SentBy.Id == m2.SentBy.Id;
     }
 
-    bool IsSameTime(Message m1, Message m2)
+    bool IsSameTime(MessageModel m1, MessageModel m2)
     {
-        return (m1.Sent.GetValueOrDefault().Hour == m2.Sent.GetValueOrDefault().Hour
-                && m1.Sent.GetValueOrDefault().Minute == m2.Sent.GetValueOrDefault().Minute);
+        return (m1.Sent.Hour == m2.Sent.Hour
+                && m1.Sent.Minute == m2.Sent.Minute);
     }
 
-    async Task DeleteMessage(Message message)
+    async Task DeleteMessage(MessageModel message)
     {
         await hubConnection.SendAsync("DeleteMessage", message.Id);
         //await MessagesClient.DeleteMessageAsync(message.Id);
+    }
+
+    void ReplyToMessage(MessageModel message)
+    {
+        editMessage = null;
+        replyToMessage = message;
+        text = string.Empty;
+    }
+
+    void EditMessage(MessageModel message)
+    {
+        replyToMessage = null;
+        editMessage = message;
+        text = message.Text;
     }
 
     bool isCurrentUserAdmin;
@@ -298,13 +345,46 @@
 
     async Task OnMessageReceived(MessageDto dto)
     {
-        messages.Add(new Message() {
+        var model = new MessageModel()
+        {
             Id = dto.Id!,
+            ReplyToId = dto.ReplyToId,
             SentBy = dto.SentBy,
             Text = dto.Text!,
             Receipts = dto.Receipts.ToList(),
             Sent = dto.Sent.DateTime
-        });
+        };
+
+        if(model.ReplyToId is null)
+        {
+            messages.Add(model);
+
+            if(model.SentBy.Id == userId)
+            {
+                await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
+            }
+            else
+            {
+                // TODO: Only display when outside viewport
+
+                Snackbar.Add($"{model.SentBy.GetDisplayName()} said: \"{model.Text}\"", Severity.Normal, options =>
+                {
+                    options.Onclick = async (sb) =>
+                    {
+                        await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
+                    };
+                });
+            }
+        }
+        else
+        {
+            Console.WriteLine("Reply");
+
+            var parent = allMessages.First(x => x.Id == model.ReplyToId);
+            parent.Replies.Add(model);
+        }
+
+        allMessages.Add(model);
 
         this.skip++;
 
@@ -316,8 +396,6 @@
         }
 
         StateHasChanged();
-
-        await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
     }
 
     async Task OnMessageEdited(MessageEditedDto dto)
@@ -410,8 +488,9 @@
 
         foreach(var dto in results.Items)
         {
-            var message = new Message() {
+            var message = new MessageModel() {
                 Id = dto.Id,
+                ReplyToId = dto.ReplyToId,
                 SentBy = dto.SentBy,
                 Text = dto.Text!,
                 Receipts = dto.Receipts.ToList(),
@@ -420,6 +499,8 @@
             };
 
             messages.Insert(0, message);
+
+            allMessages.Add(message);
 
             if (dto.SentBy.Id != userId && !message.Receipts.Any(x => x.User.Id == userId))
             {
@@ -489,9 +570,12 @@
             return;
         }
 
-        await hubConnection.SendAsync("SendMessage", text);
+        await hubConnection.SendAsync("SendMessage", text, replyToMessage?.Id);
 
         text = string.Empty;
+
+        replyToMessage = null;
+        editMessage = null;
     }
 
     string text;
@@ -502,13 +586,15 @@
 
         public string? Header { get; set; }
 
-        public List<Message> Messages { get; set; } = new List<Message>();
+        public List<MessageModel> Messages { get; set; } = new List<MessageModel>();
     }
 
 
-    public class Message
+    public class MessageModel
     {
         public string Id { get; set; } = null!;
+
+        public string? ReplyToId { get; set; }
 
         public UserDto SentBy { get; set; } = null!;
 
@@ -516,7 +602,9 @@
 
         public List<ReceiptDto> Receipts { get; set; } = new List<ReceiptDto>();
 
-        public DateTime? Sent { get; set; }
+        public List<MessageModel> Replies { get; set; } = new List<MessageModel>();
+
+        public DateTime Sent { get; set; }
 
         public DateTime? Deleted { get; set; }
 
