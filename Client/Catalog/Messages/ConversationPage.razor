@@ -386,6 +386,7 @@
         allMessages.Add(model);
 
         this.skip++;
+        this.total++;
 
         if (dto.SentBy.Id != userId)
         {
@@ -457,7 +458,10 @@
 
             if (args.Y <= threshold)
             {
-                await LoadItemsIncr(30);
+                if(messages.Count < total)
+                {
+                    await LoadItemsIncr(30);
+                }
             }
         }
 

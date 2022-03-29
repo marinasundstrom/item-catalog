@@ -32,6 +32,7 @@ services:
 
 - name: identity
   project: Server/IdentityService/IdentityService/IdentityService.csproj
+  replicas: 2
   bindings:
   - protocol: https
     port: 5050
