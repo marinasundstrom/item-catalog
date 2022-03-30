@@ -29,8 +29,11 @@ public static class Config
                 {
                     Scopes = new string[] { "myapi" }
                 },
-                // the api requires the role claim
-                new ApiResource("timereport", "The Web Api", new[] { JwtClaimTypes.Name, JwtClaimTypes.PreferredUserName, JwtClaimTypes.Email, JwtClaimTypes.Role })
+                new ApiResource("notifications", "The Web Api", new[] { JwtClaimTypes.Name, JwtClaimTypes.PreferredUserName, JwtClaimTypes.Email, JwtClaimTypes.Role })
+                {
+                    Scopes = new string[] { "myapi" }
+                },
+                new ApiResource("messenger", "The Web Api", new[] { JwtClaimTypes.Name, JwtClaimTypes.PreferredUserName, JwtClaimTypes.Email, JwtClaimTypes.Role })
                 {
                     Scopes = new string[] { "myapi" }
                 }

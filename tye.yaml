@@ -30,12 +30,18 @@ services:
   - protocol: https
     port: 5040
 
+- name: messenger
+  project: Server/Messenger/Messenger/Messenger.csproj
+  bindings:
+  - protocol: https
+    port: 5050
+
 - name: identity
   project: Server/IdentityService/IdentityService/IdentityService.csproj
   replicas: 2
   bindings:
   - protocol: https
-    port: 5050
+    port: 5060
 
 - name: azurite
   image: mcr.microsoft.com/azure-storage/azurite

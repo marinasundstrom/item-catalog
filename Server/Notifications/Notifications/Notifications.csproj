@@ -32,16 +32,4 @@
     </ProjectReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Domain\Exceptions\" />
-    <None Remove="Application\Subscriptions\" />
-    <None Remove="Application\Subscriptions\Commands\" />
-    <None Remove="Application\Subscriptions\Queries\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Domain\Exceptions\" />
-    <Folder Include="Application\Subscriptions\" />
-    <Folder Include="Application\Subscriptions\Commands\" />
-    <Folder Include="Application\Subscriptions\Queries\" />
-  </ItemGroup>
 </Project>

@@ -18,6 +18,10 @@ echo "Seeding Notifications"
 dotnet run --project ./Notifications/Notifications/Notifications.csproj -- --seed --connection-string "$CS;Database=Notifications"
 echo "Done"
 
+echo "Seeding Messenger"
+dotnet run --project ./Messenger/Messenger/Messenger.csproj -- --seed --connection-string "$CS;Database=Messenger"
+echo "Done"
+
 echo "Seeding Worker"
 dotnet run --project ./Worker/Worker/Worker.csproj -- --seed --connection-string "$CS;Database=Worker"
 echo "Done"

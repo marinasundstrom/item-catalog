@@ -53,6 +53,9 @@
     <ProjectReference Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\..\Server\Messenger\Messenger.Client\Messenger.Client.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Messages\Message.razor" />
