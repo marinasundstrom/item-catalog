@@ -1,4 +1,6 @@
-﻿namespace Catalog.Application.Common.Interfaces;
+﻿using System.Security.Claims;
+
+namespace Catalog.Application.Common.Interfaces;
 
 public interface ICurrentUserService
 {
@@ -8,6 +10,7 @@ public interface ICurrentUserService
     string? GetAccessToken();
 
     void SetCurrentUser(string userId);
+    void SetCurrentUser(ClaimsPrincipal claimsPrincipal);
 }
 
 public static class CurrentUserServiceExtensions 

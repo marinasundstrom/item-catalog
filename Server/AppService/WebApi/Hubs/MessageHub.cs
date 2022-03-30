@@ -35,7 +35,7 @@ public class MessageHub : Hub<IMessageClient>
 
     public async Task SendMessage(string text, string? replyToId) 
     {
-        _currentUserService.SetCurrentUser(this.Context.UserIdentifier!);
+        _currentUserService.SetCurrentUser(this.Context.User!);
 
         var message = await _mediator.Send(new PostMessageCommand(null!, text, replyToId));
 
@@ -44,7 +44,7 @@ public class MessageHub : Hub<IMessageClient>
 
     public async Task MessageRead(string id)
     {
-        _currentUserService.SetCurrentUser(this.Context.UserIdentifier!);
+        _currentUserService.SetCurrentUser(this.Context.User!);
 
         ReceiptDto receipt = await _mediator.Send(new SendMessageReceiptCommand(id));
 
@@ -53,7 +53,7 @@ public class MessageHub : Hub<IMessageClient>
 
     public async Task EditMessage(string id, string message) 
     {
-        _currentUserService.SetCurrentUser(this.Context.UserIdentifier!);
+        _currentUserService.SetCurrentUser(this.Context.User!);
 
         await _mediator.Send(new UpdateMessageCommand(id, message));
         await Clients.All.MessageEdited(new MessageEditedDto {
@@ -65,7 +65,7 @@ public class MessageHub : Hub<IMessageClient>
 
     public async Task DeleteMessage(string id) 
     {
-        _currentUserService.SetCurrentUser(this.Context.UserIdentifier!);
+        _currentUserService.SetCurrentUser(this.Context.User!);
 
         await _mediator.Send(new DeleteMessageCommand(id));
         await Clients.All.MessageDeleted(new MessageDeletedDto {
