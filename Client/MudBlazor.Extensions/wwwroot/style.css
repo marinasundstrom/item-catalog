@@ -16,6 +16,10 @@
 
 .message .message-actions {}
 
+.message.message-right .message-actions-container {
+    flex-direction: row-reverse;
+}
+
 .message .message-actions-container {
     visibility: hidden;
 }
@@ -76,7 +80,7 @@
 
 .bubble {
     display: inline-block;
-    padding: 8px 16px;
+    padding: 8px 14px;
     word-break: break-word;
     border-radius: 4px;
     margin-bottom: 4px;

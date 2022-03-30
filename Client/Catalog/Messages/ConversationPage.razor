@@ -8,6 +8,7 @@
 @using Catalog.Client
 @using Humanizer
 @implements IAsyncDisposable
+@inject IDialogService DialogService
 @inject IMessagesClient MessagesClient
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
@@ -51,7 +52,7 @@
 
                     bool sameMinutesAsLast = previousMessage == null || IsSameTime(message, previousMessage);
 
-                    <MudMessage @key="@message.Id" Class="@($"{(isFirstMessage || !sameMinutesAsLast ? "first" : String.Empty)} {(isLastMessage ? "last" : string.Empty)}")" IsFooterVisible="@isLastMessage" IsSideContentVisible="@(!IsFromCurrentUser(message))" Position="@(IsFromCurrentUser(message) ? MessagePosition.Right : MessagePosition.Left)">
+                    <MudMessage id="@($"message-{message.Id}")" @key="@message.Id" Class="@($"{(isFirstMessage || !sameMinutesAsLast ? "first" : String.Empty)} {(isLastMessage ? "last" : string.Empty)}")" IsFooterVisible="@isLastMessage" IsSideContentVisible="@(!IsFromCurrentUser(message))" Position="@(IsFromCurrentUser(message) ? MessagePosition.Right : MessagePosition.Left)">
 
                         <Footer>
                             @if (isLastMessage)
@@ -72,7 +73,10 @@
                                         <MudIcon Icon="@Icons.Filled.CheckCircle" Size="Size.Small" Style="height: 0.8em; margin-top: 2px;" />
                                     }
                                 }
+                            }
 
+                            @if (isLastMessage)
+                            {
                                 var timeSince = message.TimeSinceSent;
 
                                 if (timeSince.TotalMinutes < 30)
@@ -119,6 +123,14 @@
                                 {
                                     @((MarkupString)message.Text.Replace("\n", "<br />"))
 
+                                    if(message.Edited is not null) 
+                                    {
+                                        <div class="row d-flex" style="height: 20px">
+                                            <MudTooltip Text="@(message.Edited?.ToString("g"))">
+                                                <MudIcon Icon="@Icons.Filled.Edit" Size="Size.Small" Style="height: 0.8em; margin-top: 3px;" />
+                                            </MudTooltip>
+                                        </div>
+                                    }
                                 }
                             </MudBubble>
                         </Content>
@@ -126,18 +138,14 @@
                         <Actions>
                             @if (message.Deleted is null)
                             {
+                                <MudIconButton Icon="@Icons.Filled.Reply" Style="margin-top: -5px; padding: 10px;" Size="Size.Medium" OnClick="() => ReplyToMessage(message)" />
+
                                 <MudMenu AnchorOrigin="Origin.BottomLeft">
                                     <ActivatorContent>
                                         <MudIconButton Style="margin-top: -5px; padding: 10px;" Icon="@Icons.Filled.MoreVert"
                                                        Variant="Variant.Text" Color="Color.Secondary" />
                                     </ActivatorContent>
                                     <ChildContent>
-                                        <MudMenuItem OnClick="() => ReplyToMessage(message)">
-                                            <div class="d-flex flex-row flex-grow-1 gap-2">
-                                                <MudIcon Icon="@Icons.Filled.Reply" Size="Size.Medium" />
-                                                Reply to
-                                            </div>
-                                        </MudMenuItem>
                                         @if (isAuthorizedToEdit)
                                         {
                                             <MudMenuItem OnClick="() => EditMessage(message)">
@@ -192,18 +200,27 @@
     @if (replyToMessage is not null)
     {
         <div>
-            <MudText Typo="Typo.h6">Replying to</MudText>
+            <div class="d-flex justify-space-between">
+                <MudText Typo="Typo.h6">Replying to</MudText>
+                <MudIconButton Icon="@Icons.Filled.Cancel" OnClick="() => replyToMessage = null" /> 
+            </div>
             <div class="d-flex">
                 <div class="message message-right first last">
-                    <div class="bubble">@replyToMessage.Text</div>
+                    <div class="bubble">
+                        <div class="margin-bottom: 4px">
+                            <b>@replyToMessage.SentBy.GetDisplayName()</b>
+                        </div>
+                        @replyToMessage.Text
+                    </div>
                 </div>
             </div>
         </div>
     }
     @if (editMessage is not null)
     {
-        <div>
+       <div class="d-flex justify-space-between">
             <MudText Typo="Typo.h6">Editing</MudText>
+            <MudIconButton Icon="@Icons.Filled.Cancel" OnClick="() => editMessage = null" /> 
         </div>
     }
     <div class="d-flex flex-grow-1 gap-4">
@@ -245,7 +262,11 @@
 
     async Task DeleteMessage(MessageModel message)
     {
-        await hubConnection.SendAsync("DeleteMessage", message.Id);
+        var result = await DialogService.ShowMessageBox("Delete message", "Are you sure?", "Yes", "No");
+        if(result.GetValueOrDefault()) 
+        {
+            await hubConnection.SendAsync("DeleteMessage", message.Id);
+        }
     }
 
     void ReplyToMessage(MessageModel message)
@@ -400,11 +421,12 @@
 
     async Task OnMessageEdited(MessageEditedDto dto)
     {
-        var message = messages.FirstOrDefault(x => x.Id == dto.Id);
+        var message = allMessages.FirstOrDefault(x => x.Id == dto.Id);
 
         if (message is not null)
         {
             message.Text = dto.Text;
+            message.Edited = dto.Edited;
 
             StateHasChanged();
         }
@@ -458,7 +480,7 @@
 
             if (args.Y <= threshold)
             {
-                if(messages.Count < total)
+                if (messages.Count < total)
                 {
                     await LoadItemsIncr(30);
                 }
@@ -495,7 +517,8 @@
                 Text = dto.Text!,
                 Receipts = dto.Receipts.ToList(),
                 Sent = dto.Sent.DateTime,
-                Deleted = dto.Deleted?.DateTime
+                Deleted = dto.Deleted?.DateTime,
+                Edited = dto.LastModified?.DateTime
             };
 
             messages.Insert(0, message);
@@ -556,6 +579,8 @@
         public string? Id { get; set; }
 
         public string Text { get; set; }
+
+        public DateTime Edited { get; set; }
     }
 
     public async ValueTask DisposeAsync()
@@ -570,7 +595,15 @@
             return;
         }
 
-        await hubConnection.SendAsync("SendMessage", text, replyToMessage?.Id);
+        if (editMessage is not null)
+        {
+            await hubConnection.SendAsync("EditMessage", editMessage.Id, text);
+        }
+        else
+        {
+            await hubConnection.SendAsync("SendMessage", text, replyToMessage?.Id);
+
+        }
 
         text = string.Empty;
 

@@ -1,4 +1,4 @@
-<div class="message message-@(Position == MessagePosition.Right ? "right" : "left") @Class" style="@Style">
+<div class="message message-@(Position == MessagePosition.Right ? "right" : "left") @Class" style="@Style" @attributes="AdditionalAttributes">
     @if(Header is not null) 
     {
         <div class="message-header d-flex flex-row flex-grow-1">
@@ -22,7 +22,7 @@
             @Content
         </div>
         <div class="flex-none message-side message-actions">
-            <div class="message-actions-container">
+            <div class="d-flex message-actions-container">
                 @Actions
             </div>
         </div>
@@ -71,4 +71,7 @@
 
     [Parameter]
     public string? Style { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object> AdditionalAttributes { get; set; } = null!;
 }

@@ -26,6 +26,8 @@ public class MessageDeletedDto
 public class MessageEditedDto
 {
     public string? Id { get; set; }
+    public string Text { get; set; }
+    public DateTime Edited { get; set; }
 }
 
 public class UserDto2

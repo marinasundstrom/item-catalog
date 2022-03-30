@@ -57,7 +57,9 @@ public class MessageHub : Hub<IMessageClient>
 
         await _mediator.Send(new UpdateMessageCommand(id, message));
         await Clients.All.MessageEdited(new MessageEditedDto {
-            Id = id
+            Id = id,
+            Text = message,
+            Edited = DateTime.Now
         });
     }
 
