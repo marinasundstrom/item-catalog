@@ -121,8 +121,20 @@
                                 }
                                 else
                                 {
-                                    @((MarkupString)message.Text.Replace("\n", "<br />"))
+                                    if(message.ReplyTo is not null) 
+                                    {
+                                        <div class="reply-bubble @(message.SentBy.Id == userId ? "right" : "left")">
+                                            <b>@message.ReplyTo.SentBy.GetDisplayName()</b>
+                                            <div>
+                                                @message.ReplyTo.Text
+                                            </div>
+                                        </div>
+                                    }
 
+                                    <div style="padding-left: 10px; padding-right: 10px;">
+                                        @((MarkupString)message.Text.Replace("\n", "<br />"))
+                                    </div>
+                                    
                                     if(message.Edited is not null) 
                                     {
                                         <div class="row d-flex" style="height: 20px">
@@ -175,11 +187,6 @@
                             }
                         </Actions>
                     </MudMessage>
-
-                    @foreach (var replyMessage in message.Replies)
-                    {
-                        <p>@replyMessage.Id</p>
-                    }
                 }
             </ChildContent>
         </MudChatSection>
@@ -368,17 +375,15 @@
         var model = new MessageModel()
         {
             Id = dto.Id!,
-            ReplyToId = dto.ReplyToId,
+            ReplyTo = dto.ReplyTo,
             SentBy = dto.SentBy,
             Text = dto.Text!,
             Receipts = dto.Receipts.ToList(),
             Sent = dto.Sent.DateTime
         };
 
-        if (model.ReplyToId is null)
+        if (model.ReplyTo is null)
         {
-            messages.Add(model);
-
             if (model.SentBy.Id == userId)
             {
                 await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
@@ -400,10 +405,11 @@
         {
             Console.WriteLine("Reply");
 
-            var parent = allMessages.First(x => x.Id == model.ReplyToId);
+            var parent = allMessages.First(x => x.Id == model.ReplyTo.Id);
             parent.Replies.Add(model);
         }
 
+        messages.Add(model);
         allMessages.Add(model);
 
         this.skip++;
@@ -512,7 +518,7 @@
             var message = new MessageModel()
             {
                 Id = dto.Id,
-                ReplyToId = dto.ReplyToId,
+                ReplyTo = dto.ReplyTo,
                 SentBy = dto.SentBy,
                 Text = dto.Text!,
                 Receipts = dto.Receipts.ToList(),
@@ -627,7 +633,7 @@
     {
         public string Id { get; set; } = null!;
 
-        public string? ReplyToId { get; set; }
+        public MessageDto? ReplyTo { get; set; }
 
         public UserDto SentBy { get; set; } = null!;
 

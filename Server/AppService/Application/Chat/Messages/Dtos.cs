@@ -4,8 +4,8 @@ namespace Catalog.Application.Messages;
 
 public record MessageDto(
     string Id, string? Text,
-    string? ReplyToId,
-    IEnumerable<ReceiptDto> Receipts,
+    MessageDto? ReplyTo,
+    IEnumerable<ReceiptDto>? Receipts,
     IEnumerable<MessageDto>? Replies,
     DateTime Sent, UserDto SentBy, DateTime? LastModified, UserDto? LastModifiedBy, DateTime? Deleted, UserDto? DeletedBy);
 

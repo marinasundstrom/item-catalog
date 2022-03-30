@@ -1299,12 +1299,17 @@
             "type": "string",
             "nullable": true
           },
-          "replyToId": {
-            "type": "string",
-            "nullable": true
+          "replyTo": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MessageDto"
+              }
+            ]
           },
           "receipts": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/ReceiptDto"
             }

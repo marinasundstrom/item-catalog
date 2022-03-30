@@ -27,7 +27,7 @@ public static class Mapper
 
     public static Messages.MessageDto ToDto(this Domain.Entities.Message message)
     {
-        return new Messages.MessageDto(message.Id, message.Text, message.ReplyToId, message.Receipts.Select(r => r.ToDto()), message.Replies?.Select(r => r.ToDto()), message.Created, message.CreatedBy!.ToDto(), message.LastModified, message.LastModifiedBy?.ToDto(), message.Deleted, message.DeletedBy?.ToDto());
+        return new Messages.MessageDto(message.Id, message.Text, message.ReplyTo?.ToDto(), message.Receipts?.Select(r => r.ToDto()), message.Replies?.Select(r => r.ToDto()), message.Created, message.CreatedBy!.ToDto(), message.LastModified, message.LastModifiedBy?.ToDto(), message.Deleted, message.DeletedBy?.ToDto());
     }
 
     public static Messages.ReceiptDto ToDto(this Domain.Entities.MessageReceipt receipt)
