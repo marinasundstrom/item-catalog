@@ -4,6 +4,7 @@ using Messenger.Application.Common.Interfaces;
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
+using Messenger.Contracts;
 
 namespace Messenger.Application.Messages.Commands;
 

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Messenger.Application.Common.Interfaces;
 using Messenger.Domain.Exceptions;
+using Messenger.Contracts;
 
 namespace Messenger.Application.Users.Commands;
 

@@ -5,10 +5,11 @@ using Messenger.Domain.Entities;
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
+using Messenger.Contracts;
 
 namespace Messenger.Application.Messages.Commands;
 
-public record PostMessageCommand(string ItemId, string Text, string ReplyToId) : IRequest<MessageDto>
+public record PostMessageCommand(string ItemId, string Text, string? ReplyToId) : IRequest<MessageDto>
 {
     public class PostMessageCommandHandler : IRequestHandler<PostMessageCommand, MessageDto>
     {

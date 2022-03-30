@@ -2,6 +2,7 @@
 using MediatR;
 
 using Messenger.Application.Common.Interfaces;
+using Messenger.Contracts;
 using Messenger.Domain.Entities;
 
 namespace Messenger.Application.Users.Commands;

@@ -1,4 +1,5 @@
 using Messenger.Application.Messages;
+using Messenger.Contracts;
 
 namespace Messenger.Application.Common.Interfaces;
 

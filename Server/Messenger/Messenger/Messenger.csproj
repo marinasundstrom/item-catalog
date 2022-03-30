@@ -30,6 +30,9 @@
     <ProjectReference Include="..\..\IdentityService\IdentityService.Contracts\IdentityService.Contracts.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\Messenger.Contracts\Messenger.Contracts.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>

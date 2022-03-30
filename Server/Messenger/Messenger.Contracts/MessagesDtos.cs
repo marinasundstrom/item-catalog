@@ -1,6 +1,4 @@
-﻿using Messenger.Application.Users;
-
-namespace Messenger.Application.Messages;
+﻿namespace Messenger.Contracts;
 
 public record MessageDto(
     string Id, string? Text,

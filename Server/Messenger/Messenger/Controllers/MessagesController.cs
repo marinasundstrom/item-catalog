@@ -8,6 +8,7 @@ using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Messenger.Contracts;
 
 namespace Messenger.WebApi.Controllers;
 

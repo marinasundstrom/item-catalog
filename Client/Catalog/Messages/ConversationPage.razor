@@ -125,7 +125,7 @@
                                     if (message.ReplyTo is not null)
                                     {
                                         <div class="reply-bubble @(message.SentBy.Id == userId ? "right" : "left")">
-                                            <b>@message.ReplyTo.SentBy.GetDisplayName()</b>
+                                            <small><b>@message.ReplyTo.SentBy.GetDisplayName()</b></small>
                                             <div>
                                                 @message.ReplyTo.Text
                                             </div>
@@ -209,7 +209,7 @@
     {
         <div class="reply-bubble @(replyToMessage.SentBy.Id == userId ? "right" : "left")" style="border-top-left-radius: 4px; border-top-right-radius: 4px;">
             <div class="d-flex justify-space-between" style="padding-top: 4px">
-                <b>@replyToMessage.SentBy.GetDisplayName()</b>
+                <small><b>@replyToMessage.SentBy.GetDisplayName()</b></small>
                 <MudIconButton Icon="@Icons.Filled.Cancel" Size="Size.Small" OnClick="() => replyToMessage = null" />
             </div>
             <div>
@@ -291,6 +291,12 @@
         userId = await CurrentUserService.GetUserId();
         isCurrentUserAdmin = await CurrentUserService.IsUserInRole(Roles.Administrator);
 
+        await LoadItems(30);
+
+        await JSRuntime.InvokeVoidAsync("helpers.attachScrollEventHandler", DotNetObjectReference.Create(this));
+
+        await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
+
         try
         {
             hubConnection = new HubConnectionBuilder().WithUrl($"{NavigationManager.BaseUri}messenger/hubs/messages", options =>
@@ -342,12 +348,6 @@
         {
             Snackbar.Add(exc.Message.ToString(), Severity.Error);
         }
-
-        await LoadItems(30);
-
-        await JSRuntime.InvokeVoidAsync("helpers.attachScrollEventHandler", DotNetObjectReference.Create(this));
-
-        await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
     }
 
     void OnUserJoined(UserDto2 dto)
