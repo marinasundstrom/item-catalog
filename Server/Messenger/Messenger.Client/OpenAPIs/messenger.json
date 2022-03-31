@@ -28,12 +28,12 @@
         }
       }
     },
-    "/Messages": {
+    "/Conversations": {
       "get": {
         "tags": [
-          "Messages"
+          "Conversations"
         ],
-        "operationId": "Messages_GetMessages",
+        "operationId": "Conversations_GetConversations",
         "parameters": [
           {
             "name": "skip",
@@ -88,7 +88,44 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResultsOfMessageDto"
+                  "$ref": "#/components/schemas/ResultsOfConversationDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Conversations"
+        ],
+        "operationId": "Conversations_CreateConversation",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageDto"
                 }
               }
             }
@@ -104,12 +141,52 @@
         ]
       }
     },
-    "/Messages/{id}": {
-      "delete": {
+    "/Conversations/{id}": {
+      "get": {
         "tags": [
-          "Messages"
+          "Conversations"
         ],
-        "operationId": "Messages_DeleteMessage",
+        "operationId": "Conversations_GetConversations2",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/Conversations/{id}/Join": {
+      "post": {
+        "tags": [
+          "Conversations"
+        ],
+        "operationId": "Conversations_JoinConversation",
         "parameters": [
           {
             "name": "id",
@@ -144,18 +221,252 @@
           }
         ]
       }
+    },
+    "/Conversations/{id}/Leave": {
+      "post": {
+        "tags": [
+          "Conversations"
+        ],
+        "operationId": "Conversations_LeaveConversation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/Conversations/{id}/Messages": {
+      "get": {
+        "tags": [
+          "Conversations"
+        ],
+        "operationId": "Conversations_GetMessages",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            },
+            "x-position": 2
+          },
+          {
+            "name": "take",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            },
+            "x-position": 3
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 4
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "schema": {
+              "oneOf": [
+                {
+                  "nullable": true,
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/SortDirection"
+                    }
+                  ]
+                }
+              ]
+            },
+            "x-position": 5
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultsOfMessageDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Conversations"
+        ],
+        "operationId": "Conversations_PostMessage",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          },
+          {
+            "name": "replyToId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "ApiKey": []
+          }
+        ]
+      }
+    },
+    "/Conversations/{conversationId}/Messages/{id}": {
+      "delete": {
+        "tags": [
+          "Conversations"
+        ],
+        "operationId": "Conversations_DeleteMessage",
+        "parameters": [
+          {
+            "name": "conversationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "ApiKey": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
-      "ResultsOfMessageDto": {
+      "ResultsOfConversationDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "items": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MessageDto"
+              "$ref": "#/components/schemas/ConversationDto"
             }
           },
           "totalCount": {
@@ -164,11 +475,77 @@
           }
         }
       },
+      "ConversationDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdBy": {
+            "$ref": "#/components/schemas/UserDto"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UserDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "SortDirection": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Desc",
+          "Asc"
+        ],
+        "enum": [
+          "Desc",
+          "Asc"
+        ]
+      },
       "MessageDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
+            "type": "string"
+          },
+          "conversationId": {
             "type": "string"
           },
           "text": {
@@ -251,48 +628,21 @@
           }
         }
       },
-      "UserDto": {
+      "ResultsOfMessageDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "type": "string"
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageDto"
+            }
           },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "displayName": {
-            "type": "string",
-            "nullable": true
-          },
-          "email": {
-            "type": "string"
-          },
-          "created": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "lastModified": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
           }
         }
-      },
-      "SortDirection": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Desc",
-          "Asc"
-        ],
-        "enum": [
-          "Desc",
-          "Asc"
-        ]
       }
     },
     "securitySchemes": {

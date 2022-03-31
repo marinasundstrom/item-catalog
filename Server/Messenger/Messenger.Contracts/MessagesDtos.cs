@@ -1,7 +1,9 @@
 ﻿namespace Messenger.Contracts;
 
+public record ConversationDto(string Id, string? Title, UserDto CreatedBy, DateTime Created);
+
 public record MessageDto(
-    string Id, string? Text,
+    string Id, string ConversationId, string? Text,
     MessageDto? ReplyTo,
     IEnumerable<ReceiptDto>? Receipts,
     IEnumerable<MessageDto>? Replies,

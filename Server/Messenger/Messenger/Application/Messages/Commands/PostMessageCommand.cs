@@ -10,28 +10,41 @@ using MassTransit;
 
 namespace Messenger.Application.Messages.Commands;
 
-public record PostMessageCommand(string ItemId, string Text, string? ReplyToId) : IRequest<MessageDto>
+public record PostMessageCommand(string ConversationId, string Text, string? ReplyToId) : IRequest<MessageDto>
 {
     public class PostMessageCommandHandler : IRequestHandler<PostMessageCommand, MessageDto>
     {
         private readonly IMessengerContext context;
+        private readonly ICurrentUserService _currentUserService;
         private readonly IBus _bus;
 
-        public PostMessageCommandHandler(IMessengerContext context, IBus bus)
+        public PostMessageCommandHandler(IMessengerContext context, ICurrentUserService currentUserService, IBus bus)
         {
             this.context = context;
+            this._currentUserService = currentUserService;
             _bus = bus;
         }
 
         public async Task<MessageDto> Handle(PostMessageCommand request, CancellationToken cancellationToken)
         {
-            //var item = await context.Items.FirstOrDefaultAsync(i => i.Id == request.ItemId, cancellationToken);
+            var conversation = await context.Conversations
+                .Include(x => x.Participants)
+                .AsSplitQuery()
+                .FirstOrDefaultAsync(i => i.Id == request.ConversationId, cancellationToken);
 
-            //if (item is null) throw new Exception();
+            if (conversation is null) 
+            {
+                throw new Exception();
+            }
+
+            if(!conversation.Participants.Any(x => x.UserId == _currentUserService.UserId)) 
+            {
+                throw new Exception();
+            }
 
             var message = new Message(request.Text, request.ReplyToId);
 
-            context.Messages.Add(message);
+            conversation.Messages.Add(message);
 
             await context.SaveChangesAsync(cancellationToken);
 

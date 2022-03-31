@@ -17,13 +17,16 @@ public class MessageHub : Hub<IMessageClient>
 {
     private readonly IMediator _mediator;
     private readonly ICurrentUserService _currentUserService;
+    private readonly IRequestClient<PostMessage> _postMessageClient;
     private readonly IBus _bus;
 
     public MessageHub(IMediator mediator, ICurrentUserService currentUserService,
+        IRequestClient<PostMessage> postMessageClient,
         IBus bus)
     {
         _mediator = mediator;
         _currentUserService = currentUserService;
+        _postMessageClient = postMessageClient;
         _bus = bus;
     }
 
@@ -44,7 +47,7 @@ public class MessageHub : Hub<IMessageClient>
     {
         _currentUserService.SetCurrentUser(this.Context.User!);
 
-        await _bus.Publish(new PostMessage(_currentUserService.GetAccessToken()!, null!, text, replyToId));
+        var response = await _postMessageClient.GetResponse<MessageDto>(new PostMessage(_currentUserService.GetAccessToken()!, null!, text, replyToId));
     }
 
     public async Task MessageRead(string id)

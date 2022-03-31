@@ -5,7 +5,7 @@ namespace Messenger.Domain.Entities;
 
 public class ConversationParticipant : AuditableEntity, ISoftDelete, IHasDomainEvent
 {
-    public string Id { get; private set; } = null!;
+    public string Id { get; set; } = null!;
 
     public Conversation Conversation { get; set; } = null!;
 

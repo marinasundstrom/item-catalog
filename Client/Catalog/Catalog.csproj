@@ -59,5 +59,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Messages\Message.razor" />
+    <Content Remove="Messages\Conversations.razor" />
+    <Content Remove="Messages\Conversations.razor" />
+    <Content Remove="Messages\Foo.razor" />
   </ItemGroup>
+
 </Project>

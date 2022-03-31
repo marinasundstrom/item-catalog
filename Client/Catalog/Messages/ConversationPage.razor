@@ -1,4 +1,4 @@
-@page "/conversation"
+@page "/conversations/{ConversationId}"
 @attribute [Authorize]
 @layout ConversationLayout
 @using Microsoft.AspNetCore.SignalR.Client
@@ -10,7 +10,7 @@
 @using Humanizer
 @implements IAsyncDisposable
 @inject IDialogService DialogService
-@inject IMessagesClient MessagesClient
+@inject IConversationsClient ConversationsClient
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 @inject IAccessTokenProvider AccessTokenProvider
@@ -235,6 +235,9 @@
 </div>
 
 @code {
+    [Parameter]
+    public string ConversationId { get; set; } = null!;
+
     HubConnection hubConnection;
 
     string userId;
@@ -242,7 +245,6 @@
     MessageModel? editMessage;
 
     List<MessageModel> messages = new List<MessageModel>();
-    List<MessageModel> allMessages = new List<MessageModel>();
 
     bool IsFromCurrentUser(MessageModel message)
     {
@@ -372,7 +374,7 @@
             ReplyTo = dto.ReplyTo,
             SentBy = dto.SentBy,
             Text = dto.Text!,
-            Receipts = dto.Receipts.ToList(),
+            Receipts = dto.Receipts?.ToList() ?? new List<ReceiptDto>(),
             Sent = dto.Sent.DateTime
         };
 
@@ -399,12 +401,11 @@
         {
             Console.WriteLine("Reply");
 
-            var parent = allMessages.First(x => x.Id == model.ReplyTo.Id);
+            var parent = messages.First(x => x.Id == model.ReplyTo.Id);
             parent.Replies.Add(model);
         }
 
         messages.Add(model);
-        allMessages.Add(model);
 
         this.skip++;
         this.total++;
@@ -421,7 +422,7 @@
 
     async Task OnMessageEdited(MessageEditedDto dto)
     {
-        var message = allMessages.FirstOrDefault(x => x.Id == dto.Id);
+        var message = messages.FirstOrDefault(x => x.Id == dto.Id);
 
         if (message is not null)
         {
@@ -503,7 +504,7 @@
 
     async Task LoadItemsCore(int take = 10)
     {
-        var results = await MessagesClient.GetMessagesAsync(this.skip, take, null!, null);
+        var results = await ConversationsClient.GetMessagesAsync(ConversationId, this.skip, take, null!, null);
         total = results.TotalCount;
         this.skip += results.Items.Count;
 
@@ -522,8 +523,6 @@
             };
 
             messages.Insert(0, message);
-
-            allMessages.Add(message);
 
             if (dto.SentBy.Id != userId && !message.Receipts.Any(x => x.User.Id == userId))
             {
@@ -595,14 +594,21 @@
             return;
         }
 
+        MessageDto message;
+
         if (editMessage is not null)
         {
+            //message = await ConversationsClient.PostMessageAsync(text, replyToMessage?.Id);
+
             await hubConnection.SendAsync("EditMessage", editMessage.Id, text);
         }
         else
         {
-            await hubConnection.SendAsync("SendMessage", text, replyToMessage?.Id);
+            message = await ConversationsClient.PostMessageAsync(ConversationId, text, replyToMessage?.Id);
 
+            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(message));
+
+            await OnMessageReceived(message);
         }
 
         text = string.Empty;

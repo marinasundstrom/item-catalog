@@ -6,38 +6,38 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Messenger.Contracts;
 
-namespace Messenger.Application.Messages.Queries;
+namespace Messenger.Application.Conversations.Queries;
 
-public class GetMessageQuery : IRequest<MessageDto?>
+public class GetConversationQuery : IRequest<ConversationDto?>
 {
     public string Id { get; set; }
 
-    public GetMessageQuery(string id)
+    public GetConversationQuery(string id)
     {
         Id = id;
     }
 
-    public class GetMessageQueryHandler : IRequestHandler<GetMessageQuery, MessageDto?>
+    public class GetConversationQueryHandler : IRequestHandler<GetConversationQuery, ConversationDto?>
     {
         private readonly IMessengerContext context;
 
-        public GetMessageQueryHandler(IMessengerContext context)
+        public GetConversationQueryHandler(IMessengerContext context)
         {
             this.context = context;
         }
 
-        public async Task<MessageDto?> Handle(GetMessageQuery request, CancellationToken cancellationToken)
+        public async Task<ConversationDto?> Handle(GetConversationQuery request, CancellationToken cancellationToken)
         {
-            var message = await context.Messages
+            var conversation = await context.Conversations
                 .Include(i => i.CreatedBy)
                 .Include(i => i.LastModifiedBy)
                 .AsSplitQuery()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(i => i.Id == request.Id, cancellationToken);
 
-            if (message is null) return null;
+            if (conversation is null) return null;
 
-            return message.ToDto();
+            return conversation.ToDto();
         }
     }
 }

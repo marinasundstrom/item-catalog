@@ -17,11 +17,16 @@ public static class Mapper
 
     public static Contracts.MessageDto ToDto(this Domain.Entities.Message message)
     {
-        return new Contracts.MessageDto(message.Id, message.Text, message.ReplyTo?.ToDto(), message.Receipts?.Select(r => r.ToDto()), message.Replies?.Select(r => r.ToDto()), message.Created, message.CreatedBy!.ToDto(), message.LastModified, message.LastModifiedBy?.ToDto(), message.Deleted, message.DeletedBy?.ToDto());
+        return new Contracts.MessageDto(message.Id, message.ConversationId, message.Text, message.ReplyTo?.ToDto(), message.Receipts?.Select(r => r.ToDto()), message.Replies?.Select(r => r.ToDto()), message.Created, message.CreatedBy!.ToDto(), message.LastModified, message.LastModifiedBy?.ToDto(), message.Deleted, message.DeletedBy?.ToDto());
     }
 
     public static Contracts.ReceiptDto ToDto(this Domain.Entities.MessageReceipt receipt)
     {
         return new Contracts.ReceiptDto(receipt.Id, receipt.Message.Id, receipt.CreatedBy!.ToDto(), receipt.Created);
+    }
+
+    public static Contracts.ConversationDto ToDto(this Domain.Entities.Conversation conversation)
+    {
+        return new Contracts.ConversationDto(conversation.Id, conversation.Title, conversation.CreatedBy!.ToDto(), conversation.Created);
     }
 }

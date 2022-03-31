@@ -5,11 +5,13 @@ namespace Messenger.Domain.Entities;
 
 public class Conversation : AuditableEntity, ISoftDelete, IHasDomainEvent
 {
-    public string Id { get; private set; } = null!;
+    public string Id { get; set; } = null!;
 
     public string? Title { get; set; }
 
     public List<ConversationParticipant> Participants { get; set; } = new List<ConversationParticipant>();
+
+    public List<Message> Messages { get; set; } = new List<Message>();
 
     public DateTime? Deleted { get; set; }
     public string? DeletedById { get; set; }

@@ -27,7 +27,9 @@ public class PostMessageConsumer : IConsumer<PostMessage>
 
         await _currentUserService.SetCurrentUserFromAccessTokenAsync(message.AccessToken);
 
-        await _mediator.Send(new PostMessageCommand(null!, message.Text, message.ReplyToId));
+        var result = await _mediator.Send(new PostMessageCommand(message.ConversationId, message.Text, message.ReplyToId));
+
+        await context.RespondAsync<MessageDto>(result);
     }
 }
 

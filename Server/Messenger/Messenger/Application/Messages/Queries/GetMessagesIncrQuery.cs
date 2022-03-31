@@ -12,16 +12,16 @@ namespace Messenger.Application.Messages.Queries;
 
 public class GetMessagesIncrQuery : IRequest<Results<MessageDto>>
 {
-    public string ItemId { get; set; }
+    public string ConversationId { get; set; }
 
     public int Skip { get; set; }
     public int Take { get; set; }
     public string? SortBy { get; }
     public Application.Common.Models.SortDirection? SortDirection { get; }
 
-    public GetMessagesIncrQuery(string itemId, int skip, int take, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null)
+    public GetMessagesIncrQuery(string conversationId, int skip, int take, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null)
     {
-        ItemId = itemId;
+        ConversationId = conversationId;
         Skip = skip;
         Take = take;
         SortBy = sortBy;
@@ -49,7 +49,7 @@ public class GetMessagesIncrQuery : IRequest<Results<MessageDto>>
                 .ThenInclude(c => c.DeletedBy)
                 .Include(c => c.Receipts)
                 .ThenInclude(r => r.CreatedBy)
-                //.Where(c => c.Item.Id == request.ItemId)
+                .Where(c => c.ConversationId == request.ConversationId)
                 .OrderByDescending(c => c.Created)
                 .IgnoreQueryFilters()
                 .AsSplitQuery()

@@ -19,6 +19,10 @@ public class Message : AuditableEntity, ISoftDelete, IHasDomainEvent
 
     public string Id { get; private set; } = null!;
 
+    public string ConversationId { get; set; }
+
+    public Conversation Conversation { get; set; }
+
     public string Text { get; set; } = null!;
 
     public List<MessageReceipt> Receipts { get; set; } = new List<MessageReceipt>();

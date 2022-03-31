@@ -37,8 +37,10 @@
 
   <ItemGroup>
     <None Remove="Controllers\" />
+    <None Remove="Application\Conversations\Queries\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Application\Conversations\Queries\" />
   </ItemGroup>
 </Project>

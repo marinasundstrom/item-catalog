@@ -30,14 +30,21 @@ public record SendMessageReceiptCommand(string MessageId) : IRequest<ReceiptDto>
 
             var message = await context
                 .Messages
-                .Include(x => x.Receipts.Where(i => i.CreatedById != userId))
+                .Include(x => x.Receipts)
                 .IgnoreQueryFilters()
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(i => i.Id == request.MessageId, cancellationToken);
 
             if (message is null) throw new Exception();
 
-            var receipt = new Domain.Entities.MessageReceipt()
+            var receipt = message.Receipts.FirstOrDefault(x => x.CreatedById == userId);
+
+            if (receipt is not null)
+            {
+                return receipt.ToDto();
+            }
+
+            receipt = new Domain.Entities.MessageReceipt()
             {
                 Id = Guid.NewGuid().ToString()
             };

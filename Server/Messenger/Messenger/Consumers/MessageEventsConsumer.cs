@@ -7,28 +7,42 @@ using Messenger.Contracts;
 using Messenger.Hubs;
 
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Messenger.Consumers;
 
 public class MessagePostedConsumer : IConsumer<MessagePosted>
 {
     private readonly IMediator _mediator;
+    private readonly IMessengerContext _messengerContext;
     private readonly ICurrentUserService _currentUserService;
     private readonly IHubContext<MessageHub, IMessageClient> _hubContext;
 
-    public MessagePostedConsumer(IMediator mediator, ICurrentUserService currentUserService,
+    public MessagePostedConsumer(IMediator mediator, IMessengerContext messengerContext, ICurrentUserService currentUserService,
         IHubContext<MessageHub, IMessageClient> hubContext)
     {
         _mediator = mediator;
+        _messengerContext = messengerContext;
         _currentUserService = currentUserService;
         _hubContext = hubContext;
     }
 
     public async Task Consume(ConsumeContext<MessagePosted> context)
     {
-        var message = context.Message;
+        var message = context.Message.Message;
 
-        await _hubContext.Clients.All.MessageReceived(message.Message);
+        var conversationId = message.ConversationId;
+        var sentById = message.SentBy.Id;
+
+        var participantUserId = await _messengerContext
+            .ConversationParticipants
+            .Where(x => x.Conversation.Id == conversationId && x.UserId != sentById) //Is not muted
+            .Select(x => x.UserId)
+            .ToArrayAsync();
+
+        await _hubContext.Clients
+            .Users(participantUserId)
+            .MessageReceived(message);
     }
 }
 
