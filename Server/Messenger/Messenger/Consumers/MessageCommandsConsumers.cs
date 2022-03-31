@@ -25,7 +25,7 @@ public class PostMessageConsumer : IConsumer<PostMessage>
     {
         var message = context.Message;
 
-        _currentUserService.SetCurrentUser(message.UserId);
+        await _currentUserService.SetCurrentUserFromAccessTokenAsync(message.AccessToken);
 
         var result = await _mediator.Send(new PostMessageCommand(null!, message.Text, message.ReplyToId));
 
@@ -50,7 +50,7 @@ public class UpdateMessageConsumer : IConsumer<UpdateMessage>
     {
         var message = context.Message;
 
-        _currentUserService.SetCurrentUser(message.UserId);
+        await _currentUserService.SetCurrentUserFromAccessTokenAsync(message.AccessToken);
 
         await _mediator.Send(new UpdateMessageCommand(message.MessageId!, message.Text));
 
@@ -75,7 +75,7 @@ public class DeleteMessageConsumer : IConsumer<DeleteMessage>
     {
         var message = context.Message;
 
-        _currentUserService.SetCurrentUser(message.UserId);
+        await _currentUserService.SetCurrentUserFromAccessTokenAsync(message.AccessToken);
 
         await _mediator.Send(new DeleteMessageCommand(message.MessageId));
 
@@ -100,7 +100,7 @@ public class MarkMessageAsReadConsumer : IConsumer<MarkMessageAsRead>
     {
         var message = context.Message;
 
-        _currentUserService.SetCurrentUser(message.UserId);
+        await _currentUserService.SetCurrentUserFromAccessTokenAsync(message.AccessToken);
 
         var receipt = await _mediator.Send(new SendMessageReceiptCommand(message.MessageId));
 
@@ -123,13 +123,13 @@ public class StartTypingConsumer : IConsumer<StartTyping>
     {
         var message = context.Message;
 
-        _currentUserService.SetCurrentUser(message.UserId);
+        await _currentUserService.SetCurrentUserFromAccessTokenAsync(message.AccessToken);
 
         //await _mediator.Send(new SendMessageReceiptCommand(message.MessageId));
     }
 }
 
-public class EndTypingConsumer : IConsumer<EndedTyping>
+public class EndTypingConsumer : IConsumer<EndTyping>
 {
     private readonly IMediator _mediator;
     private readonly ICurrentUserService _currentUserService;
@@ -140,11 +140,11 @@ public class EndTypingConsumer : IConsumer<EndedTyping>
         _currentUserService = currentUserService;
     }
 
-    public async Task Consume(ConsumeContext<EndedTyping> context)
+    public async Task Consume(ConsumeContext<EndTyping> context)
     {
         var message = context.Message;
 
-        _currentUserService.SetCurrentUser(message.UserId);
+        await _currentUserService.SetCurrentUserFromAccessTokenAsync(message.AccessToken);
 
         //await _mediator.Send(new SendMessageReceiptCommand(message.MessageId));
     }

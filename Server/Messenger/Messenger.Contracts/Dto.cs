@@ -2,18 +2,18 @@
 
 namespace Messenger.Contracts;
 
-public record PostMessage(string UserId, string ConversationId, string Text, string? ReplyToId = null);
+public record PostMessage(string AccessToken, string ConversationId, string Text, string? ReplyToId = null);
 
-public record UpdateMessage(string UserId, string ConversationId, string MessageId, string Text);
+public record UpdateMessage(string AccessToken, string ConversationId, string MessageId, string Text);
 
-public record DeleteMessage(string UserId, string ConversationId, string MessageId);
+public record DeleteMessage(string AccessToken, string ConversationId, string MessageId);
 
-public record MarkMessageAsRead(string UserId, string ConversationId, string MessageId);
+public record MarkMessageAsRead(string AccessToken, string ConversationId, string MessageId);
 
 
-public record StartTyping(string UserId, string ConversationId, string MessageId);
+public record StartTyping(string AccessToken, string ConversationId, string MessageId);
 
-public record EndTyping(string UserId, string ConversationId, string MessageId);
+public record EndTyping(string AccessToken, string ConversationId, string MessageId);
 
 
 public record MessagePosted(MessageDto Message);

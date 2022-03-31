@@ -291,12 +291,6 @@
         userId = await CurrentUserService.GetUserId();
         isCurrentUserAdmin = await CurrentUserService.IsUserInRole(Roles.Administrator);
 
-        await LoadItems(30);
-
-        await JSRuntime.InvokeVoidAsync("helpers.attachScrollEventHandler", DotNetObjectReference.Create(this));
-
-        await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
-
         try
         {
             hubConnection = new HubConnectionBuilder().WithUrl($"{NavigationManager.BaseUri}messenger/hubs/messages", options =>
@@ -348,6 +342,12 @@
         {
             Snackbar.Add(exc.Message.ToString(), Severity.Error);
         }
+
+        await LoadItems(30);
+
+        await JSRuntime.InvokeVoidAsync("helpers.attachScrollEventHandler", DotNetObjectReference.Create(this));
+
+        await JSRuntime.InvokeVoidAsync("helpers.scrollToBottom");
     }
 
     void OnUserJoined(UserDto2 dto)

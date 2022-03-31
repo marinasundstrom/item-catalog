@@ -42,50 +42,30 @@ public class MessageHub : Hub<IMessageClient>
 
     public async Task SendMessage(string text, string? replyToId) 
     {
-        await _bus.Publish(new PostMessage(this.Context.UserIdentifier!, null!, text, replyToId));
+        _currentUserService.SetCurrentUser(this.Context.User!);
 
-        //_currentUserService.SetCurrentUser(this.Context.User!);
-
-        //var message = await _mediator.Send(new PostMessageCommand(null!, text, replyToId));
-
-        //await Clients.All.MessageReceived(message);
+        await _bus.Publish(new PostMessage(_currentUserService.GetAccessToken()!, null!, text, replyToId));
     }
 
     public async Task MessageRead(string id)
     {
-        await _bus.Publish(new MarkMessageAsRead(this.Context.UserIdentifier!, null!, id));
+        _currentUserService.SetCurrentUser(this.Context.User!);
 
-        //_currentUserService.SetCurrentUser(this.Context.User!);
-
-        //ReceiptDto receipt = await _mediator.Send(new SendMessageReceiptCommand(id));
-
-        //await Clients.All.MessageRead(receipt);
+        await _bus.Publish(new MarkMessageAsRead(_currentUserService.GetAccessToken()!, null!, id));
     }
 
     public async Task EditMessage(string id, string text) 
     {
-        await _bus.Publish(new UpdateMessage(this.Context.UserIdentifier!, null!, id, text));
+        _currentUserService.SetCurrentUser(this.Context.User!);
 
-        //_currentUserService.SetCurrentUser(this.Context.User!);
-
-        //await _mediator.Send(new UpdateMessageCommand(id, message));
-        //await Clients.All.MessageEdited(new MessageEditedDto {
-        //    Id = id,
-        //    Text = message,
-        //    Edited = DateTime.Now
-        //});
+        await _bus.Publish(new UpdateMessage(_currentUserService.GetAccessToken()!, null!, id, text));
     }
 
     public async Task DeleteMessage(string id) 
     {
-        await _bus.Publish(new DeleteMessage(this.Context.UserIdentifier!, null!, id));
+        _currentUserService.SetCurrentUser(this.Context.User!);
 
-        //_currentUserService.SetCurrentUser(this.Context.User!);
-
-        //await _mediator.Send(new DeleteMessageCommand(id));
-        //await Clients.All.MessageDeleted(new MessageDeletedDto {
-        //    Id = id
-        //});
+        await _bus.Publish(new DeleteMessage(_currentUserService.GetAccessToken()!, null!, id));
     }
     public override async Task OnDisconnectedAsync(Exception? exception)
     {

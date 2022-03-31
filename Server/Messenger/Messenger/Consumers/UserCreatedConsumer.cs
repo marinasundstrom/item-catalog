@@ -6,14 +6,14 @@ using Messenger.Application.Common.Interfaces;
 using Messenger.Application.Users.Commands;
 namespace Messenger.Consumers;
 
-public class UserCreated1Consumer : IConsumer<UserCreated>
+public class UserCreated2Consumer : IConsumer<UserCreated>
 {
     private readonly IMediator _mediator;
     private readonly IRequestClient<GetUser> _requestClient;
-    private readonly ILogger<UserCreated1Consumer> _logger;
+    private readonly ILogger<UserCreated2Consumer> _logger;
     private readonly ICurrentUserService _currentUserService;
 
-    public UserCreated1Consumer(IMediator mediator, ICurrentUserService currentUserService, IRequestClient<GetUser> requestClient, ILogger<UserCreated1Consumer> logger)
+    public UserCreated2Consumer(IMediator mediator, ICurrentUserService currentUserService, IRequestClient<GetUser> requestClient, ILogger<UserCreated2Consumer> logger)
     {
         _mediator = mediator;
         _currentUserService = currentUserService;

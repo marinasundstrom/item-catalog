@@ -9,12 +9,12 @@ using Messenger.Application.Users.Commands;
 
 namespace Messenger.Consumers;
 
-public class UserDeleted1Consumer : IConsumer<UserDeleted>
+public class UserDeleted2Consumer : IConsumer<UserDeleted>
 {
     private readonly IMediator _mediator;
     private readonly ICurrentUserService _currentUserService;
 
-    public UserDeleted1Consumer(IMediator mediator, ICurrentUserService currentUserService)
+    public UserDeleted2Consumer(IMediator mediator, ICurrentUserService currentUserService)
     {
         _mediator = mediator;
         _currentUserService = currentUserService;
