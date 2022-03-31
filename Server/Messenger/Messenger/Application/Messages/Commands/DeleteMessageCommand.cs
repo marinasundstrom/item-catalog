@@ -4,6 +4,8 @@ using Messenger.Application.Common.Interfaces;
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
+using MassTransit;
+using Messenger.Contracts;
 
 namespace Messenger.Application.Messages.Commands;
 
@@ -13,11 +15,13 @@ public record DeleteMessageCommand(string MessageId) : IRequest
     {
         private readonly IMessengerContext context;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IBus _bus;
 
-        public DeleteMessageCommandHandler(IMessengerContext context, ICurrentUserService currentUserService)
+        public DeleteMessageCommandHandler(IMessengerContext context, ICurrentUserService currentUserService, IBus bus)
         {
             this.context = context;
             _currentUserService = currentUserService;
+            _bus = bus;
         }
 
         public async Task<Unit> Handle(DeleteMessageCommand request, CancellationToken cancellationToken)
@@ -36,6 +40,8 @@ public record DeleteMessageCommand(string MessageId) : IRequest
             context.Messages.Remove(message);
 
             await context.SaveChangesAsync(cancellationToken);
+
+            await _bus.Publish(new MessageDeleted(null!, message.Id));
 
             return Unit.Value;
         }

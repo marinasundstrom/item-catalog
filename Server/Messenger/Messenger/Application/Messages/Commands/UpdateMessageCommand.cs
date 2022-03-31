@@ -4,6 +4,8 @@ using Messenger.Application.Common.Interfaces;
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
+using MassTransit;
+using Messenger.Contracts;
 
 namespace Messenger.Application.Messages.Commands;
 
@@ -13,11 +15,13 @@ public record UpdateMessageCommand(string MessageId, string Text) : IRequest
     {
         private readonly IMessengerContext context;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IBus _bus;
 
-        public UpdateMessageCommandHandler(IMessengerContext context, ICurrentUserService currentUserService)
+        public UpdateMessageCommandHandler(IMessengerContext context, ICurrentUserService currentUserService, IBus bus)
         {
             this.context = context;
             _currentUserService = currentUserService;
+            _bus = bus;
         }
 
         public async Task<Unit> Handle(UpdateMessageCommand request, CancellationToken cancellationToken)
@@ -34,6 +38,8 @@ public record UpdateMessageCommand(string MessageId, string Text) : IRequest
             message.Text = request.Text;
 
             await context.SaveChangesAsync(cancellationToken);
+
+            await _bus.Publish(new MessageUpdated(null!, message.Id, message.Text, DateTime.Now));
 
             return Unit.Value;
         }

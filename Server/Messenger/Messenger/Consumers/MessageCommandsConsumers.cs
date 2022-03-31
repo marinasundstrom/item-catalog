@@ -27,9 +27,7 @@ public class PostMessageConsumer : IConsumer<PostMessage>
 
         await _currentUserService.SetCurrentUserFromAccessTokenAsync(message.AccessToken);
 
-        var result = await _mediator.Send(new PostMessageCommand(null!, message.Text, message.ReplyToId));
-
-        await _bus.Publish(new MessagePosted(result));
+        await _mediator.Send(new PostMessageCommand(null!, message.Text, message.ReplyToId));
     }
 }
 
@@ -53,8 +51,6 @@ public class UpdateMessageConsumer : IConsumer<UpdateMessage>
         await _currentUserService.SetCurrentUserFromAccessTokenAsync(message.AccessToken);
 
         await _mediator.Send(new UpdateMessageCommand(message.MessageId!, message.Text));
-
-        await _bus.Publish(new MessageUpdated(null!, message.MessageId,  message.Text, DateTime.Now));
     }
 }
 
@@ -78,8 +74,6 @@ public class DeleteMessageConsumer : IConsumer<DeleteMessage>
         await _currentUserService.SetCurrentUserFromAccessTokenAsync(message.AccessToken);
 
         await _mediator.Send(new DeleteMessageCommand(message.MessageId));
-
-        await _bus.Publish(new MessageDeleted(null!, message.MessageId));
     }
 }
 
@@ -102,9 +96,7 @@ public class MarkMessageAsReadConsumer : IConsumer<MarkMessageAsRead>
 
         await _currentUserService.SetCurrentUserFromAccessTokenAsync(message.AccessToken);
 
-        var receipt = await _mediator.Send(new SendMessageReceiptCommand(message.MessageId));
-
-        await _bus.Publish(new MessageRead(receipt));
+        await _mediator.Send(new SendMessageReceiptCommand(message.MessageId));
     }
 }
 

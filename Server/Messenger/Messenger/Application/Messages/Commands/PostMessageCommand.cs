@@ -6,6 +6,7 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 using Messenger.Contracts;
+using MassTransit;
 
 namespace Messenger.Application.Messages.Commands;
 
@@ -14,10 +15,12 @@ public record PostMessageCommand(string ItemId, string Text, string? ReplyToId) 
     public class PostMessageCommandHandler : IRequestHandler<PostMessageCommand, MessageDto>
     {
         private readonly IMessengerContext context;
+        private readonly IBus _bus;
 
-        public PostMessageCommandHandler(IMessengerContext context)
+        public PostMessageCommandHandler(IMessengerContext context, IBus bus)
         {
             this.context = context;
+            _bus = bus;
         }
 
         public async Task<MessageDto> Handle(PostMessageCommand request, CancellationToken cancellationToken)
@@ -47,6 +50,10 @@ public record PostMessageCommand(string ItemId, string Text, string? ReplyToId) 
                 .IgnoreQueryFilters()
                 .AsSplitQuery()
                 .FirstAsync(x => x.Id == message.Id);
+
+            var result = message.ToDto();
+
+            await _bus.Publish(new MessagePosted(result));
 
             return message.ToDto();
         }

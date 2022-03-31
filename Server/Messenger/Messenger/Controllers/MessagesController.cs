@@ -31,6 +31,14 @@ public class MessagesController : ControllerBase
         return Ok(await _mediator.Send(new GetMessagesIncrQuery(null!, skip, take, sortBy, sortDirection), cancellationToken));
     }
 
+    [HttpPost]
+    public async Task<ActionResult> PostMessage(
+        string text, string? replyToId, CancellationToken cancellationToken = default)
+    {
+        await _mediator.Send(new PostMessageCommand(null, text, replyToId), cancellationToken);
+        return Ok();
+    }
+
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteMessage(
         string id, CancellationToken cancellationToken = default)

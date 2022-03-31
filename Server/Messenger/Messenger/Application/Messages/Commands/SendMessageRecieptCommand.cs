@@ -5,6 +5,7 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 using Messenger.Contracts;
+using MassTransit;
 
 namespace Messenger.Application.Messages.Commands;
 
@@ -14,11 +15,13 @@ public record SendMessageReceiptCommand(string MessageId) : IRequest<ReceiptDto>
     {
         private readonly IMessengerContext context;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IBus _bus;
 
-        public SendMessageReceiptCommandHandler(IMessengerContext context, ICurrentUserService currentUserService)
+        public SendMessageReceiptCommandHandler(IMessengerContext context, ICurrentUserService currentUserService, IBus bus)
         {
             this.context = context;
             _currentUserService = currentUserService;
+            _bus = bus;
         }
 
         public async Task<ReceiptDto> Handle(SendMessageReceiptCommand request, CancellationToken cancellationToken)
@@ -50,7 +53,11 @@ public record SendMessageReceiptCommand(string MessageId) : IRequest<ReceiptDto>
                 .AsSplitQuery()
                 .FirstAsync(i => i.Id == receipt.Id, cancellationToken);
 
-            return receipt.ToDto();
+            var dto = receipt.ToDto();
+
+            await _bus.Publish(new MessageRead(dto));
+
+            return dto;
         }
     }
 }
