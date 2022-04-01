@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Catalog.Messenger</RootNamespace>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Client\Catalog.Shared\Catalog.Shared.csproj" />
+    <ProjectReference Include="..\..\..\Client\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
+    <ProjectReference Include="..\Messenger.Client\Messenger.Client.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Messages\Message.razor" />
+    <Content Remove="Messages\Foo.razor" />
+  </ItemGroup>
+</Project>

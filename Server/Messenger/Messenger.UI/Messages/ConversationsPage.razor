@@ -3,11 +3,10 @@
 @attribute [Authorize]
 @using Microsoft.AspNetCore.SignalR.Client
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using Messenger.Client
+@using global::Messenger.Client
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<ConversationsPage> T
 @inject ISnackbar Snackbar
-@inject INotificationService NotificationService
 @inject IConversationsClient ConversationsClient
 @inject IDialogService DialogService
 @inject IAccessTokenProvider AccessTokenProvider

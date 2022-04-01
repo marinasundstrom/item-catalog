@@ -79,12 +79,12 @@ public static class ServiceExtensions
         .AddTypedClient<Catalog.Client.INotificationsClient>((http, sp) => new Catalog.Client.NotificationsClient(http))
         .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
-        services.AddHttpClient(nameof(Messenger.Client.IConversationsClient), (sp, http) =>
+        services.AddHttpClient(nameof(global::Messenger.Client.IConversationsClient), (sp, http) =>
         {
             var navigationManager = sp.GetRequiredService<NavigationManager>();
             http.BaseAddress = new Uri($"{navigationManager.BaseUri}messenger/");
         })
-        .AddTypedClient<Messenger.Client.IConversationsClient>((http, sp) => new Messenger.Client.ConversationsClient(http))
+        .AddTypedClient<global::Messenger.Client.IConversationsClient>((http, sp) => new global::Messenger.Client.ConversationsClient(http))
         .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
         services.AddHttpClient(nameof(Catalog.IdentityService.Client.IUsersClient) + "2", (sp, http) =>

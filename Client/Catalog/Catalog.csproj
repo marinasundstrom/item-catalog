@@ -56,6 +56,9 @@
     <ProjectReference Include="..\..\Server\Messenger\Messenger.Client\Messenger.Client.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\..\Server\Messenger\Messenger.UI\Messenger.UI.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Messages\Message.razor" />

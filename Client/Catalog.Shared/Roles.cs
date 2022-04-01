@@ -1,4 +1,4 @@
-namespace Catalog;
+namespace Catalog.Shared;
 
 public static class Roles 
 {
