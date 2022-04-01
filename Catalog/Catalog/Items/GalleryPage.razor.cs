@@ -25,14 +25,7 @@ namespace Catalog.Items
                 {
                     options.AccessTokenProvider = async () =>
                     {
-                        var results = await AccessTokenProvider.RequestAccessToken(new AccessTokenRequestOptions()
-                        {Scopes = new[]{"myapi"}});
-                        if (results.TryGetToken(out var accessToken))
-                        {
-                            return accessToken.Value;
-                        }
-
-                        return null !;
+                        return await AccessTokenProvider.GetAccessTokenAsync();
                     };
                 }).WithAutomaticReconnect().Build();
                 hubConnection.On<ItemDto>("ItemAdded", OnItemAdded);

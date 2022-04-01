@@ -6,6 +6,7 @@ using Catalog.Notifications;
 using Catalog.Services;
 using Catalog.Shared;
 using Catalog.Shared.Authorization;
+using Catalog.Shared.Services;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
@@ -31,6 +32,8 @@ public static class ServiceExtensions
         services.AddScoped<INotificationService, NotificationService>();
 
         services.AddSingleton<IFilePickerService, FilePickerService>();
+
+        services.AddScoped<Services.IAccessTokenProvider, AccessTokenProvider>();
 
         services.AddAuthorization();
 

@@ -13,7 +13,7 @@
 @inject IConversationsClient ConversationsClient
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
-@inject IAccessTokenProvider AccessTokenProvider
+@inject Services.IAccessTokenProvider AccessTokenProvider
 @inject Catalog.Shared.Authorization.ICurrentUserService CurrentUserService
 @inject IJSRuntime JSRuntime
 
@@ -299,14 +299,7 @@
             {
                 options.AccessTokenProvider = async () =>
                 {
-                    var results = await AccessTokenProvider.RequestAccessToken(new AccessTokenRequestOptions()
-                    { Scopes = new[] { "myapi" } });
-                    if (results.TryGetToken(out var accessToken))
-                    {
-                        return accessToken.Value;
-                    }
-
-                    return null!;
+                    return await AccessTokenProvider.GetAccessTokenAsync();
                 };
             }).WithAutomaticReconnect().Build();
 

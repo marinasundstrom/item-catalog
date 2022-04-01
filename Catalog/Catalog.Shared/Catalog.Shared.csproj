@@ -23,11 +23,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\AppService\AppService.Client\AppService.Client.csproj" />
+    <ProjectReference Include="..\Catalog.Services\Catalog.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Authorization\" />
+    <None Remove="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Authorization\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 </Project>
