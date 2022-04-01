@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
 
+using Catalog.Messenger;
+using Catalog.Notifications;
 using Catalog.Services;
 using Catalog.Shared;
 using Catalog.Shared.Authorization;
@@ -30,9 +32,11 @@ public static class ServiceExtensions
 
         services.AddSingleton<IFilePickerService, FilePickerService>();
 
-        services.AddScoped<CustomAuthorizationMessageHandler>();
+        services.AddAuthorization();
 
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddIdentityUI();
+        services.AddMessengerUI();
+        services.AddNotificationsUI();
 
         services.AddClients();
 
@@ -78,30 +82,6 @@ public static class ServiceExtensions
         })
         .AddTypedClient<Catalog.Client.INotificationsClient>((http, sp) => new Catalog.Client.NotificationsClient(http))
         .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
-
-        services.AddHttpClient(nameof(global::Messenger.Client.IConversationsClient), (sp, http) =>
-        {
-            var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"{navigationManager.BaseUri}messenger/");
-        })
-        .AddTypedClient<global::Messenger.Client.IConversationsClient>((http, sp) => new global::Messenger.Client.ConversationsClient(http))
-        .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
-
-        services.AddHttpClient(nameof(Catalog.IdentityService.Client.IUsersClient) + "2", (sp, http) =>
-        {
-            var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"https://identity.local/");
-        })
-        .AddTypedClient<Catalog.IdentityService.Client.IUsersClient>((http, sp) => new Catalog.IdentityService.Client.UsersClient(http))
-        .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
-
-        services.AddHttpClient(nameof(Catalog.IdentityService.Client.IRolesClient) + "2", (sp, http) =>
-        {
-            var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"https://identity.local/");
-        })
-       .AddTypedClient<Catalog.IdentityService.Client.IRolesClient>((http, sp) => new Catalog.IdentityService.Client.RolesClient(http))
-       .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
         return services;
     }

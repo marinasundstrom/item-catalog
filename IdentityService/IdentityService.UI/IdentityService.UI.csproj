@@ -14,10 +14,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\IdentityService.Client\IdentityService.Client.csproj" />
     <ProjectReference Include="..\..\Catalog\Catalog.Shared\Catalog.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Microsoft.Extensions.Http" />
   </ItemGroup>
 </Project>
