@@ -38,13 +38,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Server\IdentityService\IdentityService.Client\IdentityService.Client.csproj">
+    <ProjectReference Include="..\..\IdentityService\IdentityService.Client\IdentityService.Client.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\Worker\Worker.Client\Worker.Client.csproj">
+    <ProjectReference Include="..\..\Worker\Worker.Client\Worker.Client.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\Notifications\Notifications.Client\Notifications.Client.csproj">
+    <ProjectReference Include="..\..\Notifications\Notifications.Client\Notifications.Client.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
     <ProjectReference Include="..\Catalog.Shared\Catalog.Shared.csproj">
@@ -53,16 +53,16 @@
     <ProjectReference Include="..\MudBlazor.Extensions\MudBlazor.Extensions.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\Messenger\Messenger.Client\Messenger.Client.csproj">
+    <ProjectReference Include="..\..\Messenger\Messenger.Client\Messenger.Client.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\Messenger\Messenger.UI\Messenger.UI.csproj">
+    <ProjectReference Include="..\..\Messenger\Messenger.UI\Messenger.UI.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\Notifications\Notifications.UI\Notifications.UI.csproj">
+    <ProjectReference Include="..\..\Notifications\Notifications.UI\Notifications.UI.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\..\Server\IdentityService\IdentityService.UI\IdentityService.UI.csproj">
+    <ProjectReference Include="..\..\IdentityService\IdentityService.UI\IdentityService.UI.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>

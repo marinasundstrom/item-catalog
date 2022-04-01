@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Client\Catalog.Shared\Catalog.Shared.csproj" />
-    <ProjectReference Include="..\..\..\Client\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
+    <ProjectReference Include="..\..\Catalog\Catalog.Shared\Catalog.Shared.csproj" />
+    <ProjectReference Include="..\..\Catalog\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
     <ProjectReference Include="..\Notifications.Client\Notifications.Client.csproj" />
   </ItemGroup>
 

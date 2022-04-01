@@ -7,37 +7,37 @@
 name: webapi
 services:
 - name: webapp
-  project: Client/Catalog/Catalog.csproj
+  project: Catalog/Catalog/Catalog.csproj
   bindings:
   - protocol: https
     port: 5010
 
 - name: webapi
-  project: Server/AppService/WebApi/WebApi.csproj
+  project: AppService/WebApi/WebApi.csproj
   bindings:
   - protocol: https
     port: 5020
 
 - name: worker
-  project: Server/Worker/Worker/Worker.csproj
+  project: Worker/Worker/Worker.csproj
   bindings:
   - protocol: https
     port: 5030
 
 - name: notifications
-  project: Server/Notifications/Notifications/Notifications.csproj
+  project: Notifications/Notifications/Notifications.csproj
   bindings:
   - protocol: https
     port: 5040
 
 - name: messenger
-  project: Server/Messenger/Messenger/Messenger.csproj
+  project: Messenger/Messenger/Messenger.csproj
   bindings:
   - protocol: https
     port: 5050
 
 - name: identity
-  project: Server/IdentityService/IdentityService/IdentityService.csproj
+  project: IdentityService/IdentityService/IdentityService.csproj
   replicas: 2
   bindings:
   - protocol: https
