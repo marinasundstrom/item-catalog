@@ -59,10 +59,15 @@
     <ProjectReference Include="..\..\Server\Messenger\Messenger.UI\Messenger.UI.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\..\Server\Notifications\Notifications.UI\Notifications.UI.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\IdentityService\IdentityService.UI\IdentityService.UI.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Messages\Message.razor" />
-    <Content Remove="Messages\Conversations.razor" />
     <Content Remove="Messages\Conversations.razor" />
     <Content Remove="Messages\Foo.razor" />
   </ItemGroup>

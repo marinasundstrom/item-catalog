@@ -5,7 +5,8 @@
 <MudSnackbarProvider />
 
 <CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="new []{ typeof(Catalog.Messenger.Messages.NewConversationDialog).Assembly }">
+    <Router AppAssembly="@typeof(Program).Assembly"
+            AdditionalAssemblies="new []{ typeof(Catalog.Users.ChangePasswordDialog).Assembly, typeof(Catalog.Notifications.NotificationsPage).Assembly, typeof(Catalog.Messenger.Messages.NewConversationDialog).Assembly }">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>

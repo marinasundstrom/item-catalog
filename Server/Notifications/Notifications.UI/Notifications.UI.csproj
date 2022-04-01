@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Catalog.Messenger</RootNamespace>
+    <RootNamespace>Catalog.Notifications</RootNamespace>
   </PropertyGroup>
 
 
@@ -19,12 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Client\Catalog.Shared\Catalog.Shared.csproj" />
     <ProjectReference Include="..\..\..\Client\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
-    <ProjectReference Include="..\Messenger.Client\Messenger.Client.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="Messages\Message.razor" />
-    <Content Remove="Messages\Foo.razor" />
+    <ProjectReference Include="..\Notifications.Client\Notifications.Client.csproj" />
   </ItemGroup>
 
 </Project>
