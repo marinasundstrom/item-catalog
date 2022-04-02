@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Security.Claims;
 
+using Catalog.Shared.Authorization;
+
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace Catalog.Shared.Authorization;
+namespace Catalog.Shared.Services;
 
 public class CurrentUserService : ICurrentUserService
 {

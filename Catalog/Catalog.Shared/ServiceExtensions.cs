@@ -1,8 +1,11 @@
 ﻿using System;
 
+using Catalog.Shared.Authorization;
+using Catalog.Shared.Services;
+
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Catalog.Shared.Authorization;
+namespace Catalog.Shared;
 
 public static class ServiceExtensions
 {
