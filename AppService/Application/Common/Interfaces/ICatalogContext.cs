@@ -1,7 +1,6 @@
 using Catalog.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Catalog.Application.Common.Interfaces;
 

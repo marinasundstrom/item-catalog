@@ -5,8 +5,6 @@ using Catalog.Domain.Events;
 
 using MediatR;
 
-using Microsoft.EntityFrameworkCore;
-
 namespace Catalog.Application.Items.EventHandlers;
 
 public class ItemDeletedEventHandler : INotificationHandler<DomainEventNotification<ItemDeletedEvent>>

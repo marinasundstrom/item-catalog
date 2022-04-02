@@ -1,8 +1,7 @@
-﻿using System;
+﻿
+using Catalog.Notifications.Domain.Common;
 
 using MediatR;
-
-using Catalog.Notifications.Domain.Common;
 
 namespace Catalog.Notifications.Application.Common.Models;
 

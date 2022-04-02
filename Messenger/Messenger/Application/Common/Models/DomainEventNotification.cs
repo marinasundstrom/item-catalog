@@ -1,8 +1,7 @@
-﻿using System;
+﻿
+using Catalog.Messenger.Domain.Common;
 
 using MediatR;
-
-using Catalog.Messenger.Domain.Common;
 
 namespace Catalog.Messenger.Application.Common.Models;
 

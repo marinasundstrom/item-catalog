@@ -1,9 +1,6 @@
 
-using System.Data.Common;
-
 using Catalog.Search.Application.Common.Interfaces;
 using Catalog.Search.Application.Common.Models;
-using Catalog.Search.Domain.Entities;
 
 using MediatR;
 

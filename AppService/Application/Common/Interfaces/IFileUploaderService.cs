@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Catalog.Application.Common.Interfaces;
+﻿namespace Catalog.Application.Common.Interfaces;
 
 public interface IFileUploaderService
 {

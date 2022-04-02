@@ -1,5 +1,4 @@
-﻿using System;
-namespace Catalog.Search.Domain.Exceptions;
+﻿namespace Catalog.Search.Domain.Exceptions;
 
 public class DomainException : Exception
 {

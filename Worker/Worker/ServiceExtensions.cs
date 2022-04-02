@@ -1,8 +1,4 @@
-﻿using System;
-
-using Catalog.Worker.Application;
-using Catalog.Worker.Application.Common.Interfaces;
-using Catalog.Worker.Infrastructure;
+﻿using Catalog.Worker.Application.Common.Interfaces;
 using Catalog.Worker.Services;
 
 namespace Catalog.Worker;

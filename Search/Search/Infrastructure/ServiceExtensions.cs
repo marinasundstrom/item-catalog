@@ -1,8 +1,4 @@
-﻿using System;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
+﻿
 using Catalog.Search.Application.Common.Interfaces;
 using Catalog.Search.Infrastructure.Persistence;
 using Catalog.Search.Infrastructure.Services;

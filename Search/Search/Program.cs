@@ -1,22 +1,14 @@
-﻿using System.Data.SqlClient;
-
-using Hangfire;
-using Hangfire.SqlServer;
+﻿
+using Catalog.Search;
+using Catalog.Search.Application;
+using Catalog.Search.Authentication;
+using Catalog.Search.Infrastructure;
+using Catalog.Search.Infrastructure.Persistence;
 
 using MassTransit;
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-
-using Catalog.Search.Authentication;
-
 using NSwag;
 using NSwag.Generation.Processors.Security;
-
-using Catalog.Search;
-using Catalog.Search.Application;
-using Catalog.Search.Infrastructure;
-using Catalog.Search.Infrastructure.Persistence;
 
 static class Program
 {

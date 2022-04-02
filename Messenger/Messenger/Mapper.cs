@@ -1,9 +1,3 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
-using Catalog.Messenger.Application.Common.Interfaces;
-using Catalog.Messenger.Application.Users;
-using Catalog.Messenger.Application.Messages;
 using Catalog.Messenger.Contracts;
 
 namespace Catalog.Messenger.Application;

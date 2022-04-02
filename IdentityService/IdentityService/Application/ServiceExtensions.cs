@@ -1,11 +1,7 @@
-﻿using System;
+﻿
+using Catalog.IdentityService.Application.Users.Commands;
 
 using MediatR;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-using Catalog.IdentityService.Application.Users.Commands;
 
 namespace Catalog.IdentityService.Application;
 

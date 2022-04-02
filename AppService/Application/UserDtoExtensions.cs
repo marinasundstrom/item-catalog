@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using Catalog.Domain.Entities;
 
 namespace Catalog.Application;

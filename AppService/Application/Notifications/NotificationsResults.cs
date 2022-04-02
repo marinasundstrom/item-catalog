@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using Catalog.Application.Common.Models;
 
 namespace Catalog.Application.Notifications;

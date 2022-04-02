@@ -1,8 +1,8 @@
 ﻿
-using MediatR;
-
 using Catalog.Application.Common.Interfaces;
 using Catalog.Domain.Entities;
+
+using MediatR;
 
 namespace Catalog.Application.Users.Commands;
 

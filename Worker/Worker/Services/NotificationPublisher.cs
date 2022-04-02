@@ -1,13 +1,12 @@
-using System;
+
+using Catalog.Worker.Application.Common.Interfaces;
+using Catalog.Worker.Domain.Entities;
 
 using Contracts;
 
 using MassTransit;
 
 using Microsoft.EntityFrameworkCore;
-
-using Catalog.Worker.Application.Common.Interfaces;
-using Catalog.Worker.Domain.Entities;
 
 namespace Catalog.Worker.Services;
 

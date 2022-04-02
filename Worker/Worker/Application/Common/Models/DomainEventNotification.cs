@@ -1,8 +1,7 @@
-﻿using System;
+﻿
+using Catalog.Worker.Domain.Common;
 
 using MediatR;
-
-using Catalog.Worker.Domain.Common;
 
 namespace Catalog.Worker.Application.Common.Models;
 

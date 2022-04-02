@@ -1,7 +1,4 @@
-﻿
-using Catalog.IdentityService.Domain.Entities;
-
-namespace Catalog.IdentityService.Domain.Common.Interfaces;
+﻿namespace Catalog.IdentityService.Domain.Common.Interfaces;
 
 public interface IAuditableEntity
 {

@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace Catalog.IdentityService.Infrastructure.Infrastructure;
+﻿namespace Catalog.IdentityService.Infrastructure.Infrastructure;
 
 public static class ConfigurationExtensions
 {

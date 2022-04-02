@@ -5,8 +5,6 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
- using Catalog.Notifications.Client;
-
 namespace Catalog.Application.Items.Commands;
 
 public record PostCommentCommand(string ItemId, string Text) : IRequest<string>

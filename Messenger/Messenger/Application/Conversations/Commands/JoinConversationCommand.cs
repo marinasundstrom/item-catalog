@@ -1,10 +1,10 @@
 ﻿
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Domain.Entities;
+
 using MassTransit;
 
 using MediatR;
-
-using Catalog.Messenger.Application.Common.Interfaces;
-using Catalog.Messenger.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 

@@ -1,10 +1,10 @@
 ﻿
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Domain.Exceptions;
+
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-
-using Catalog.Notifications.Application.Common.Interfaces;
-using Catalog.Notifications.Domain.Exceptions;
 
 namespace Catalog.Notifications.Application.Users.Commands;
 

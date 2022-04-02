@@ -1,13 +1,12 @@
-using System;
+
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Domain.Entities;
 
 using Contracts;
 
 using MassTransit;
 
 using Microsoft.EntityFrameworkCore;
-
-using Catalog.Notifications.Application.Common.Interfaces;
-using Catalog.Notifications.Domain.Entities;
 
 namespace Catalog.Notifications.Services;
 

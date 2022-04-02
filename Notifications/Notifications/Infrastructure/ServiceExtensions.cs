@@ -1,8 +1,4 @@
-﻿using System;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
+﻿
 using Catalog.Notifications.Application.Common.Interfaces;
 using Catalog.Notifications.Infrastructure.Persistence;
 using Catalog.Notifications.Infrastructure.Services;

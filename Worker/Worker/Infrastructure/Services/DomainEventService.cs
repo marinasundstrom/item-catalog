@@ -1,12 +1,9 @@
-﻿using System;
-
-using MediatR;
-
-using Microsoft.Extensions.Logging;
-
+﻿
 using Catalog.Worker.Application.Common.Interfaces;
 using Catalog.Worker.Application.Common.Models;
 using Catalog.Worker.Domain.Common;
+
+using MediatR;
 
 namespace Catalog.Worker.Infrastructure.Services;
 

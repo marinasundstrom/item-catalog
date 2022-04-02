@@ -1,7 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-
 using Catalog.Worker.Domain.Entities;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Worker.Application.Common.Interfaces;
 

@@ -1,9 +1,10 @@
 ﻿
+using Catalog.IdentityService.Application.Common.Interfaces;
+using Catalog.IdentityService.Contracts;
+
 using MassTransit;
 
 using MediatR;
-using Catalog.IdentityService.Contracts;
-using Catalog.IdentityService.Application.Common.Interfaces;
 
 namespace Catalog.IdentityService.Consumers;
 

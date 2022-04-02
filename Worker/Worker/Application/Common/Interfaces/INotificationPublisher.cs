@@ -1,5 +1,4 @@
-﻿using Catalog.Worker.Application.Common.Interfaces;
-using Catalog.Worker.Domain.Entities;
+﻿using Catalog.Worker.Domain.Entities;
 
 namespace Catalog.Worker.Application.Common.Interfaces;
 

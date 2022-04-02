@@ -1,11 +1,10 @@
 ﻿
+using Catalog.IdentityService.Application.Common.Interfaces;
+using Catalog.IdentityService.Application.Common.Models;
+
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-
-using Catalog.IdentityService.Application.Common.Interfaces;
-using Catalog.IdentityService.Application.Common.Models;
-using Catalog.IdentityService.Domain.Entities;
 
 namespace Catalog.IdentityService.Application.Users.Queries;
 

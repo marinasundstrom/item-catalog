@@ -1,12 +1,9 @@
-﻿using System;
-
-using MediatR;
-
-using Microsoft.Extensions.Logging;
-
+﻿
 using Catalog.IdentityService.Application.Common.Interfaces;
 using Catalog.IdentityService.Application.Common.Models;
 using Catalog.IdentityService.Domain.Common;
+
+using MediatR;
 
 namespace Catalog.IdentityService.Infrastructure.Services;
 

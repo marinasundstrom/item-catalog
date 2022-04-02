@@ -1,9 +1,10 @@
-﻿using MassTransit;
-
-using MediatR;
-using Catalog.IdentityService.Contracts;
+﻿using Catalog.IdentityService.Contracts;
 using Catalog.Search.Application.Common.Interfaces;
 using Catalog.Search.Application.Users.Commands;
+
+using MassTransit;
+
+using MediatR;
 namespace Catalog.Search.Consumers;
 
 public class UserCreated5Consumer : IConsumer<UserCreated>

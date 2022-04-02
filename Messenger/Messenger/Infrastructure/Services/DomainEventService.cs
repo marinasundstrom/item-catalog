@@ -1,12 +1,9 @@
-﻿using System;
-
-using MediatR;
-
-using Microsoft.Extensions.Logging;
-
+﻿
 using Catalog.Messenger.Application.Common.Interfaces;
 using Catalog.Messenger.Application.Common.Models;
 using Catalog.Messenger.Domain.Common;
+
+using MediatR;
 
 namespace Catalog.Messenger.Infrastructure.Services;
 

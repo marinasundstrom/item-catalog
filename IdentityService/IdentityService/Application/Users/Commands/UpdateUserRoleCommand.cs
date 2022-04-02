@@ -1,8 +1,8 @@
-﻿using MediatR;
+﻿using Catalog.IdentityService.Domain.Entities;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Identity;
-
-using Catalog.IdentityService.Domain.Entities;
 
 namespace Catalog.IdentityService.Application.Users.Commands;
 

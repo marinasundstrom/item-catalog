@@ -1,23 +1,15 @@
-﻿using System.Data.SqlClient;
-
-using Hangfire;
-using Hangfire.SqlServer;
+﻿
+using Catalog.Messenger;
+using Catalog.Messenger.Application;
+using Catalog.Messenger.Authentication;
+using Catalog.Messenger.Hubs;
+using Catalog.Messenger.Infrastructure;
+using Catalog.Messenger.Infrastructure.Persistence;
 
 using MassTransit;
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-
-using Catalog.Messenger.Authentication;
-
 using NSwag;
 using NSwag.Generation.Processors.Security;
-
-using Catalog.Messenger;
-using Catalog.Messenger.Application;
-using Catalog.Messenger.Infrastructure;
-using Catalog.Messenger.Infrastructure.Persistence;
-using Catalog.Messenger.Hubs;
 
 static class Program
 {

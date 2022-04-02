@@ -1,11 +1,7 @@
-﻿
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Catalog.IdentityService.Domain.Entities;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using Catalog.IdentityService.Domain.Entities;
 
 namespace Catalog.IdentityService.Infrastructure.Persistence.Configurations;
 

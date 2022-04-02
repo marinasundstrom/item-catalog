@@ -1,8 +1,4 @@
-﻿using System;
-
-using Catalog.IdentityService.Application;
-using Catalog.IdentityService.Application.Common.Interfaces;
-using Catalog.IdentityService.Infrastructure;
+﻿using Catalog.IdentityService.Application.Common.Interfaces;
 using Catalog.IdentityService.Services;
 
 namespace Catalog.IdentityService;

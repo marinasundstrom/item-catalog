@@ -1,12 +1,11 @@
-﻿using System;
+﻿
+using Catalog.Worker.Application;
 
 using Contracts;
 
 using MassTransit;
 
 using MediatR;
-
-using Catalog.Worker.Application;
 
 namespace Catalog.Worker.Consumers;
 

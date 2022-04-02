@@ -1,8 +1,7 @@
-﻿using System;
+﻿
+using Catalog.Search.Domain.Common;
 
 using MediatR;
-
-using Catalog.Search.Domain.Common;
 
 namespace Catalog.Search.Application.Common.Models;
 

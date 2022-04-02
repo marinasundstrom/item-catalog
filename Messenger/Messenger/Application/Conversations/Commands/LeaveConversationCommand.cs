@@ -1,9 +1,9 @@
 ﻿
+using Catalog.Messenger.Application.Common.Interfaces;
+
 using MassTransit;
 
 using MediatR;
-
-using Catalog.Messenger.Application.Common.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 

@@ -1,7 +1,5 @@
-using Microsoft.Extensions.DependencyInjection;
 
 using Catalog.Messenger.Domain.Entities;
-using Catalog.Messenger.Infrastructure.Persistence;
 
 namespace Catalog.Messenger.Infrastructure.Persistence;
 

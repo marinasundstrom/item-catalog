@@ -1,11 +1,11 @@
 ﻿
-using MassTransit;
-
-using MediatR;
-
 using Catalog.IdentityService.Contracts;
 using Catalog.Notifications.Application.Common.Interfaces;
 using Catalog.Notifications.Application.Users.Commands;
+
+using MassTransit;
+
+using MediatR;
 
 namespace Catalog.Notifications.Consumers;
 

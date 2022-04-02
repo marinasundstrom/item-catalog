@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 using Catalog.Application.Common.Interfaces;
 using Catalog.Application.Items;

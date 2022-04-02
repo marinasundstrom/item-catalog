@@ -1,7 +1,7 @@
 ﻿
-using Catalog.Search.Application.Common.Models;
 using Catalog.Search.Application;
 using Catalog.Search.Application.Commands;
+using Catalog.Search.Application.Common.Models;
 
 using MediatR;
 

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 using Catalog.Search.Application.Common.Interfaces;
-using Catalog.Search.Infrastructure;
 
 namespace Catalog.Search.Services;
 

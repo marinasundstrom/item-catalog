@@ -1,8 +1,4 @@
-﻿using System;
-
-using Catalog.Search.Application;
-using Catalog.Search.Application.Common.Interfaces;
-using Catalog.Search.Infrastructure;
+﻿using Catalog.Search.Application.Common.Interfaces;
 using Catalog.Search.Services;
 
 namespace Catalog.Search;

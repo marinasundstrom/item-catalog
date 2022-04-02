@@ -1,18 +1,18 @@
 ﻿
+using Catalog.Messenger.Application.Common.Interfaces;
 using Catalog.Messenger.Application.Common.Models;
-using Catalog.Messenger.Application.Messages;
-using Catalog.Messenger.Application.Messages.Queries;
+using Catalog.Messenger.Application.Conversations.Commands;
+using Catalog.Messenger.Application.Conversations.Queries;
 using Catalog.Messenger.Application.Messages.Commands;
+using Catalog.Messenger.Application.Messages.Queries;
+using Catalog.Messenger.Contracts;
+
+using MassTransit;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Catalog.Messenger.Contracts;
-using MassTransit;
-using Catalog.Messenger.Application.Common.Interfaces;
-using Catalog.Messenger.Application.Conversations.Commands;
-using Catalog.Messenger.Application.Conversations.Queries;
 
 namespace Catalog.Messenger.WebApi.Controllers;
 

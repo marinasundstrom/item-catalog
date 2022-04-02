@@ -1,10 +1,10 @@
-﻿using MediatR;
-
-using Microsoft.EntityFrameworkCore;
-
-using Catalog.IdentityService.Application.Common.Interfaces;
+﻿using Catalog.IdentityService.Application.Common.Interfaces;
 using Catalog.IdentityService.Contracts;
 using Catalog.IdentityService.Domain.Exceptions;
+
+using MediatR;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.IdentityService.Application.Users.Commands;
 

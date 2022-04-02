@@ -1,13 +1,13 @@
 ﻿
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Application.Common.Models;
+using Catalog.Notifications.Domain.Events;
+
 using Hangfire;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-
-using Catalog.Notifications.Application.Common.Interfaces;
-using Catalog.Notifications.Application.Common.Models;
-using Catalog.Notifications.Domain.Events;
 
 namespace Catalog.Notifications.Application.Notifications.EventHandlers;
 

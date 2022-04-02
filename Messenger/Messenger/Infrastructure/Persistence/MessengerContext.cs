@@ -1,12 +1,10 @@
-﻿using System;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-
+﻿
 using Catalog.Messenger.Application.Common.Interfaces;
 using Catalog.Messenger.Domain.Common;
 using Catalog.Messenger.Domain.Entities;
-using Catalog.Messenger.Infrastructure;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Catalog.Messenger.Infrastructure.Persistence;
 

@@ -1,9 +1,5 @@
-﻿using System;
-
+﻿
 using MediatR;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Catalog.Worker.Application;
 

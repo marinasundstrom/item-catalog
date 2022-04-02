@@ -1,12 +1,9 @@
-﻿using System;
-
-using MediatR;
-
-using Microsoft.Extensions.Logging;
-
+﻿
 using Catalog.Search.Application.Common.Interfaces;
 using Catalog.Search.Application.Common.Models;
 using Catalog.Search.Domain.Common;
+
+using MediatR;
 
 namespace Catalog.Search.Infrastructure.Services;
 

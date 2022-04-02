@@ -1,8 +1,6 @@
-﻿using System;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 using Catalog.Notifications.Application.Common.Interfaces;
-using Catalog.Notifications.Infrastructure;
 
 namespace Catalog.Notifications.Services;
 

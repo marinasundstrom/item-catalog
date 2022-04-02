@@ -1,10 +1,10 @@
-﻿using MassTransit;
-
-using MediatR;
-
-using Catalog.Messenger.Application.Common.Interfaces;
+﻿using Catalog.Messenger.Application.Common.Interfaces;
 using Catalog.Messenger.Application.Messages.Commands;
 using Catalog.Messenger.Contracts;
+
+using MassTransit;
+
+using MediatR;
 
 namespace Catalog.Messenger.Consumers;
 

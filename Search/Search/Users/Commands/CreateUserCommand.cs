@@ -1,8 +1,8 @@
 ﻿
-using MediatR;
-
 using Catalog.Search.Application.Common.Interfaces;
 using Catalog.Search.Domain.Entities;
+
+using MediatR;
 
 namespace Catalog.Search.Application.Users.Commands;
 

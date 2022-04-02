@@ -1,10 +1,10 @@
 ﻿
 using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Contracts;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-using Catalog.Messenger.Contracts;
 
 namespace Catalog.Messenger.Application.Messages.Queries;
 

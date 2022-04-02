@@ -1,7 +1,5 @@
-using Microsoft.Extensions.DependencyInjection;
 
 using Catalog.Search.Domain.Entities;
-using Catalog.Search.Infrastructure.Persistence;
 
 namespace Catalog.Search.Infrastructure.Persistence;
 

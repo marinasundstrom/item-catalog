@@ -1,13 +1,6 @@
-﻿using System;
-using System.Net.Http.Headers;
-
-using Catalog.Messenger.Application.Common.Interfaces;
-using Catalog.Messenger.Application.Messages.Queries;
+﻿using Catalog.Messenger.Application.Messages.Queries;
 
 using MediatR;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Catalog.Messenger.Application;

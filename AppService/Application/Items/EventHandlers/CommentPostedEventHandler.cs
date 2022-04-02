@@ -2,12 +2,11 @@
 using Catalog.Application.Common.Models;
 using Catalog.Domain.Entities;
 using Catalog.Domain.Events;
+using Catalog.Notifications.Client;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-
- using Catalog.Notifications.Client;
 
 namespace Catalog.Application.Items.EventHandlers;
 

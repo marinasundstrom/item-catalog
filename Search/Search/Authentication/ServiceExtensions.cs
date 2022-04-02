@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using AspNetCore.Authentication.ApiKey;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;

@@ -1,7 +1,5 @@
-using Microsoft.Extensions.DependencyInjection;
 
 using Catalog.Notifications.Domain.Entities;
-using Catalog.Notifications.Infrastructure.Persistence;
 
 namespace Catalog.Notifications.Infrastructure.Persistence;
 

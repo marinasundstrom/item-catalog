@@ -1,12 +1,12 @@
 ﻿
-using MassTransit;
-
-using MediatR;
-
 using Catalog.Messenger.Application.Common.Interfaces;
 using Catalog.Messenger.Application.Conversations.Queries;
 using Catalog.Messenger.Contracts;
 using Catalog.Messenger.Domain.Entities;
+
+using MassTransit;
+
+using MediatR;
 
 namespace Catalog.Messenger.Application.Conversations.Commands;
 

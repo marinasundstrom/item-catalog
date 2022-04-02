@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Catalog.IdentityService.Domain.Exceptions;
+﻿namespace Catalog.IdentityService.Domain.Exceptions;
 
 public class DomainException : Exception
 {

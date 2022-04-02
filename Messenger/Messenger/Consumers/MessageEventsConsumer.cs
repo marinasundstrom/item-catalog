@@ -1,10 +1,10 @@
-﻿using MassTransit;
-
-using MediatR;
-
-using Catalog.Messenger.Application.Common.Interfaces;
+﻿using Catalog.Messenger.Application.Common.Interfaces;
 using Catalog.Messenger.Contracts;
 using Catalog.Messenger.Hubs;
+
+using MassTransit;
+
+using MediatR;
 
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;

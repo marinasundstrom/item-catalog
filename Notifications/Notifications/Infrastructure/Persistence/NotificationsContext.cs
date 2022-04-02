@@ -1,12 +1,10 @@
-﻿using System;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-
+﻿
 using Catalog.Notifications.Application.Common.Interfaces;
 using Catalog.Notifications.Domain.Common;
 using Catalog.Notifications.Domain.Entities;
-using Catalog.Notifications.Infrastructure;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Catalog.Notifications.Infrastructure.Persistence;
 

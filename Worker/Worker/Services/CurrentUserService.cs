@@ -1,8 +1,6 @@
-﻿using System;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 using Catalog.Worker.Application.Common.Interfaces;
-using Catalog.Worker.Infrastructure;
 
 namespace Catalog.Worker.Services;
 

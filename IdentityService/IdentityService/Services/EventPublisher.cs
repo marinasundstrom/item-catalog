@@ -1,11 +1,7 @@
-using System;
-
-using MassTransit;
-
-using Microsoft.EntityFrameworkCore;
 
 using Catalog.IdentityService.Application.Common.Interfaces;
-using Catalog.IdentityService.Domain.Entities;
+
+using MassTransit;
 
 namespace Catalog.IdentityService.Services;
 

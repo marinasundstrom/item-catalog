@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using Catalog.Search.Domain.Common;
 
 namespace Catalog.Search.Domain.Entities;

@@ -1,16 +1,16 @@
 ﻿
 using System.Security.Claims;
 
+using Catalog.IdentityService.Application.Common.Interfaces;
+using Catalog.IdentityService.Contracts;
+using Catalog.IdentityService.Domain.Entities;
+
 using IdentityModel;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
-using Catalog.IdentityService.Application.Common.Interfaces;
-using Catalog.IdentityService.Contracts;
-using Catalog.IdentityService.Domain.Entities;
 
 namespace Catalog.IdentityService.Application.Users.Commands;
 

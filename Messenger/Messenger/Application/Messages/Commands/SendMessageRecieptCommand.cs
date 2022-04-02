@@ -1,11 +1,12 @@
 ﻿
 using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Contracts;
+
+using MassTransit;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-using Catalog.Messenger.Contracts;
-using MassTransit;
 
 namespace Catalog.Messenger.Application.Messages.Commands;
 

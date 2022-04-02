@@ -1,11 +1,7 @@
-﻿using System;
+﻿
+using Catalog.Notifications.Application.Notifications.Queries;
 
 using MediatR;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-using Catalog.Notifications.Application.Notifications.Queries;
 
 namespace Catalog.Notifications.Application;
 

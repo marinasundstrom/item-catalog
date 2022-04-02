@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using Catalog.Notifications.Domain.Common;
 
 namespace Catalog.Notifications.Domain.Entities;

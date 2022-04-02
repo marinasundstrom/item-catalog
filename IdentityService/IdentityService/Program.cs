@@ -1,7 +1,7 @@
 ﻿using Catalog.IdentityService;
+using Catalog.IdentityService.Infrastructure.Persistence;
 
 using Serilog;
-using Catalog.IdentityService.Infrastructure.Persistence;
 
 static class Program
 {

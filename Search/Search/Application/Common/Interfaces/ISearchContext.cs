@@ -1,7 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-
 using Catalog.Search.Domain.Entities;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Search.Application.Common.Interfaces;
 

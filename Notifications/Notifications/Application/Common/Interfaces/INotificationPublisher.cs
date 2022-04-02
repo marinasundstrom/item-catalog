@@ -1,5 +1,4 @@
-﻿using Catalog.Notifications.Application.Common.Interfaces;
-using Catalog.Notifications.Domain.Entities;
+﻿using Catalog.Notifications.Domain.Entities;
 
 namespace Catalog.Notifications.Application.Common.Interfaces;
 

@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Catalog.IdentityService.Client;
+﻿using Catalog.IdentityService.Client;
+
+using Microsoft.Extensions.DependencyInjection;
 
 const string ApiKey = "foobar";
 

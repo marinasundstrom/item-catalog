@@ -1,17 +1,12 @@
 
-using AspNetCore.Authentication.ApiKey;
+using Catalog.IdentityService.Application.Common.Models;
+using Catalog.IdentityService.Application.Users;
+using Catalog.IdentityService.Application.Users.Queries;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using Catalog.IdentityService.Application.Common.Models;
-using Catalog.IdentityService.Application.Users;
-using Catalog.IdentityService.Application.Users.Commands;
-using Catalog.IdentityService.Application.Users.Queries;
-using Catalog.IdentityService.Domain.Exceptions;
 
 namespace Catalog.IdentityService;
 

@@ -1,7 +1,5 @@
 ﻿using System.Security.Claims;
 
-using Microsoft.AspNetCore.Http;
-
 using Catalog.IdentityService.Application.Common.Interfaces;
 
 namespace Catalog.IdentityService.Services;

@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using Catalog.Search.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;

@@ -1,11 +1,11 @@
 ﻿
-using MassTransit;
-
-using MediatR;
-
 using Catalog.IdentityService.Contracts;
 using Catalog.Messenger.Application.Common.Interfaces;
 using Catalog.Messenger.Application.Users.Commands;
+
+using MassTransit;
+
+using MediatR;
 
 namespace Catalog.Messenger.Consumers;
 

@@ -1,13 +1,13 @@
 ﻿
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-
 using Catalog.IdentityService.Application.Common.Interfaces;
 using Catalog.IdentityService.Domain.Common;
 using Catalog.IdentityService.Domain.Common.Interfaces;
 using Catalog.IdentityService.Domain.Entities;
 using Catalog.IdentityService.Infrastructure.Persistence.Configurations;
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.IdentityService.Infrastructure.Persistence;
 

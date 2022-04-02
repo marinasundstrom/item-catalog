@@ -1,4 +1,3 @@
-using Catalog.Messenger.Application.Messages;
 using Catalog.Messenger.Contracts;
 
 namespace Catalog.Messenger.Application.Common.Interfaces;

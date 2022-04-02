@@ -1,7 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-
 using Catalog.Messenger.Domain.Entities;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Messenger.Application.Common.Interfaces;
 

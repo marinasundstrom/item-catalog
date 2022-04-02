@@ -1,11 +1,10 @@
-﻿using System;
+﻿
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Domain.Entities;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-
-using Catalog.Notifications.Application.Common.Interfaces;
-using Catalog.Notifications.Domain.Entities;
 
 namespace Catalog.Notifications.Application.Subscriptions.Commands;
 

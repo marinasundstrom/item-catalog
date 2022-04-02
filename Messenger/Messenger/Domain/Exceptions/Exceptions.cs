@@ -1,5 +1,4 @@
-﻿using System;
-namespace Catalog.Messenger.Domain.Exceptions;
+﻿namespace Catalog.Messenger.Domain.Exceptions;
 
 public class DomainException : Exception
 {

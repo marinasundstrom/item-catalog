@@ -1,5 +1,4 @@
-﻿using System;
-namespace Catalog.Notifications.Domain.Exceptions;
+﻿namespace Catalog.Notifications.Domain.Exceptions;
 
 public class DomainException : Exception
 {

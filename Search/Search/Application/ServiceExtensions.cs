@@ -1,11 +1,7 @@
-﻿using System;
+﻿
+using Catalog.Search.Application.Commands;
 
 using MediatR;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-using Catalog.Search.Application.Commands;
 
 namespace Catalog.Search.Application;
 

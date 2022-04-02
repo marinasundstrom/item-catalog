@@ -1,8 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-
-using Catalog.Worker.Domain.Entities;
-using Catalog.Worker.Infrastructure.Persistence;
-
 namespace Catalog.Worker.Infrastructure.Persistence;
 
 public static class Seed

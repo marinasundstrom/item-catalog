@@ -1,5 +1,4 @@
-﻿using System;
-namespace Catalog.IdentityService;
+﻿namespace Catalog.IdentityService;
 
 public static class Roles
 {

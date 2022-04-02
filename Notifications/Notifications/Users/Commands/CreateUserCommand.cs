@@ -1,8 +1,8 @@
 ﻿
-using MediatR;
-
 using Catalog.Notifications.Application.Common.Interfaces;
 using Catalog.Notifications.Domain.Entities;
+
+using MediatR;
 
 namespace Catalog.Notifications.Application.Users.Commands;
 

@@ -1,14 +1,13 @@
 ﻿
 using Catalog.Messenger.Application.Common.Interfaces;
-using Catalog.Messenger.Application.Messages;
-using Catalog.Messenger.Application.Messages.Commands;
+using Catalog.Messenger.Contracts;
+
+using MassTransit;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using Catalog.Messenger.Contracts;
-using MassTransit;
 
 namespace Catalog.Messenger.Hubs;
 

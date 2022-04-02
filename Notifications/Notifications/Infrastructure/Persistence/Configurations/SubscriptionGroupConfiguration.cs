@@ -1,7 +1,7 @@
+using Catalog.Notifications.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using Catalog.Notifications.Domain.Entities;
 
 namespace Catalog.Notifications.Infrastructure.Persistence.Configurations;
 

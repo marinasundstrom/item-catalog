@@ -1,8 +1,8 @@
 ﻿
+using Catalog.Worker.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using Catalog.Worker.Domain.Entities;
 
 namespace Catalog.Worker.Infrastructure.Persistence.Configurations;
 

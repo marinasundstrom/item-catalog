@@ -1,21 +1,25 @@
+using System.Security.Claims;
+
+using AspNetCore.Authentication.ApiKey;
+
+using Catalog.IdentityService.Application;
+using Catalog.IdentityService.Domain.Entities;
+using Catalog.IdentityService.Infrastructure.Infrastructure;
+using Catalog.IdentityService.Infrastructure.Persistence;
+
 using Duende.IdentityServer;
 
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using IdentityModel;
 
-using Serilog;
+using MassTransit;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 
 using NSwag;
 using NSwag.Generation.Processors.Security;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using MassTransit;
-using Catalog.IdentityService.Application;
-using Catalog.IdentityService.Infrastructure.Persistence;
-using Catalog.IdentityService.Domain.Entities;
-using Catalog.IdentityService.Infrastructure.Infrastructure;
-using AspNetCore.Authentication.ApiKey;
-using System.Security.Claims;
-using IdentityModel;
+
+using Serilog;
 
 namespace Catalog.IdentityService;
 

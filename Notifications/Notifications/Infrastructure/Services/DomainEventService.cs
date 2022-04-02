@@ -1,12 +1,9 @@
-﻿using System;
-
-using MediatR;
-
-using Microsoft.Extensions.Logging;
-
+﻿
 using Catalog.Notifications.Application.Common.Interfaces;
 using Catalog.Notifications.Application.Common.Models;
 using Catalog.Notifications.Domain.Common;
+
+using MediatR;
 
 namespace Catalog.Notifications.Infrastructure.Services;
 

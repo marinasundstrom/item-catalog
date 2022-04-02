@@ -1,12 +1,7 @@
-﻿using System.Security.Claims;
-
-using IdentityModel;
-
+﻿
 using Catalog.IdentityService.Domain.Entities;
 
 using Microsoft.AspNetCore.Identity;
-
-using Serilog;
 
 namespace Catalog.IdentityService.Infrastructure.Persistence;
 

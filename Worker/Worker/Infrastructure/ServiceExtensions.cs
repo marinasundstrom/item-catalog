@@ -1,8 +1,4 @@
-﻿using System;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
+﻿
 using Catalog.Worker.Application.Common.Interfaces;
 using Catalog.Worker.Infrastructure.Persistence;
 using Catalog.Worker.Infrastructure.Services;

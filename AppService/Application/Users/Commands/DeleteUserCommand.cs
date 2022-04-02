@@ -1,10 +1,10 @@
 ﻿
+using Catalog.Application.Common.Interfaces;
+using Catalog.Domain.Exceptions;
+
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-
-using Catalog.Application.Common.Interfaces;
-using Catalog.Domain.Exceptions;
 
 namespace Catalog.Application.Users.Commands;
 

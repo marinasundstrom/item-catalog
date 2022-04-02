@@ -1,8 +1,4 @@
-﻿using System;
-
-using Catalog.Notifications.Application;
-using Catalog.Notifications.Application.Common.Interfaces;
-using Catalog.Notifications.Infrastructure;
+﻿using Catalog.Notifications.Application.Common.Interfaces;
 using Catalog.Notifications.Services;
 
 namespace Catalog.Notifications;

@@ -1,12 +1,10 @@
-﻿using System;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-
+﻿
 using Catalog.Search.Application.Common.Interfaces;
 using Catalog.Search.Domain.Common;
 using Catalog.Search.Domain.Entities;
-using Catalog.Search.Infrastructure;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Catalog.Search.Infrastructure.Persistence;
 

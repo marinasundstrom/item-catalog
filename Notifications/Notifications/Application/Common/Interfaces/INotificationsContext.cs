@@ -1,7 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-
 using Catalog.Notifications.Domain.Entities;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Notifications.Application.Common.Interfaces;
 

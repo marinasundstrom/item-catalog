@@ -1,16 +1,11 @@
 ﻿
-using System.ComponentModel.DataAnnotations;
+using Catalog.Notifications.Application.Subscriptions.Commands;
+using Catalog.Notifications.Application.Subscriptions.Queries;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using Catalog.Notifications.Application.Common.Interfaces;
-using Catalog.Notifications.Application.Common.Models;
-using Catalog.Notifications.Application.Subscriptions;
-using Catalog.Notifications.Application.Subscriptions.Commands;
-using Catalog.Notifications.Application.Subscriptions.Queries;
 
 namespace Catalog.Notifications.WebApi.Controllers;
 

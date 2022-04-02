@@ -1,10 +1,10 @@
 ﻿
+using Catalog.Search.Application.Common.Interfaces;
+using Catalog.Search.Domain.Exceptions;
+
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-
-using Catalog.Search.Application.Common.Interfaces;
-using Catalog.Search.Domain.Exceptions;
 
 namespace Catalog.Search.Application.Users.Commands;
 

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
 using Catalog.Messenger.Application.Common.Interfaces;
-using Catalog.Messenger.Infrastructure;
 
 namespace Catalog.Messenger.Services;
 

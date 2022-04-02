@@ -1,10 +1,10 @@
 ﻿
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Application.Common.Models;
+
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-
-using Catalog.Notifications.Application.Common.Interfaces;
-using Catalog.Notifications.Application.Common.Models;
 
 namespace Catalog.Notifications.Application.Users.Queries;
 

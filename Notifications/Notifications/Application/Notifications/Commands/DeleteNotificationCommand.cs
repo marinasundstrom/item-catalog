@@ -1,11 +1,11 @@
 ﻿
+using Catalog.Notifications.Application.Common.Interfaces;
+
 using Hangfire;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-
-using Catalog.Notifications.Application.Common.Interfaces;
 
 namespace Catalog.Notifications.Application.Notifications.Commands;
 

@@ -1,12 +1,9 @@
-﻿using System;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
+﻿
 using Catalog.IdentityService.Application.Common.Interfaces;
 using Catalog.IdentityService.Infrastructure.Persistence;
 using Catalog.IdentityService.Infrastructure.Services;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.IdentityService.Infrastructure.Infrastructure;
 

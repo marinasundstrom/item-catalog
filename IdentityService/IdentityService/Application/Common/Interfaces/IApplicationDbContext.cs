@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Catalog.IdentityService.Domain.Entities;
 
-using Catalog.IdentityService.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.IdentityService.Application.Common.Interfaces;
 

@@ -2,11 +2,9 @@
 // See LICENSE in the project root for license information.
 
 
-using System.ComponentModel.DataAnnotations.Schema;
+using Catalog.IdentityService.Domain.Common.Interfaces;
 
 using Microsoft.AspNetCore.Identity;
-
-using Catalog.IdentityService.Domain.Common.Interfaces;
 
 namespace Catalog.IdentityService.Domain.Entities;
 
