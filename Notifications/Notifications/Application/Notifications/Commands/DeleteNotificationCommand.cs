@@ -9,15 +9,8 @@ using Notifications.Application.Common.Interfaces;
 
 namespace Notifications.Application.Notifications.Commands;
 
-public class DeleteNotificationCommand : IRequest
+public record DeleteNotificationCommand(string NotificationId) : IRequest
 {
-    public DeleteNotificationCommand(string notificationId)
-    {
-        NotificationId = notificationId;
-    }
-
-    public string NotificationId { get; }
-
     public class DeleteNotificationCommandHandler : IRequestHandler<DeleteNotificationCommand>
     {
         private readonly INotificationsContext context;

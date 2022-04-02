@@ -14,30 +14,8 @@ using Catalog.IdentityService.Domain.Entities;
 
 namespace Catalog.IdentityService.Application.Users.Commands;
 
-public class CreateUserCommand : IRequest<UserDto>
+public record CreateUserCommand(string FirstName, string LastName, string? DisplayName, string Role, string Email, string Password) : IRequest<UserDto>
 {
-    public CreateUserCommand(string firstName, string lastName, string? displayName, string role, string email, string password)
-    {
-        FirstName = firstName;
-        LastName = lastName;
-        DisplayName = displayName;
-        Role = role;
-        Email = email;
-        Password = password;
-    }
-
-    public string FirstName { get; }
-
-    public string LastName { get; }
-
-    public string? DisplayName { get; }
-
-    public string Role { get; }
-
-    public string Email { get; }
-
-    public string Password { get; }
-
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserDto>
     {
         private readonly UserManager<User> _userManager;

@@ -11,36 +11,9 @@ using Notifications.Domain.Events;
 
 namespace Notifications.Application.Notifications.Commands;
 
-public class CreateNotificationCommand : IRequest
+public record CreateNotificationCommand(
+    string Title, string? Text, string? Link, string? UserId, string[]? ExceptUserIds, string? SubscriptionId, string? SubscriptionGroupId, DateTime? ScheduledFor) : IRequest
 {
-    public string Title { get; set; } = null!;
-
-    public string? Text { get; set; } = null!;
-
-    public string? Link { get; set; }
-
-    public string? UserId { get; set; }
-
-    public string[]? ExceptUserIds { get; set; }
-
-    public string? SubscriptionId { get; set; }
-
-    public string? SubscriptionGroupId { get; set; }
-
-    public DateTime? ScheduledFor { get; set; }
-
-    public CreateNotificationCommand(string title, string? text, string? link, string? userId, string[]? exceptUserIds, string? subscriptionId, string? subscriptionGroupId, DateTime? scheduledFor)
-    {
-        Title = title;
-        Text = text;
-        Link = link;
-        UserId = userId;
-        ExceptUserIds = exceptUserIds;
-        SubscriptionId = subscriptionId;
-        SubscriptionGroupId = subscriptionGroupId;
-        ScheduledFor = scheduledFor;
-    }
-
     public class CreateNotificationCommandHandler : IRequestHandler<CreateNotificationCommand>
     {
         private readonly INotificationsContext context;

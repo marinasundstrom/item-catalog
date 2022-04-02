@@ -10,24 +10,10 @@ using Messenger.Contracts;
 
 namespace Messenger.Application.Messages.Queries;
 
-public class GetMessagesIncrQuery : IRequest<Results<MessageDto>>
+public record GetMessagesIncrQuery(
+    string ConversationId, int Skip, int Take, string? SortBy = null, Application.Common.Models.SortDirection? SortDirection = null)
+    : IRequest<Results<MessageDto>>
 {
-    public string ConversationId { get; set; }
-
-    public int Skip { get; set; }
-    public int Take { get; set; }
-    public string? SortBy { get; }
-    public Application.Common.Models.SortDirection? SortDirection { get; }
-
-    public GetMessagesIncrQuery(string conversationId, int skip, int take, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null)
-    {
-        ConversationId = conversationId;
-        Skip = skip;
-        Take = take;
-        SortBy = sortBy;
-        SortDirection = sortDirection;
-    }
-
     public class GetMessagesIncrQueryHandler : IRequestHandler<GetMessagesIncrQuery, Results<MessageDto>>
     {
         private readonly IMessengerContext context;

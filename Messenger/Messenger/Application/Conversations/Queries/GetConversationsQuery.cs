@@ -10,21 +10,10 @@ using Messenger.Contracts;
 
 namespace Messenger.Application.Conversations.Queries;
 
-public class GetConversationsQuery : IRequest<Results<ConversationDto>>
+public record GetConversationsQuery(
+    int Page, int PageSize, string? SortBy = null, Application.Common.Models.SortDirection? SortDirection = null)
+    : IRequest<Results<ConversationDto>>
 {
-    public int Page { get; set; }
-    public int PageSize { get; set; }
-    public string? SortBy { get; }
-    public Application.Common.Models.SortDirection? SortDirection { get; }
-
-    public GetConversationsQuery(int page, int pageSize, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null)
-    {
-        Page = page;
-        PageSize = pageSize;
-        SortBy = sortBy;
-        SortDirection = sortDirection;
-    }
-
     public class GetConversationsQueryHandler : IRequestHandler<GetConversationsQuery, Results<ConversationDto>>
     {
         private readonly IMessengerContext context;

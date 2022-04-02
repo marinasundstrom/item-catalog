@@ -9,24 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Application.Items.Queries;
 
-public class GetCommentsIncrQuery : IRequest<Results<CommentDto>>
+public record GetCommentsIncrQuery(string ItemId, int Skip, int Take, string? SortBy = null, Application.Common.Models.SortDirection? SortDirection = null) : IRequest<Results<CommentDto>>
 {
-    public string ItemId { get; set; }
-
-    public int Skip { get; set; }
-    public int Take { get; set; }
-    public string? SortBy { get; }
-    public Application.Common.Models.SortDirection? SortDirection { get; }
-
-    public GetCommentsIncrQuery(string itemId, int skip, int take, string? sortBy = null, Application.Common.Models.SortDirection? sortDirection = null)
-    {
-        ItemId = itemId;
-        Skip = skip;
-        Take = take;
-        SortBy = sortBy;
-        SortDirection = sortDirection;
-    }
-
     public class GetCommentsIncrQueryHandler : IRequestHandler<GetCommentsIncrQuery, Results<CommentDto>>
     {
         private readonly ICatalogContext context;

@@ -6,20 +6,8 @@ using Catalog.IdentityService.Domain.Entities;
 
 namespace Catalog.IdentityService.Application.Users.Commands;
 
-public class UpdateUserPasswordCommand : IRequest
+public record UpdateUserPasswordCommand(string UserId, string CurrentPassword, string NewPassword) : IRequest
 {
-    public UpdateUserPasswordCommand(string userId, string currentPassword, string newPassword)
-    {
-        UserId = userId;
-        CurrentPassword = currentPassword;
-        NewPassword = newPassword;
-    }
-
-    public string UserId { get; }
-    public string CurrentPassword { get; private set; }
-
-    public string NewPassword { get; }
-
     public class UpdateUserPasswordCommandHandler : IRequestHandler<UpdateUserPasswordCommand>
     {
         private readonly UserManager<User> _userManager;

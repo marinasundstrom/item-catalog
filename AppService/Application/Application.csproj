@@ -29,4 +29,10 @@
      <ProjectReference Include="..\..\Notifications\Notifications.Client\Notifications.Client.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Search\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Search\" />
+  </ItemGroup>
 </Project>

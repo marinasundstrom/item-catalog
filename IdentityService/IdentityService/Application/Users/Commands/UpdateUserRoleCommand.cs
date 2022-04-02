@@ -6,18 +6,8 @@ using Catalog.IdentityService.Domain.Entities;
 
 namespace Catalog.IdentityService.Application.Users.Commands;
 
-public class UpdateUserRoleCommand : IRequest
+public record UpdateUserRoleCommand(string UserId, string Role) : IRequest
 {
-    public UpdateUserRoleCommand(string userId, string role)
-    {
-        UserId = userId;
-        Role = role;
-    }
-
-    public string UserId { get; }
-
-    public string Role { get; }
-
     public class UpdateUserRoleCommandHandler : IRequestHandler<UpdateUserRoleCommand>
     {
         private readonly UserManager<User> _userManager;

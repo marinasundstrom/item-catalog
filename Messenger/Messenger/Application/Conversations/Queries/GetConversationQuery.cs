@@ -8,15 +8,8 @@ using Messenger.Contracts;
 
 namespace Messenger.Application.Conversations.Queries;
 
-public class GetConversationQuery : IRequest<ConversationDto?>
+public record GetConversationQuery(string Id) : IRequest<ConversationDto?>
 {
-    public string Id { get; set; }
-
-    public GetConversationQuery(string id)
-    {
-        Id = id;
-    }
-
     public class GetConversationQueryHandler : IRequestHandler<GetConversationQuery, ConversationDto?>
     {
         private readonly IMessengerContext context;
