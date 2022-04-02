@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>MudBlazor</RootNamespace>
+    <RootNamespace>Catalog.Search</RootNamespace>
   </PropertyGroup>
 
 
@@ -14,7 +14,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.3" />
-    <PackageReference Include="MudBlazor" Version="6.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Catalog\Catalog.Shared\Catalog.Shared.csproj" />
+    <ProjectReference Include="..\..\Catalog\MudBlazor.Extensions\MudBlazor.Extensions.csproj" />
+    <ProjectReference Include="..\Search.Client\Search.Client.csproj" />
   </ItemGroup>
 
 </Project>

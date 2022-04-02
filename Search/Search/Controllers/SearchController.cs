@@ -1,14 +1,14 @@
 ﻿
-using Catalog.Application.Common.Models;
-using Catalog.Application.Search;
-using Catalog.Application.Search.Commands;
+using Catalog.Search.Application.Common.Models;
+using Catalog.Search.Application;
+using Catalog.Search.Application.Commands;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Catalog.WebApi.Controllers;
+namespace Catalog.Search.WebApi.Controllers;
 
 [Route("[controller]")]
 [ApiController]

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Catalog.Application.Search;
+namespace Catalog.Search.Application;
 
 public class SearchResultItem
 {

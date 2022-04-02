@@ -36,12 +36,20 @@ services:
   - protocol: https
     port: 5050
 
+# Port 5060 is not supported
+
+- name: search
+  project: Search/Search/Search.csproj
+  bindings:
+  - protocol: https
+    port: 5070
+
 - name: identity
   project: IdentityService/IdentityService/IdentityService.csproj
   replicas: 2
   bindings:
   - protocol: https
-    port: 5060
+    port: 5080
 
 - name: azurite
   image: mcr.microsoft.com/azure-storage/azurite

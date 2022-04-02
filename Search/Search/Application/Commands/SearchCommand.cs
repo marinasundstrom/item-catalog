@@ -1,16 +1,15 @@
 
 using System.Data.Common;
 
-using Catalog.Application.Common.Interfaces;
-using Catalog.Application.Common.Models;
-using Catalog.Domain.Entities;
-using Catalog.Domain.Events;
+using Catalog.Search.Application.Common.Interfaces;
+using Catalog.Search.Application.Common.Models;
+using Catalog.Search.Domain.Entities;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Application.Search.Commands;
+namespace Catalog.Search.Application.Commands;
 
 public class SearchCommand : IRequest<Results<SearchResultItem>>
 {
@@ -33,9 +32,9 @@ public class SearchCommand : IRequest<Results<SearchResultItem>>
 
     public class SearchCommandHandler : IRequestHandler<SearchCommand, Results<SearchResultItem>>
     {
-        private readonly ICatalogContext context;
+        private readonly ISearchContext context;
 
-        public SearchCommandHandler(ICatalogContext context)
+        public SearchCommandHandler(ISearchContext context)
         {
             this.context = context;
         }

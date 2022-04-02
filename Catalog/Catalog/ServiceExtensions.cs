@@ -2,6 +2,7 @@
 using System.Globalization;
 
 using Catalog.Messenger;
+using Catalog.Search;
 using Catalog.Notifications;
 using Catalog.Services;
 using Catalog.Shared;
@@ -38,6 +39,7 @@ public static class ServiceExtensions
         services.AddAuthorization();
 
         services.AddIdentityUI();
+        services.AddSearchUI();
         services.AddMessengerUI();
         services.AddNotificationsUI();
 
@@ -69,14 +71,6 @@ public static class ServiceExtensions
             http.BaseAddress = new Uri($"{navigationManager.BaseUri}api/");
         })
         .AddTypedClient<Catalog.Client.IDoSomethingClient>((http, sp) => new Catalog.Client.DoSomethingClient(http));
-
-        services.AddHttpClient(nameof(Catalog.Client.ISearchClient), (sp, http) =>
-        {
-            var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"{navigationManager.BaseUri}api/");
-        })
-        .AddTypedClient<Catalog.Client.ISearchClient>((http, sp) => new Catalog.Client.SearchClient(http))
-        .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
 
         services.AddHttpClient(nameof(Catalog.Client.INotificationsClient), (sp, http) =>
         {

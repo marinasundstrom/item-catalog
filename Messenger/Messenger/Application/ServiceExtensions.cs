@@ -20,8 +20,6 @@ public static class ServiceExtensions
     {
         services.AddMediatR(typeof(GetMessagesIncrQuery));
 
-        services.AddScoped<Handler>();
-
         /*
         services.AddHttpClient(nameof(INotificationsClient), (sp, http) =>
         {
@@ -35,22 +33,5 @@ public static class ServiceExtensions
         */
 
         return services;
-    }
-}
-
-public class Handler : DelegatingHandler
-{
-    private readonly ICurrentUserService _currentUserService;
-
-    public Handler(ICurrentUserService currentUserService)
-    {
-        _currentUserService = currentUserService;
-    }
-
-    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-    {
-        request.Headers.Authorization = new AuthenticationHeaderValue("bearer", _currentUserService.GetAccessToken());
-
-        return base.SendAsync(request, cancellationToken);
     }
 }
