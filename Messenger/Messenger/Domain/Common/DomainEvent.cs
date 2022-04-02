@@ -1,4 +1,4 @@
-﻿namespace Messenger.Domain.Common;
+﻿namespace Catalog.Messenger.Domain.Common;
 
 public abstract class DomainEvent
 {

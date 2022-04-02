@@ -1,4 +1,4 @@
-﻿namespace Worker.Services;
+﻿namespace Catalog.Worker.Services;
 
 public interface INotifier
 {

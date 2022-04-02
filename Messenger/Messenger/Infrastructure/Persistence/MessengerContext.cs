@@ -3,12 +3,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-using Messenger.Application.Common.Interfaces;
-using Messenger.Domain.Common;
-using Messenger.Domain.Entities;
-using Messenger.Infrastructure;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Domain.Common;
+using Catalog.Messenger.Domain.Entities;
+using Catalog.Messenger.Infrastructure;
 
-namespace Messenger.Infrastructure.Persistence;
+namespace Catalog.Messenger.Infrastructure.Persistence;
 
 class MessengerContext : DbContext, IMessengerContext
 {

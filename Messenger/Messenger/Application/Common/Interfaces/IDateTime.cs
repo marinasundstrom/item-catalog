@@ -1,4 +1,4 @@
-﻿namespace Messenger.Application.Common.Interfaces;
+﻿namespace Catalog.Messenger.Application.Common.Interfaces;
 
 public interface IDateTime
 {

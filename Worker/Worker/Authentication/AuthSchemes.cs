@@ -3,7 +3,7 @@ using AspNetCore.Authentication.ApiKey;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace Worker.Authentication;
+namespace Catalog.Worker.Authentication;
 
 public static class AuthSchemes
 {

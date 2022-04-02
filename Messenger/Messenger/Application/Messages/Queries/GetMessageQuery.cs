@@ -1,12 +1,12 @@
 ﻿
-using Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Application.Common.Interfaces;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-using Messenger.Contracts;
+using Catalog.Messenger.Contracts;
 
-namespace Messenger.Application.Messages.Queries;
+namespace Catalog.Messenger.Application.Messages.Queries;
 
 public record GetMessageQuery(string Id) : IRequest<MessageDto?>
 {

@@ -1,6 +1,6 @@
-﻿using Notifications.Domain.Entities;
+﻿using Catalog.Notifications.Domain.Entities;
 
-namespace Notifications.Domain.Common;
+namespace Catalog.Notifications.Domain.Common;
 
 public interface ISoftDelete
 {

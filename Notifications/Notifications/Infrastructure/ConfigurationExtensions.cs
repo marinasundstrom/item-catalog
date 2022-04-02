@@ -1,4 +1,4 @@
-﻿namespace Notifications.Infrastructure;
+﻿namespace Catalog.Notifications.Infrastructure;
 
 public static class ConfigurationExtensions
 {

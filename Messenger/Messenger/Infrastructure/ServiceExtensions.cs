@@ -3,11 +3,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Messenger.Application.Common.Interfaces;
-using Messenger.Infrastructure.Persistence;
-using Messenger.Infrastructure.Services;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Infrastructure.Persistence;
+using Catalog.Messenger.Infrastructure.Services;
 
-namespace Messenger.Infrastructure;
+namespace Catalog.Messenger.Infrastructure;
 
 public static class ServiceExtensions
 {

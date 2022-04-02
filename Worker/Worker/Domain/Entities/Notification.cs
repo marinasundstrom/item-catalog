@@ -1,8 +1,8 @@
 ﻿using System;
 
-using Worker.Domain.Common;
+using Catalog.Worker.Domain.Common;
 
-namespace Worker.Domain.Entities;
+namespace Catalog.Worker.Domain.Entities;
 
 public class Notification : AuditableEntity, ISoftDelete, IHasDomainEvent
 {

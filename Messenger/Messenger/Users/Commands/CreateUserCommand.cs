@@ -1,11 +1,11 @@
 ﻿
 using MediatR;
 
-using Messenger.Application.Common.Interfaces;
-using Messenger.Contracts;
-using Messenger.Domain.Entities;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Contracts;
+using Catalog.Messenger.Domain.Entities;
 
-namespace Messenger.Application.Users.Commands;
+namespace Catalog.Messenger.Application.Users.Commands;
 
 public class CreateUserCommand : IRequest<UserDto>
 {

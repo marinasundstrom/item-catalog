@@ -1,6 +1,6 @@
-﻿using Notifications.Domain.Common;
+﻿using Catalog.Notifications.Domain.Common;
 
-namespace Notifications.Application.Common.Interfaces;
+namespace Catalog.Notifications.Application.Common.Interfaces;
 
 public interface IDomainEventService
 {

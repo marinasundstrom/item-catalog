@@ -8,15 +8,15 @@ using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-using Worker.Authentication;
+using Catalog.Worker.Authentication;
 
 using NSwag;
 using NSwag.Generation.Processors.Security;
 
-using Worker;
-using Worker.Application;
-using Worker.Infrastructure;
-using Worker.Infrastructure.Persistence;
+using Catalog.Worker;
+using Catalog.Worker.Application;
+using Catalog.Worker.Infrastructure;
+using Catalog.Worker.Infrastructure.Persistence;
 
 static class Program
 {

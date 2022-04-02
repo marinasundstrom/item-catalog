@@ -5,7 +5,7 @@ using AspNetCore.Authentication.ApiKey;
 
 using IdentityModel;
 
-namespace Messenger.Authentication;
+namespace Catalog.Messenger.Authentication;
 
 public class ApiKeyProvider : IApiKeyProvider
 {

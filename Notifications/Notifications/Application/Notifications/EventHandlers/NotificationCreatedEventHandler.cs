@@ -5,11 +5,11 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Notifications.Application.Common.Interfaces;
-using Notifications.Application.Common.Models;
-using Notifications.Domain.Events;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Application.Common.Models;
+using Catalog.Notifications.Domain.Events;
 
-namespace Notifications.Application.Notifications.EventHandlers;
+namespace Catalog.Notifications.Application.Notifications.EventHandlers;
 
 public class NotificationCreatedEventHandler : INotificationHandler<DomainEventNotification<NotificationCreatedEvent>>
 {

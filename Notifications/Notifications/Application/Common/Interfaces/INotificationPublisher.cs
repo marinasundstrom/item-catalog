@@ -1,7 +1,7 @@
-﻿using Notifications.Application.Common.Interfaces;
-using Notifications.Domain.Entities;
+﻿using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Domain.Entities;
 
-namespace Notifications.Application.Common.Interfaces;
+namespace Catalog.Notifications.Application.Common.Interfaces;
 
 public interface INotificationPublisher
 {

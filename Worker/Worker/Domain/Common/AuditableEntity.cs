@@ -1,4 +1,4 @@
-﻿namespace Worker.Domain.Common;
+﻿namespace Catalog.Worker.Domain.Common;
 
 public abstract class AuditableEntity
 {

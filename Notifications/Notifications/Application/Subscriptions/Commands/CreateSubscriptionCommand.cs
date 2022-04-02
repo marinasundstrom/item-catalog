@@ -4,10 +4,10 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Notifications.Application.Common.Interfaces;
-using Notifications.Domain.Entities;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Domain.Entities;
 
-namespace Notifications.Application.Subscriptions.Commands;
+namespace Catalog.Notifications.Application.Subscriptions.Commands;
 
 public record CreateSubscriptionCommand(string UserId, string? SubscriptionGroupId, string? Tag) : IRequest<string>
 {

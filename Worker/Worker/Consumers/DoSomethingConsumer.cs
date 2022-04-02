@@ -6,9 +6,9 @@ using MassTransit;
 
 using MediatR;
 
-using Worker.Application;
+using Catalog.Worker.Application;
 
-namespace Worker.Consumers;
+namespace Catalog.Worker.Consumers;
 
 public class DoSomethingConsumer : IConsumer<DoSomething>
 {

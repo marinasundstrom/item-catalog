@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Security.Claims;
 
-using Notifications.Application.Common.Interfaces;
-using Notifications.Infrastructure;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Infrastructure;
 
-namespace Notifications.Services;
+namespace Catalog.Notifications.Services;
 
 public class CurrentUserService : ICurrentUserService
 {

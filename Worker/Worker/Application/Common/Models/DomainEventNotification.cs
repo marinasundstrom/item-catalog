@@ -2,9 +2,9 @@
 
 using MediatR;
 
-using Worker.Domain.Common;
+using Catalog.Worker.Domain.Common;
 
-namespace Worker.Application.Common.Models;
+namespace Catalog.Worker.Application.Common.Models;
 
 public class DomainEventNotification<TDomainEvent> : INotification where TDomainEvent : DomainEvent
 {

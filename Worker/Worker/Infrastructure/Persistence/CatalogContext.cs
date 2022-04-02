@@ -3,12 +3,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-using Worker.Application.Common.Interfaces;
-using Worker.Domain.Common;
-using Worker.Domain.Entities;
-using Worker.Infrastructure;
+using Catalog.Worker.Application.Common.Interfaces;
+using Catalog.Worker.Domain.Common;
+using Catalog.Worker.Domain.Entities;
+using Catalog.Worker.Infrastructure;
 
-namespace Worker.Infrastructure.Persistence;
+namespace Catalog.Worker.Infrastructure.Persistence;
 
 class WorkerContext : DbContext, IWorkerContext
 {

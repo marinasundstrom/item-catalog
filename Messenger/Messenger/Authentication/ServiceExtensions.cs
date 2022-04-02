@@ -7,7 +7,7 @@ using AspNetCore.Authentication.ApiKey;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Messenger.Authentication;
+namespace Catalog.Messenger.Authentication;
 
 public static class ServiceExtensions
 {

@@ -4,11 +4,11 @@ using MediatR;
 
 using Microsoft.Extensions.Logging;
 
-using Worker.Application.Common.Interfaces;
-using Worker.Application.Common.Models;
-using Worker.Domain.Common;
+using Catalog.Worker.Application.Common.Interfaces;
+using Catalog.Worker.Application.Common.Models;
+using Catalog.Worker.Domain.Common;
 
-namespace Worker.Infrastructure.Services;
+namespace Catalog.Worker.Infrastructure.Services;
 
 class DomainEventService : IDomainEventService
 {

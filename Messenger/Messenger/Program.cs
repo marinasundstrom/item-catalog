@@ -8,16 +8,16 @@ using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-using Messenger.Authentication;
+using Catalog.Messenger.Authentication;
 
 using NSwag;
 using NSwag.Generation.Processors.Security;
 
-using Messenger;
-using Messenger.Application;
-using Messenger.Infrastructure;
-using Messenger.Infrastructure.Persistence;
-using Messenger.Hubs;
+using Catalog.Messenger;
+using Catalog.Messenger.Application;
+using Catalog.Messenger.Infrastructure;
+using Catalog.Messenger.Infrastructure.Persistence;
+using Catalog.Messenger.Hubs;
 
 static class Program
 {

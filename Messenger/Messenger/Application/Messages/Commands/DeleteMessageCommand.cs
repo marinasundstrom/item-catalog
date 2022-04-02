@@ -1,13 +1,13 @@
 ﻿
-using Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Application.Common.Interfaces;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 using MassTransit;
-using Messenger.Contracts;
+using Catalog.Messenger.Contracts;
 
-namespace Messenger.Application.Messages.Commands;
+namespace Catalog.Messenger.Application.Messages.Commands;
 
 public record DeleteMessageCommand(string MessageId) : IRequest
 {

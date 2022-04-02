@@ -2,9 +2,9 @@
 
 using MediatR;
 
-using Messenger.Domain.Common;
+using Catalog.Messenger.Domain.Common;
 
-namespace Messenger.Application.Common.Models;
+namespace Catalog.Messenger.Application.Common.Models;
 
 public class DomainEventNotification<TDomainEvent> : INotification where TDomainEvent : DomainEvent
 {

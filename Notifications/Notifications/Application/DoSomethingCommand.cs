@@ -2,7 +2,7 @@
 
 using MediatR;
 
-namespace Notifications.Application;
+namespace Catalog.Notifications.Application;
 
 public class DoSomethingCommand : IRequest<double>
 {

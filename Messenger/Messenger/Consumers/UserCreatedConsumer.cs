@@ -2,9 +2,9 @@
 
 using MediatR;
 using Catalog.IdentityService.Contracts;
-using Messenger.Application.Common.Interfaces;
-using Messenger.Application.Users.Commands;
-namespace Messenger.Consumers;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Application.Users.Commands;
+namespace Catalog.Messenger.Consumers;
 
 public class UserCreated2Consumer : IConsumer<UserCreated>
 {

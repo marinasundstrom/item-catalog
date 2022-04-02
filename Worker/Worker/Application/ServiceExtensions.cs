@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Worker.Application;
+namespace Catalog.Worker.Application;
 
 public static class ServiceExtensions
 {

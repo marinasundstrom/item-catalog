@@ -2,7 +2,7 @@
 
 using AspNetCore.Authentication.ApiKey;
 
-namespace Messenger.Authentication;
+namespace Catalog.Messenger.Authentication;
 
 class ApiKey : IApiKey
 {

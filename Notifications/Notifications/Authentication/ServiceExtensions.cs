@@ -5,7 +5,7 @@ using AspNetCore.Authentication.ApiKey;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Notifications.Authentication;
+namespace Catalog.Notifications.Authentication;
 
 public static class ServiceExtensions
 {

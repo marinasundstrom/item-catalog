@@ -1,4 +1,4 @@
-﻿namespace Messenger.Infrastructure;
+﻿namespace Catalog.Messenger.Infrastructure;
 
 public static class ConfigurationExtensions
 {

@@ -1,4 +1,4 @@
-﻿namespace Notifications.Domain.Common;
+﻿namespace Catalog.Notifications.Domain.Common;
 
 public abstract class DomainEvent
 {

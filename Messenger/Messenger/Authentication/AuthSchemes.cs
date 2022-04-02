@@ -3,7 +3,7 @@ using AspNetCore.Authentication.ApiKey;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace Messenger.Authentication;
+namespace Catalog.Messenger.Authentication;
 
 public static class AuthSchemes
 {

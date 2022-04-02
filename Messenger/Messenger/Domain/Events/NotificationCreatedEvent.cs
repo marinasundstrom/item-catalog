@@ -1,6 +1,6 @@
-﻿using Messenger.Domain.Common;
+﻿using Catalog.Messenger.Domain.Common;
 
-namespace Messenger.Domain.Events;
+namespace Catalog.Messenger.Domain.Events;
 
 public class NotificationCreatedEvent : DomainEvent
 {

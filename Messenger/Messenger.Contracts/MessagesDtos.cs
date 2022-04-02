@@ -1,4 +1,4 @@
-﻿namespace Messenger.Contracts;
+﻿namespace Catalog.Messenger.Contracts;
 
 public record ConversationDto(string Id, string? Title, UserDto CreatedBy, DateTime Created);
 

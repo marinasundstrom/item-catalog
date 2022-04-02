@@ -1,4 +1,4 @@
-﻿namespace Worker.Infrastructure;
+﻿namespace Catalog.Worker.Infrastructure;
 
 public static class ConfigurationExtensions
 {

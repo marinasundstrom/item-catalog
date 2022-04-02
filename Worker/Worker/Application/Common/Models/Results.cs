@@ -1,5 +1,5 @@
 ﻿using System;
 
-namespace Worker.Application.Common.Models;
+namespace Catalog.Worker.Application.Common.Models;
 
 public record class Results<T>(IEnumerable<T> Items, int TotalCount);

@@ -4,11 +4,11 @@ using MediatR;
 
 using Microsoft.Extensions.Logging;
 
-using Messenger.Application.Common.Interfaces;
-using Messenger.Application.Common.Models;
-using Messenger.Domain.Common;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Application.Common.Models;
+using Catalog.Messenger.Domain.Common;
 
-namespace Messenger.Infrastructure.Services;
+namespace Catalog.Messenger.Infrastructure.Services;
 
 class DomainEventService : IDomainEventService
 {

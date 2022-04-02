@@ -4,7 +4,7 @@ using Contracts;
 
 using MassTransit;
 
-namespace Notifications.Services;
+namespace Catalog.Notifications.Services;
 
 public class Notifier : INotifier
 {

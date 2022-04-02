@@ -1,11 +1,11 @@
 ﻿using System;
 
-using Notifications.Application;
-using Notifications.Application.Common.Interfaces;
-using Notifications.Infrastructure;
-using Notifications.Services;
+using Catalog.Notifications.Application;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Infrastructure;
+using Catalog.Notifications.Services;
 
-namespace Notifications;
+namespace Catalog.Notifications;
 
 public static class ServiceExtensions
 {

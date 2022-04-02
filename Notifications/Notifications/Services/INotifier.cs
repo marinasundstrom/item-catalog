@@ -1,4 +1,4 @@
-﻿namespace Notifications.Services;
+﻿namespace Catalog.Notifications.Services;
 
 public interface INotifier
 {

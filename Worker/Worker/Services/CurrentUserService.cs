@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Security.Claims;
 
-using Worker.Application.Common.Interfaces;
-using Worker.Infrastructure;
+using Catalog.Worker.Application.Common.Interfaces;
+using Catalog.Worker.Infrastructure;
 
-namespace Worker.Services;
+namespace Catalog.Worker.Services;
 
 public class CurrentUserService : ICurrentUserService
 {

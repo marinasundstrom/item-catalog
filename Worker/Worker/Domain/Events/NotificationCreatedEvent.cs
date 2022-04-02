@@ -1,6 +1,6 @@
-﻿using Worker.Domain.Common;
+﻿using Catalog.Worker.Domain.Common;
 
-namespace Worker.Domain.Events;
+namespace Catalog.Worker.Domain.Events;
 
 public class NotificationCreatedEvent : DomainEvent
 {

@@ -4,10 +4,10 @@ using MassTransit;
 using MediatR;
 
 using Catalog.IdentityService.Contracts;
-using Notifications.Application.Common.Interfaces;
-using Notifications.Application.Users.Commands;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Application.Users.Commands;
 
-namespace Notifications.Consumers;
+namespace Catalog.Notifications.Consumers;
 
 public class UserDeleted1Consumer : IConsumer<UserDeleted>
 {

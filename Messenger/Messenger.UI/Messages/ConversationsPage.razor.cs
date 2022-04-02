@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Messenger.Client;
+using Catalog.Messenger.Client;
 using MudBlazor;
 
 namespace Catalog.Messenger.Messages;
@@ -13,7 +13,7 @@ public partial class ConversationsPage
     {
         try
         {
-            var results = await ConversationsClient.GetConversationsAsync(state.Page, state.PageSize, state.SortLabel, state.SortDirection == MudBlazor.SortDirection.Ascending ? global::Messenger.Client.SortDirection.Asc : global::Messenger.Client.SortDirection.Desc);
+            var results = await ConversationsClient.GetConversationsAsync(state.Page, state.PageSize, state.SortLabel, state.SortDirection == MudBlazor.SortDirection.Ascending ? global::Catalog.Messenger.Client.SortDirection.Asc : global::Catalog.Messenger.Client.SortDirection.Desc);
             return new TableData<ConversationDto>()
             {TotalItems = results.TotalCount, Items = results.Items};
         }

@@ -2,9 +2,9 @@
 
 using MediatR;
 
-using Notifications.Domain.Common;
+using Catalog.Notifications.Domain.Common;
 
-namespace Notifications.Application.Common.Models;
+namespace Catalog.Notifications.Application.Common.Models;
 
 public class DomainEventNotification<TDomainEvent> : INotification where TDomainEvent : DomainEvent
 {

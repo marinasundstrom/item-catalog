@@ -1,4 +1,4 @@
-﻿namespace Worker.Application.Common.Interfaces;
+﻿namespace Catalog.Worker.Application.Common.Interfaces;
 
 public interface ICurrentUserService
 {

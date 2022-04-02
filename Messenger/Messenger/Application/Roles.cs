@@ -1,4 +1,4 @@
-namespace Messenger.Application;
+namespace Catalog.Messenger.Application;
 
 public static class Roles 
 {

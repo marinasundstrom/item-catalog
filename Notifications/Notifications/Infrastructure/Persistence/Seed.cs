@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 
-using Notifications.Domain.Entities;
-using Notifications.Infrastructure.Persistence;
+using Catalog.Notifications.Domain.Entities;
+using Catalog.Notifications.Infrastructure.Persistence;
 
-namespace Notifications.Infrastructure.Persistence;
+namespace Catalog.Notifications.Infrastructure.Persistence;
 
 public static class Seed
 {

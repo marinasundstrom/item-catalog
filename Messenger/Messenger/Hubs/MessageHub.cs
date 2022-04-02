@@ -1,16 +1,16 @@
 ﻿
-using Messenger.Application.Common.Interfaces;
-using Messenger.Application.Messages;
-using Messenger.Application.Messages.Commands;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Application.Messages;
+using Catalog.Messenger.Application.Messages.Commands;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using Messenger.Contracts;
+using Catalog.Messenger.Contracts;
 using MassTransit;
 
-namespace Messenger.Hubs;
+namespace Catalog.Messenger.Hubs;
 
 [Authorize(AuthenticationSchemes = Messenger.Authentication.AuthSchemes.Default)]
 public class MessageHub : Hub<IMessageClient>

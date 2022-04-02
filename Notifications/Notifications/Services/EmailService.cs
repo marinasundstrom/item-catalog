@@ -1,7 +1,7 @@
 using System.Net.Mail;
 using System.Text;
 
-namespace Notifications.Services;
+namespace Catalog.Notifications.Services;
 
 public class EmailService : IEmailService
 {

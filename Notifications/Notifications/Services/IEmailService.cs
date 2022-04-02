@@ -1,5 +1,5 @@
 ﻿
-namespace Notifications.Services;
+namespace Catalog.Notifications.Services;
 
 public interface IEmailService
 {

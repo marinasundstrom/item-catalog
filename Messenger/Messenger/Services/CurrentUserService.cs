@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Security.Claims;
 
-using Messenger.Application.Common.Interfaces;
-using Messenger.Infrastructure;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Infrastructure;
 
-namespace Messenger.Services;
+namespace Catalog.Messenger.Services;
 
 public class CurrentUserService : ICurrentUserService
 {

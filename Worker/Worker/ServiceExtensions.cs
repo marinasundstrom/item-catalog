@@ -1,11 +1,11 @@
 ﻿using System;
 
-using Worker.Application;
-using Worker.Application.Common.Interfaces;
-using Worker.Infrastructure;
-using Worker.Services;
+using Catalog.Worker.Application;
+using Catalog.Worker.Application.Common.Interfaces;
+using Catalog.Worker.Infrastructure;
+using Catalog.Worker.Services;
 
-namespace Worker;
+namespace Catalog.Worker;
 
 public static class ServiceExtensions
 {

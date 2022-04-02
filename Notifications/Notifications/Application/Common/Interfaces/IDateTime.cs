@@ -1,4 +1,4 @@
-﻿namespace Notifications.Application.Common.Interfaces;
+﻿namespace Catalog.Notifications.Application.Common.Interfaces;
 
 public interface IDateTime
 {

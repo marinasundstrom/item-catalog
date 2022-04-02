@@ -3,11 +3,11 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Messenger.Application.Common.Interfaces;
-using Messenger.Application.Common.Models;
-using Messenger.Contracts;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Application.Common.Models;
+using Catalog.Messenger.Contracts;
 
-namespace Messenger.Application.Users.Queries;
+namespace Catalog.Messenger.Application.Users.Queries;
 
 public class GetUsersQuery : IRequest<Results<UserDto>>
 {

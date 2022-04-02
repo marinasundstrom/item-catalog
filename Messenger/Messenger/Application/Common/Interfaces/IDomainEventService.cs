@@ -1,6 +1,6 @@
-﻿using Messenger.Domain.Common;
+﻿using Catalog.Messenger.Domain.Common;
 
-namespace Messenger.Application.Common.Interfaces;
+namespace Catalog.Messenger.Application.Common.Interfaces;
 
 public interface IDomainEventService
 {

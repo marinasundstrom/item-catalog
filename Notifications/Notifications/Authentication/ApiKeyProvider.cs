@@ -5,7 +5,7 @@ using AspNetCore.Authentication.ApiKey;
 
 using IdentityModel;
 
-namespace Notifications.Authentication;
+namespace Catalog.Notifications.Authentication;
 
 public class ApiKeyProvider : IApiKeyProvider
 {

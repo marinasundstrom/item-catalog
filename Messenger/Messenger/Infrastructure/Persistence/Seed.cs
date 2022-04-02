@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 
-using Messenger.Domain.Entities;
-using Messenger.Infrastructure.Persistence;
+using Catalog.Messenger.Domain.Entities;
+using Catalog.Messenger.Infrastructure.Persistence;
 
-namespace Messenger.Infrastructure.Persistence;
+namespace Catalog.Messenger.Infrastructure.Persistence;
 
 public static class Seed
 {

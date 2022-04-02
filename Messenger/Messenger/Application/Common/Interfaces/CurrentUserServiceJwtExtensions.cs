@@ -6,7 +6,7 @@ using IdentityModel.Client;
 
 using Microsoft.IdentityModel.Tokens;
 
-namespace Messenger.Application.Common.Interfaces;
+namespace Catalog.Messenger.Application.Common.Interfaces;
 
 public static class CurrentUserServiceJwtExtensions
 {

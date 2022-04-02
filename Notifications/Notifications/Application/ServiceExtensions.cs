@@ -5,9 +5,9 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Notifications.Application.Notifications.Queries;
+using Catalog.Notifications.Application.Notifications.Queries;
 
-namespace Notifications.Application;
+namespace Catalog.Notifications.Application;
 
 public static class ServiceExtensions
 {

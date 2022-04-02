@@ -1,12 +1,12 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-using Messenger.Application.Common.Interfaces;
-using Messenger.Application.Users;
-using Messenger.Application.Messages;
-using Messenger.Contracts;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Application.Users;
+using Catalog.Messenger.Application.Messages;
+using Catalog.Messenger.Contracts;
 
-namespace Messenger.Application;
+namespace Catalog.Messenger.Application;
 
 public static class Mapper
 {

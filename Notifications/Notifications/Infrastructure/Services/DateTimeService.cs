@@ -1,6 +1,6 @@
-﻿using Notifications.Application.Common.Interfaces;
+﻿using Catalog.Notifications.Application.Common.Interfaces;
 
-namespace Notifications.Infrastructure.Services;
+namespace Catalog.Notifications.Infrastructure.Services;
 
 class DateTimeService : IDateTime
 {

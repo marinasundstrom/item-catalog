@@ -3,12 +3,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-using Notifications.Application.Common.Interfaces;
-using Notifications.Domain.Common;
-using Notifications.Domain.Entities;
-using Notifications.Infrastructure;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Domain.Common;
+using Catalog.Notifications.Domain.Entities;
+using Catalog.Notifications.Infrastructure;
 
-namespace Notifications.Infrastructure.Persistence;
+namespace Catalog.Notifications.Infrastructure.Persistence;
 
 class NotificationsContext : DbContext, INotificationsContext
 {

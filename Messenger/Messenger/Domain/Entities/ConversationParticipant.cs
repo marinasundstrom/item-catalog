@@ -1,7 +1,7 @@
 ﻿
-using Messenger.Domain.Common;
+using Catalog.Messenger.Domain.Common;
 
-namespace Messenger.Domain.Entities;
+namespace Catalog.Messenger.Domain.Entities;
 
 public class ConversationParticipant : AuditableEntity, ISoftDelete, IHasDomainEvent
 {

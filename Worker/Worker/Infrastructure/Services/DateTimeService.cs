@@ -1,6 +1,6 @@
-﻿using Worker.Application.Common.Interfaces;
+﻿using Catalog.Worker.Application.Common.Interfaces;
 
-namespace Worker.Infrastructure.Services;
+namespace Catalog.Worker.Infrastructure.Services;
 
 class DateTimeService : IDateTime
 {

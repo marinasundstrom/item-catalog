@@ -5,11 +5,11 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Notifications.Application.Common.Interfaces;
-using Notifications.Domain.Entities;
-using Notifications.Domain.Events;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Domain.Entities;
+using Catalog.Notifications.Domain.Events;
 
-namespace Notifications.Application.Notifications.Commands;
+namespace Catalog.Notifications.Application.Notifications.Commands;
 
 public record CreateNotificationCommand(
     string Title, string? Text, string? Link, string? UserId, string[]? ExceptUserIds, string? SubscriptionId, string? SubscriptionGroupId, DateTime? ScheduledFor) : IRequest

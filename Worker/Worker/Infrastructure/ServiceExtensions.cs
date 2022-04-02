@@ -3,11 +3,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Worker.Application.Common.Interfaces;
-using Worker.Infrastructure.Persistence;
-using Worker.Infrastructure.Services;
+using Catalog.Worker.Application.Common.Interfaces;
+using Catalog.Worker.Infrastructure.Persistence;
+using Catalog.Worker.Infrastructure.Services;
 
-namespace Worker.Infrastructure;
+namespace Catalog.Worker.Infrastructure;
 
 public static class ServiceExtensions
 {

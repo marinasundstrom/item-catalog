@@ -3,11 +3,11 @@ using MassTransit;
 
 using MediatR;
 
-using Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Application.Common.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Messenger.Application.Conversations.Commands;
+namespace Catalog.Messenger.Application.Conversations.Commands;
 
 public record LeaveConversationCommand(string? ConversationId) : IRequest
 {

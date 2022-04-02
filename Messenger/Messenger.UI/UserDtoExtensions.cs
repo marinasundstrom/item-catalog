@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Messenger.Client;
+using Catalog.Messenger.Client;
 
 namespace Catalog.Messenger;
 

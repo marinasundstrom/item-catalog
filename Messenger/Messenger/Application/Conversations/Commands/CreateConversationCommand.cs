@@ -3,12 +3,12 @@ using MassTransit;
 
 using MediatR;
 
-using Messenger.Application.Common.Interfaces;
-using Messenger.Application.Conversations.Queries;
-using Messenger.Contracts;
-using Messenger.Domain.Entities;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Application.Conversations.Queries;
+using Catalog.Messenger.Contracts;
+using Catalog.Messenger.Domain.Entities;
 
-namespace Messenger.Application.Conversations.Commands;
+namespace Catalog.Messenger.Application.Conversations.Commands;
 
 public record CreateConversationCommand(string? Title) : IRequest<ConversationDto>
 {

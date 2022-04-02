@@ -6,13 +6,13 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using Notifications.Application.Common.Interfaces;
-using Notifications.Application.Common.Models;
-using Notifications.Application.Subscriptions;
-using Notifications.Application.Subscriptions.Commands;
-using Notifications.Application.Subscriptions.Queries;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Application.Common.Models;
+using Catalog.Notifications.Application.Subscriptions;
+using Catalog.Notifications.Application.Subscriptions.Commands;
+using Catalog.Notifications.Application.Subscriptions.Queries;
 
-namespace Notifications.WebApi.Controllers;
+namespace Catalog.Notifications.WebApi.Controllers;
 
 [Route("[controller]")]
 [ApiController]

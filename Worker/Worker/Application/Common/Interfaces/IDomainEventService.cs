@@ -1,6 +1,6 @@
-﻿using Worker.Domain.Common;
+﻿using Catalog.Worker.Domain.Common;
 
-namespace Worker.Application.Common.Interfaces;
+namespace Catalog.Worker.Application.Common.Interfaces;
 
 public interface IDomainEventService
 {

@@ -3,10 +3,10 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Notifications.Application.Common.Interfaces;
-using Notifications.Domain.Exceptions;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Domain.Exceptions;
 
-namespace Notifications.Application.Users.Commands;
+namespace Catalog.Notifications.Application.Users.Commands;
 
 public class UpdateUserCommand : IRequest<UserDto>
 {

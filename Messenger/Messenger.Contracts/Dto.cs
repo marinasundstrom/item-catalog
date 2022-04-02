@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Messenger.Contracts;
+namespace Catalog.Messenger.Contracts;
 
 public record PostMessage(string AccessToken, string ConversationId, string Text, string? ReplyToId = null);
 

@@ -2,11 +2,11 @@
 
 using MediatR;
 
-using Messenger.Application.Common.Interfaces;
-using Messenger.Application.Messages.Commands;
-using Messenger.Contracts;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Application.Messages.Commands;
+using Catalog.Messenger.Contracts;
 
-namespace Messenger.Consumers;
+namespace Catalog.Messenger.Consumers;
 
 public class PostMessageConsumer : IConsumer<PostMessage>
 {

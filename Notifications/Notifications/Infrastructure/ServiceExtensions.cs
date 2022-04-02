@@ -3,11 +3,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Notifications.Application.Common.Interfaces;
-using Notifications.Infrastructure.Persistence;
-using Notifications.Infrastructure.Services;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Infrastructure.Persistence;
+using Catalog.Notifications.Infrastructure.Services;
 
-namespace Notifications.Infrastructure;
+namespace Catalog.Notifications.Infrastructure;
 
 public static class ServiceExtensions
 {

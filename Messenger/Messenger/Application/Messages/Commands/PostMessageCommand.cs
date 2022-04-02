@@ -1,14 +1,14 @@
 ﻿
-using Messenger.Application.Common.Interfaces;
-using Messenger.Domain.Entities;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Domain.Entities;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-using Messenger.Contracts;
+using Catalog.Messenger.Contracts;
 using MassTransit;
 
-namespace Messenger.Application.Messages.Commands;
+namespace Catalog.Messenger.Application.Messages.Commands;
 
 public record PostMessageCommand(string ConversationId, string Text, string? ReplyToId) : IRequest<MessageDto>
 {

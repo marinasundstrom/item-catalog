@@ -4,10 +4,10 @@ using MassTransit;
 using MediatR;
 
 using Catalog.IdentityService.Contracts;
-using Messenger.Application.Common.Interfaces;
-using Messenger.Application.Users.Commands;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Application.Users.Commands;
 
-namespace Messenger.Consumers;
+namespace Catalog.Messenger.Consumers;
 
 public class UserDeleted2Consumer : IConsumer<UserDeleted>
 {

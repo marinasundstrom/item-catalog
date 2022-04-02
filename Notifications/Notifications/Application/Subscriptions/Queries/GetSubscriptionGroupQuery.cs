@@ -4,9 +4,9 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Application.Common.Interfaces;
 
-namespace Notifications.Application.Subscriptions.Queries;
+namespace Catalog.Notifications.Application.Subscriptions.Queries;
 
 public record GetSubscriptionGroupQuery(string? SubscriptionGroupId, string? Tag) : IRequest<SubscriptionGroupDto?>
 {

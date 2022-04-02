@@ -3,7 +3,7 @@ using AspNetCore.Authentication.ApiKey;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace Notifications.Authentication;
+namespace Catalog.Notifications.Authentication;
 
 public static class AuthSchemes
 {

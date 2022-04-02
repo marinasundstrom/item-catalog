@@ -3,11 +3,11 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Notifications.Application.Common.Interfaces;
-using Notifications.Application.Common.Models;
-using Notifications.Domain;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Application.Common.Models;
+using Catalog.Notifications.Domain;
 
-namespace Notifications.Application.Notifications.Queries;
+namespace Catalog.Notifications.Application.Notifications.Queries;
 
 public record GetNotificationsQuery(
         string? UserId, string? Tag,

@@ -1,7 +1,7 @@
-using Messenger.Application.Messages;
-using Messenger.Contracts;
+using Catalog.Messenger.Application.Messages;
+using Catalog.Messenger.Contracts;
 
-namespace Messenger.Application.Common.Interfaces;
+namespace Catalog.Messenger.Application.Common.Interfaces;
 
 public interface IMessageClient
 {

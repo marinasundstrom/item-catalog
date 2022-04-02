@@ -6,10 +6,10 @@ using MassTransit;
 
 using Microsoft.EntityFrameworkCore;
 
-using Worker.Application.Common.Interfaces;
-using Worker.Domain.Entities;
+using Catalog.Worker.Application.Common.Interfaces;
+using Catalog.Worker.Domain.Entities;
 
-namespace Worker.Services;
+namespace Catalog.Worker.Services;
 
 public class NotificationPublisher : INotificationPublisher
 {

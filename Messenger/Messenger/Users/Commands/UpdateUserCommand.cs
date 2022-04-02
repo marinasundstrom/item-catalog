@@ -3,11 +3,11 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Messenger.Application.Common.Interfaces;
-using Messenger.Domain.Exceptions;
-using Messenger.Contracts;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Domain.Exceptions;
+using Catalog.Messenger.Contracts;
 
-namespace Messenger.Application.Users.Commands;
+namespace Catalog.Messenger.Application.Users.Commands;
 
 public class UpdateUserCommand : IRequest<UserDto>
 {

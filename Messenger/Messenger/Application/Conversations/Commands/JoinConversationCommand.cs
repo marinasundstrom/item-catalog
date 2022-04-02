@@ -3,12 +3,12 @@ using MassTransit;
 
 using MediatR;
 
-using Messenger.Application.Common.Interfaces;
-using Messenger.Domain.Entities;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Messenger.Application.Conversations.Commands;
+namespace Catalog.Messenger.Application.Conversations.Commands;
 
 public record JoinConversationCommand(string? ConversationId) : IRequest
 {

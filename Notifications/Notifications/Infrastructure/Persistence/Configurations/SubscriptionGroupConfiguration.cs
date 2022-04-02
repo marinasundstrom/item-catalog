@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using Notifications.Domain.Entities;
+using Catalog.Notifications.Domain.Entities;
 
-namespace Notifications.Infrastructure.Persistence.Configurations;
+namespace Catalog.Notifications.Infrastructure.Persistence.Configurations;
 
 class SubscriptionGroupConfiguration : IEntityTypeConfiguration<SubscriptionGroup>
 {

@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using Worker.Domain.Entities;
+using Catalog.Worker.Domain.Entities;
 
-namespace Worker.Infrastructure.Persistence.Configurations;
+namespace Catalog.Worker.Infrastructure.Persistence.Configurations;
 
 class NotificationConfiguration : IEntityTypeConfiguration<Notification>
 {

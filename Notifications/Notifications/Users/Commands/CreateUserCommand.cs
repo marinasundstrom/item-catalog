@@ -1,10 +1,10 @@
 ﻿
 using MediatR;
 
-using Notifications.Application.Common.Interfaces;
-using Notifications.Domain.Entities;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Domain.Entities;
 
-namespace Notifications.Application.Users.Commands;
+namespace Catalog.Notifications.Application.Users.Commands;
 
 public class CreateUserCommand : IRequest<UserDto>
 {

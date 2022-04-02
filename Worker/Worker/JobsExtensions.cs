@@ -1,7 +1,7 @@
 ﻿
 using Hangfire;
 
-using Worker.Services;
+using Catalog.Worker.Services;
 
 public static class JobsExtensions
 {

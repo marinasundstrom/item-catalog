@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 
-using Worker.Domain.Entities;
-using Worker.Infrastructure.Persistence;
+using Catalog.Worker.Domain.Entities;
+using Catalog.Worker.Infrastructure.Persistence;
 
-namespace Worker.Infrastructure.Persistence;
+namespace Catalog.Worker.Infrastructure.Persistence;
 
 public static class Seed
 {

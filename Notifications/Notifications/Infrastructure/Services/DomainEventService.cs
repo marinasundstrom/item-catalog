@@ -4,11 +4,11 @@ using MediatR;
 
 using Microsoft.Extensions.Logging;
 
-using Notifications.Application.Common.Interfaces;
-using Notifications.Application.Common.Models;
-using Notifications.Domain.Common;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Application.Common.Models;
+using Catalog.Notifications.Domain.Common;
 
-namespace Notifications.Infrastructure.Services;
+namespace Catalog.Notifications.Infrastructure.Services;
 
 class DomainEventService : IDomainEventService
 {

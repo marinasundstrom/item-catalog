@@ -5,9 +5,9 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Application.Common.Interfaces;
 
-namespace Notifications.Application.Notifications.Commands;
+namespace Catalog.Notifications.Application.Notifications.Commands;
 
 public record DeleteNotificationCommand(string NotificationId) : IRequest
 {

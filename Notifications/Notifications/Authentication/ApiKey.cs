@@ -2,7 +2,7 @@
 
 using AspNetCore.Authentication.ApiKey;
 
-namespace Notifications.Authentication;
+namespace Catalog.Notifications.Authentication;
 
 class ApiKey : IApiKey
 {

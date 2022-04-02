@@ -2,9 +2,9 @@
 
 using MediatR;
 using Catalog.IdentityService.Contracts;
-using Notifications.Application.Common.Interfaces;
-using Notifications.Application.Users.Commands;
-namespace Notifications.Consumers;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Application.Users.Commands;
+namespace Catalog.Notifications.Consumers;
 
 public class UserCreated1Consumer : IConsumer<UserCreated>
 {

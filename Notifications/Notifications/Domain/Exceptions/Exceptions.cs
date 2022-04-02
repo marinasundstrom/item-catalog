@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Notifications.Domain.Exceptions;
+namespace Catalog.Notifications.Domain.Exceptions;
 
 public class DomainException : Exception
 {

@@ -1,10 +1,10 @@
 ﻿
-using Messenger.Domain.Entities;
+using Catalog.Messenger.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Messenger.Infrastructure.Persistence.Configurations;
+namespace Catalog.Messenger.Infrastructure.Persistence.Configurations;
 
 class MessageReceiptConfiguration : IEntityTypeConfiguration<MessageReceipt>
 {

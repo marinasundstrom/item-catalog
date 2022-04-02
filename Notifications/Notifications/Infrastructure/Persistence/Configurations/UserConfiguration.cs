@@ -1,5 +1,5 @@
 ﻿
-using Notifications.Domain.Entities;
+using Catalog.Notifications.Domain.Entities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

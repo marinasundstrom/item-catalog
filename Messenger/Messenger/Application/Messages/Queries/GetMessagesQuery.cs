@@ -1,14 +1,14 @@
 
-using Messenger.Application.Common.Interfaces;
-using Messenger.Application.Common.Models;
-using Messenger.Domain;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Application.Common.Models;
+using Catalog.Messenger.Domain;
 
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
-using Messenger.Contracts;
+using Catalog.Messenger.Contracts;
 
-namespace Messenger.Application.Messages.Queries;
+namespace Catalog.Messenger.Application.Messages.Queries;
 
 public record GetMessagesQuery(
     string ItemId, int Page, int PageSize, string? SortBy = null, Application.Common.Models.SortDirection? SortDirection = null)

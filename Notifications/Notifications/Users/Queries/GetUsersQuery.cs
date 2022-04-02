@@ -3,10 +3,10 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Notifications.Application.Common.Interfaces;
-using Notifications.Application.Common.Models;
+using Catalog.Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Application.Common.Models;
 
-namespace Notifications.Application.Users.Queries;
+namespace Catalog.Notifications.Application.Users.Queries;
 
 public class GetUsersQuery : IRequest<Results<UserDto>>
 {

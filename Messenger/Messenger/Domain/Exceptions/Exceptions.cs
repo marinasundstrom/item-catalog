@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Messenger.Domain.Exceptions;
+namespace Catalog.Messenger.Domain.Exceptions;
 
 public class DomainException : Exception
 {

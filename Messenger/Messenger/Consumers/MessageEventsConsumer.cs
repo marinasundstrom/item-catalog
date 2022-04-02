@@ -2,14 +2,14 @@
 
 using MediatR;
 
-using Messenger.Application.Common.Interfaces;
-using Messenger.Contracts;
-using Messenger.Hubs;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Contracts;
+using Catalog.Messenger.Hubs;
 
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Messenger.Consumers;
+namespace Catalog.Messenger.Consumers;
 
 public class MessagePostedConsumer : IConsumer<MessagePosted>
 {

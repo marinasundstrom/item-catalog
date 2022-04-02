@@ -3,9 +3,9 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Notifications.Application.Common.Interfaces;
+using Catalog.Notifications.Application.Common.Interfaces;
 
-namespace Notifications.Application.Notifications.Queries;
+namespace Catalog.Notifications.Application.Notifications.Queries;
 
 public record GetUnreadNotificationsCountQuery(string? UserId) : IRequest<int>
 {

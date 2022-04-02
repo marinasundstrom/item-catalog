@@ -1,20 +1,20 @@
 ﻿
-using Messenger.Application.Common.Models;
-using Messenger.Application.Messages;
-using Messenger.Application.Messages.Queries;
-using Messenger.Application.Messages.Commands;
+using Catalog.Messenger.Application.Common.Models;
+using Catalog.Messenger.Application.Messages;
+using Catalog.Messenger.Application.Messages.Queries;
+using Catalog.Messenger.Application.Messages.Commands;
 
 using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Messenger.Contracts;
+using Catalog.Messenger.Contracts;
 using MassTransit;
-using Messenger.Application.Common.Interfaces;
-using Messenger.Application.Conversations.Commands;
-using Messenger.Application.Conversations.Queries;
+using Catalog.Messenger.Application.Common.Interfaces;
+using Catalog.Messenger.Application.Conversations.Commands;
+using Catalog.Messenger.Application.Conversations.Queries;
 
-namespace Messenger.WebApi.Controllers;
+namespace Catalog.Messenger.WebApi.Controllers;
 
 [ApiController]
 [Authorize(AuthenticationSchemes = Messenger.Authentication.AuthSchemes.Default)]

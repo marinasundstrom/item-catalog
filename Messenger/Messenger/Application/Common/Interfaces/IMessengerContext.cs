@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-using Messenger.Domain.Entities;
+using Catalog.Messenger.Domain.Entities;
 
-namespace Messenger.Application.Common.Interfaces;
+namespace Catalog.Messenger.Application.Common.Interfaces;
 
 public interface IMessengerContext
 {

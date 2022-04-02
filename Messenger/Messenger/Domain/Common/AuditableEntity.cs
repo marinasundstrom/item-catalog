@@ -1,6 +1,6 @@
-﻿using Messenger.Domain.Entities;
+﻿using Catalog.Messenger.Domain.Entities;
 
-namespace Messenger.Domain.Common;
+namespace Catalog.Messenger.Domain.Common;
 
 public abstract class AuditableEntity
 {

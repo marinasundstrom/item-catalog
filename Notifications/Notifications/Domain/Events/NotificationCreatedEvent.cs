@@ -1,6 +1,6 @@
-﻿using Notifications.Domain.Common;
+﻿using Catalog.Notifications.Domain.Common;
 
-namespace Notifications.Domain.Events;
+namespace Catalog.Notifications.Domain.Events;
 
 public class NotificationCreatedEvent : DomainEvent
 {

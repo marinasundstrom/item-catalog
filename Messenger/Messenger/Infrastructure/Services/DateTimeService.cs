@@ -1,6 +1,6 @@
-﻿using Messenger.Application.Common.Interfaces;
+﻿using Catalog.Messenger.Application.Common.Interfaces;
 
-namespace Messenger.Infrastructure.Services;
+namespace Catalog.Messenger.Infrastructure.Services;
 
 class DateTimeService : IDateTime
 {
