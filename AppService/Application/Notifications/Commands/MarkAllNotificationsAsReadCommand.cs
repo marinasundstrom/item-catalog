@@ -5,7 +5,7 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Notifications.Client;
+ using Catalog.Notifications.Client;
 
 namespace Catalog.Application.Notifications.Commands;
 

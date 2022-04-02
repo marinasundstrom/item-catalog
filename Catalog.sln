@@ -82,6 +82,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Search.UI", "Search\Search.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Search.Components", "Search\Search.Components\Search.Components.csproj", "{7E98B0DC-C8A7-44D1-AE5B-8484EC2F3480}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notifications.Components", "Notifications\Notifications.Components\Notifications.Components.csproj", "{C53EADB7-6181-49BA-92C8-CD4F460E38A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -204,6 +206,10 @@ Global
 		{7E98B0DC-C8A7-44D1-AE5B-8484EC2F3480}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E98B0DC-C8A7-44D1-AE5B-8484EC2F3480}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E98B0DC-C8A7-44D1-AE5B-8484EC2F3480}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C53EADB7-6181-49BA-92C8-CD4F460E38A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C53EADB7-6181-49BA-92C8-CD4F460E38A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C53EADB7-6181-49BA-92C8-CD4F460E38A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C53EADB7-6181-49BA-92C8-CD4F460E38A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -239,5 +245,6 @@ Global
 		{24422926-AFFB-4B33-A0CF-F8349A165FD6} = {0ABCBD90-7D0F-492B-91E1-83C3E3C73510}
 		{B36C52D1-5390-46F8-966D-E0C4D135376D} = {0ABCBD90-7D0F-492B-91E1-83C3E3C73510}
 		{7E98B0DC-C8A7-44D1-AE5B-8484EC2F3480} = {0ABCBD90-7D0F-492B-91E1-83C3E3C73510}
+		{C53EADB7-6181-49BA-92C8-CD4F460E38A6} = {03EA5E18-1AB5-4AB6-A8E2-F80274F56EA5}
 	EndGlobalSection
 EndGlobal

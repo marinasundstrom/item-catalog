@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-using Notifications.Client;
+ using Catalog.Notifications.Client;
 
 namespace Catalog.Application.Items.EventHandlers;
 

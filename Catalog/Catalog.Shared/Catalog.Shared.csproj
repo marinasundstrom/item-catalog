@@ -14,8 +14,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.1" />
     <PackageReference Include="MudBlazor" Version="6.0.9" />
     <PackageReference Include="Humanizer" Version="2.14.1" />
@@ -25,13 +25,16 @@
     <ProjectReference Include="..\..\AppService\AppService.Client\AppService.Client.csproj" />
     <ProjectReference Include="..\Catalog.Services\Catalog.Services.csproj" />
     <ProjectReference Include="..\..\Search\Search.Components\Search.Components.csproj" />
+    <ProjectReference Include="..\..\Notifications\Notifications.Components\Notifications.Components.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Authorization\" />
     <None Remove="Services\" />
+    <None Remove="Search\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Authorization\" />
     <Folder Include="Services\" />
+    <Folder Include="Search\" />
   </ItemGroup>
 </Project>

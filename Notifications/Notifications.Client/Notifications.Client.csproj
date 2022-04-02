@@ -8,7 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<OpenApiReference Include="OpenAPIs/notifications.json" Options="/UseBaseUrl:false /GenerateClientInterfaces:true" Namespace="Notifications.Client">
+		<OpenApiReference Include="OpenAPIs/notifications.json" Options="/UseBaseUrl:false /GenerateClientInterfaces:true" Namespace="Catalog.Notifications.Client">
 			<SourceUri>https://localhost:8080/api/swagger/v1/swagger.json</SourceUri>
 			<ClassName>{controller}Client</ClassName>
 			<OutputPath>NotificationsClient.cs</OutputPath>

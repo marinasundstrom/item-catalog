@@ -7,7 +7,7 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-using Notifications.Client;
+ using Catalog.Notifications.Client;
 
 namespace Catalog.Application.Notifications.Queries;
 
@@ -45,7 +45,7 @@ public class GetNotificationsQuery : IRequest<NotificationsResults>
         {
             var userId = _currentUserService.UserId;
 
-            var results = await _notificationsClient.GetNotificationsAsync(userId, null, request.IncludeUnreadNotificationsCount, request.Page, request.PageSize, request.SortBy, (global::Notifications.Client.SortDirection?)request.SortDirection);
+            var results = await _notificationsClient.GetNotificationsAsync(userId, null, request.IncludeUnreadNotificationsCount, request.Page, request.PageSize, request.SortBy, (global::Catalog.Notifications.Client.SortDirection?)request.SortDirection);
             var notifications = results.Items;
 
             return new NotificationsResults(

@@ -9,7 +9,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Notifications.Client;
+ using Catalog.Notifications.Client;
 
 namespace Catalog.Application;
 
