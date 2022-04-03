@@ -16,6 +16,7 @@ using Microsoft.Extensions.Http;
 using Microsoft.JSInterop;
 
 using MudBlazor.Services;
+using Catalog.Client;
 
 namespace Catalog;
 
@@ -50,35 +51,13 @@ public static class ServiceExtensions
 
     public static IServiceCollection AddClients(this IServiceCollection services) 
     {
-        services.AddHttpClient(nameof(Catalog.Client.IClient), (sp, http) =>
-        {
-            var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"{navigationManager.BaseUri}api/");
-        })
-        .AddTypedClient<Catalog.Client.IClient>((http, sp) => new Catalog.Client.Client(http));
-
-        services.AddHttpClient(nameof(Catalog.Client.IItemsClient), (sp, http) =>
-        {
-            var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"{navigationManager.BaseUri}api/");
-        })
-        .AddTypedClient<Catalog.Client.IItemsClient>((http, sp) => new Catalog.Client.ItemsClient(http))
-        .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
-
-        services.AddHttpClient(nameof(Catalog.Client.IDoSomethingClient), (sp, http) =>
-        {
-            var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"{navigationManager.BaseUri}api/");
-        })
-        .AddTypedClient<Catalog.Client.IDoSomethingClient>((http, sp) => new Catalog.Client.DoSomethingClient(http));
-
-        services.AddHttpClient(nameof(Catalog.Client.INotificationsClient), (sp, http) =>
-        {
-            var navigationManager = sp.GetRequiredService<NavigationManager>();
-            http.BaseAddress = new Uri($"{navigationManager.BaseUri}api/");
-        })
-        .AddTypedClient<Catalog.Client.INotificationsClient>((http, sp) => new Catalog.Client.NotificationsClient(http))
-        .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
+        services.AddCatalogClients(
+            (sp, http) =>
+            {
+                var navigationManager = sp.GetRequiredService<NavigationManager>();
+                http.BaseAddress = new Uri($"{navigationManager.BaseUri}api/");
+            },
+            builder => builder.AddHttpMessageHandler<CustomAuthorizationMessageHandler>());
 
         return services;
     }

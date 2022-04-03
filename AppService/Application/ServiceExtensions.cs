@@ -21,35 +21,13 @@ public static class ServiceExtensions
 
         services.AddScoped<Handler>();
 
-        services.AddHttpClient(nameof(INotificationsClient), (sp, http) =>
+        services.AddNotificationsClients((sp, http) =>
         {
             var conf = sp.GetRequiredService<IConfiguration>();
 
             http.BaseAddress = conf.GetServiceUri("notifications");
             http.DefaultRequestHeaders.Add("X-API-KEY", ApiKey);
-        })
-        .AddTypedClient<INotificationsClient>((http, sp) => new NotificationsClient(http))
-        .AddHttpMessageHandler<Handler>();
-
-        services.AddHttpClient(nameof(SubscriptionGroupsClient), (sp, http) =>
-        {
-            var conf = sp.GetRequiredService<IConfiguration>();
-
-            http.BaseAddress = conf.GetServiceUri("notifications");
-            http.DefaultRequestHeaders.Add("X-API-KEY", ApiKey);
-        })
-        .AddTypedClient<ISubscriptionGroupsClient>((http, sp) => new SubscriptionGroupsClient(http))
-        .AddHttpMessageHandler<Handler>();
-
-        services.AddHttpClient(nameof(SubscriptionsClient), (sp, http) =>
-        {
-            var conf = sp.GetRequiredService<IConfiguration>();
-
-            http.BaseAddress = conf.GetServiceUri("notifications");
-            http.DefaultRequestHeaders.Add("X-API-KEY", ApiKey);
-        })
-        .AddTypedClient<ISubscriptionsClient>((http, sp) => new SubscriptionsClient(http))
-        .AddHttpMessageHandler<Handler>();
+        }, builder => builder.AddHttpMessageHandler<Handler>());
 
         return services;
     }

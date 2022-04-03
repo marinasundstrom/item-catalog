@@ -24,12 +24,11 @@ static IServiceProvider BuildServiceProvider()
 {
     ServiceCollection services = new();
 
-    services.AddHttpClient(nameof(IUsersClient), (sp, http) =>
+    services.AddUsersClient((sp, http) =>
     {
         http.BaseAddress = new Uri($"https://identity.local/");
         http.DefaultRequestHeaders.Add("X-API-KEY", ApiKey);
-    })
-    .AddTypedClient<IUsersClient>((http, sp) => new UsersClient(http));
+    });
 
     return services.BuildServiceProvider();
 }

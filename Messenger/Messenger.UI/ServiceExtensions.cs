@@ -1,5 +1,6 @@
 ﻿using System;
 
+using Catalog.Messenger.Client;
 using Catalog.Shared;
 
 using Microsoft.AspNetCore.Components;
@@ -11,13 +12,11 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddMessengerUI(this IServiceCollection services)
     {
-        services.AddHttpClient(nameof(global::Catalog.Messenger.Client.IConversationsClient), (sp, http) =>
+        services.AddMessengerClients((sp, http) =>
         {
             var navigationManager = sp.GetRequiredService<NavigationManager>();
             http.BaseAddress = new Uri($"{navigationManager.BaseUri}messenger/");
-        })
-        .AddTypedClient<global::Catalog.Messenger.Client.IConversationsClient>((http, sp) => new global::Catalog.Messenger.Client.ConversationsClient(http))
-        .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
+        }, builder => builder.AddHttpMessageHandler<CustomAuthorizationMessageHandler>());
 
         return services;
     }

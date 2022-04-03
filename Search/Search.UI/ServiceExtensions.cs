@@ -1,5 +1,5 @@
-﻿using System;
-
+﻿
+using Catalog.Search.Client;
 using Catalog.Shared;
 
 using Microsoft.AspNetCore.Components;
@@ -11,13 +11,11 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddSearchUI(this IServiceCollection services)
     {
-        services.AddHttpClient(nameof(Client.ISearchClient), (sp, http) =>
+        services.AddSearchClient((sp, http) =>
         {
             var navigationManager = sp.GetRequiredService<NavigationManager>();
             http.BaseAddress = new Uri($"{navigationManager.BaseUri}search/");
-        })
-        .AddTypedClient<Client.ISearchClient>((http, sp) => new Client.SearchClient(http))
-        .AddHttpMessageHandler<CustomAuthorizationMessageHandler>();
+        }, builder => builder.AddHttpMessageHandler<CustomAuthorizationMessageHandler>());
 
         return services;
     }
