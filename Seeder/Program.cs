@@ -2,7 +2,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-const string ApiKey = "foobar";
+const string ApiKey = "asdsr34#34rswert35234aedae?2!";
 
 var services = BuildServiceProvider();
 

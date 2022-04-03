@@ -2,7 +2,7 @@
 
 using AspNetCore.Authentication.ApiKey;
 
-namespace Catalog.Worker.Authentication;
+namespace Catalog.ApiKeys;
 
 class ApiKey : IApiKey
 {

@@ -33,7 +33,7 @@ public static class ServiceExtensions
         services.AddHttpClient(nameof(Catalog.IdentityService.Client.IUsersClient) + "2", (sp, http) =>
         {
             http.BaseAddress = new Uri($"https://identity.local/");
-            http.DefaultRequestHeaders.Add("X-API-KEY", "foobar");
+            http.DefaultRequestHeaders.Add("X-API-KEY", "asdsr34#34rswert35234aedae?2!");
         })
         .AddTypedClient<Catalog.IdentityService.Client.IUsersClient>((http, sp) => new Catalog.IdentityService.Client.UsersClient(http));
 

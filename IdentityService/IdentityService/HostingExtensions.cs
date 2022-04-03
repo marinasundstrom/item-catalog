@@ -3,6 +3,7 @@ using System.Security.Claims;
 using AspNetCore.Authentication.ApiKey;
 
 using Catalog.IdentityService.Application;
+using Catalog.IdentityService.Authentication;
 using Catalog.IdentityService.Domain.Entities;
 using Catalog.IdentityService.Infrastructure.Infrastructure;
 using Catalog.IdentityService.Infrastructure.Persistence;
@@ -112,34 +113,8 @@ internal static class HostingExtensions
             .AddInMemoryClients(Config.Clients)
             .AddAspNetIdentity<User>();
 
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.Authority = "https://identity.local";
-                options.Audience = "myapi";
-            })
-            .AddGoogle(options =>
-            {
-                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-
-                // register your IdentityServer with Google at https://console.developers.google.com
-                // enable the Google+ API
-                // set the redirect URI to https://localhost:5001/signin-google
-                options.ClientId = "copy client ID from Google here";
-                options.ClientSecret = "copy client secret from Google here";
-            });
-
-        builder.Services.AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
-
-            // The below AddApiKeyInHeaderOrQueryParams without type parameter will require options.Events.OnValidateKey delegete to be set.
-            //.AddApiKeyInHeaderOrQueryParams(options =>
-
-            // The below AddApiKeyInHeaderOrQueryParams with type parameter will add the ApiKeyProvider to the dependency container. 
-            .AddApiKeyInHeaderOrQueryParams<ApiKeyProvider>(options =>
-            {
-                options.Realm = "Identity Service API";
-                options.KeyName = "X-API-KEY";
-            });
+        builder.Services.AddAuthWithJwt();
+        builder.Services.AddAuthWithApiKey();
 
         return builder.Build();
     }
@@ -175,50 +150,4 @@ internal static class HostingExtensions
 
         return app;
     }
-}
-
-public class ApiKeyProvider : IApiKeyProvider
-{
-    private readonly ILogger<IApiKeyProvider> _logger;
-
-    public ApiKeyProvider(ILogger<IApiKeyProvider> logger)
-    {
-        _logger = logger;
-    }
-
-    public async Task<IApiKey> ProvideAsync(string key)
-    {
-        try
-        {
-            if(key != "foobar") 
-            {
-                throw new UnauthorizedAccessException();
-            }
-
-            return new ApiKey(key, "api", new List<Claim>
-            {
-                new Claim(JwtClaimTypes.Subject, "api"),
-                new Claim(ClaimTypes.NameIdentifier, "api")
-            });
-        }
-        catch (System.Exception exception)
-        {
-            _logger.LogError(exception, exception.Message);
-            throw;
-        }
-    }
-}
-
-class ApiKey : IApiKey
-{
-    public ApiKey(string key, string owner, List<Claim> claims = null)
-    {
-        Key = key;
-        OwnerName = owner;
-        Claims = claims ?? new List<Claim>();
-    }
-
-    public string Key { get; }
-    public string OwnerName { get; }
-    public IReadOnlyCollection<Claim> Claims { get; }
 }

@@ -44,12 +44,18 @@ services:
   - protocol: https
     port: 5070
 
+- name: apikeys
+  project: ApiKeys/ApiKeys/ApiKeys.csproj
+  bindings:
+  - protocol: https
+    port: 5080
+
 - name: identity
   project: IdentityService/IdentityService/IdentityService.csproj
   replicas: 2
   bindings:
   - protocol: https
-    port: 5080
+    port: 5090
 
 - name: azurite
   image: mcr.microsoft.com/azure-storage/azurite

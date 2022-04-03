@@ -3,6 +3,8 @@ using System.Security.Claims;
 
 using AspNetCore.Authentication.ApiKey;
 
+using Catalog.ApiKeys;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -54,17 +56,7 @@ public static class ServiceExtensions
 
     public static IServiceCollection AddAuthWithApiKey(this IServiceCollection services)
     {
-        services.AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
-
-            // The below AddApiKeyInHeaderOrQueryParams without type parameter will require options.Events.OnValidateKey delegete to be set.
-            //.AddApiKeyInHeaderOrQueryParams(options =>
-
-            // The below AddApiKeyInHeaderOrQueryParams with type parameter will add the ApiKeyProvider to the dependency container. 
-            .AddApiKeyInHeaderOrQueryParams<ApiKeyProvider>(options =>
-            {
-                options.Realm = "Identity Service API";
-                options.KeyName = "X-API-KEY";
-            });
+        services.AddApiKeyAuthentication("https://localhost/apikeys/");
 
         return services;
     }

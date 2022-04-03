@@ -7,7 +7,7 @@ namespace Catalog.Messenger.Application;
 
 public static class ServiceExtensions
 {
-    private const string ApiKey = "foobar";
+    private const string ApiKey = "asdsr34#34rswert35234aedae?2!";
 
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
