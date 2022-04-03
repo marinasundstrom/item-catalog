@@ -2,7 +2,7 @@
 using System.Buffers.Text;
 using System.Runtime.InteropServices;
 
-namespace Catalog.WebApi;
+namespace Catalog.Application;
 
 // Nick Chapsas code
 public static class Guider
