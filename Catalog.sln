@@ -92,6 +92,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiKeys.Client", "ApiKeys\A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiKeys.Integration", "ApiKeys\ApiKeys.Integration\ApiKeys.Integration.csproj", "{0E94E6E0-257A-4137-99A0-8574FC5E5DF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mesenger.Components", "Messenger\Messenger.Components\Mesenger.Components.csproj", "{4D8D27D9-22DB-465A-9AB3-CB431F54F8BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -230,6 +232,10 @@ Global
 		{0E94E6E0-257A-4137-99A0-8574FC5E5DF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E94E6E0-257A-4137-99A0-8574FC5E5DF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E94E6E0-257A-4137-99A0-8574FC5E5DF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D8D27D9-22DB-465A-9AB3-CB431F54F8BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D8D27D9-22DB-465A-9AB3-CB431F54F8BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D8D27D9-22DB-465A-9AB3-CB431F54F8BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D8D27D9-22DB-465A-9AB3-CB431F54F8BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -269,5 +275,6 @@ Global
 		{596BF566-DE54-474D-95F0-70888DD1E429} = {DCBFB358-3028-4CBF-849E-B226F4FE7450}
 		{7BF7B8C4-BD35-4A85-86B3-32A4179CA9D9} = {DCBFB358-3028-4CBF-849E-B226F4FE7450}
 		{0E94E6E0-257A-4137-99A0-8574FC5E5DF3} = {DCBFB358-3028-4CBF-849E-B226F4FE7450}
+		{4D8D27D9-22DB-465A-9AB3-CB431F54F8BC} = {F4EA0D92-83A8-407B-9107-C1693D7534B3}
 	EndGlobalSection
 EndGlobal
