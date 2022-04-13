@@ -4,6 +4,8 @@ App for cataloging items with pictures. Components are from MudBlazor.
 
 A "Worker" service demonstrates how to communicate with a microservice through asynchronous messaging.
 
+Have a look at the [YourBrand](https://github.com/marinasundstrom/YourBrand) project. It is based on this project.
+
 **For more info:**
 
 * Watch [demo video](https://youtu.be/-9phNIWJd7A)
