@@ -16,7 +16,9 @@ public static class ServiceExtensions
 
     private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSqlServer<ApiKeysContext>(configuration.GetConnectionString("mssql", "ApiKeys") ?? configuration.GetConnectionString("DefaultConnection"));
+        services.AddSqlServer<ApiKeysContext>(
+            configuration.GetConnectionString("mssql", "ApiKeys") ?? configuration.GetConnectionString("DefaultConnection"),
+            options => options.EnableRetryOnFailure());
 
         services.AddScoped<IApiKeysContext>(sp => sp.GetRequiredService<ApiKeysContext>());
 

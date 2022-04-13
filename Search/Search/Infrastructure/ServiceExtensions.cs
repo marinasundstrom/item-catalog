@@ -16,7 +16,9 @@ public static class ServiceExtensions
 
     private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSqlServer<SearchContext>(configuration.GetConnectionString("mssql", "Search") ?? configuration.GetConnectionString("DefaultConnection"));
+        services.AddSqlServer<SearchContext>(
+            configuration.GetConnectionString("mssql", "Search") ?? configuration.GetConnectionString("DefaultConnection"),
+            options => options.EnableRetryOnFailure());
 
         services.AddScoped<ISearchContext>(sp => sp.GetRequiredService<SearchContext>());
 

@@ -16,7 +16,9 @@ public static class ServiceExtensions
 
     private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSqlServer<MessengerContext>(configuration.GetConnectionString("mssql", "Messenger") ?? configuration.GetConnectionString("DefaultConnection"));
+        services.AddSqlServer<MessengerContext>(
+            configuration.GetConnectionString("mssql", "Messenger") ?? configuration.GetConnectionString("DefaultConnection"),
+            options => options.EnableRetryOnFailure());
 
         services.AddScoped<IMessengerContext>(sp => sp.GetRequiredService<MessengerContext>());
 

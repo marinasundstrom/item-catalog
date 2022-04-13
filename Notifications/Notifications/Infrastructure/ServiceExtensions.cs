@@ -16,7 +16,9 @@ public static class ServiceExtensions
 
     private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSqlServer<NotificationsContext>(configuration.GetConnectionString("mssql", "Notifications") ?? configuration.GetConnectionString("DefaultConnection"));
+        services.AddSqlServer<NotificationsContext>(
+            configuration.GetConnectionString("mssql", "Notifications") ?? configuration.GetConnectionString("DefaultConnection"),
+            options => options.EnableRetryOnFailure());
 
         services.AddScoped<INotificationsContext>(sp => sp.GetRequiredService<NotificationsContext>());
 
