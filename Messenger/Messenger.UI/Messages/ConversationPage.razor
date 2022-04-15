@@ -1,12 +1,11 @@
 @page "/conversations/{ConversationId}"
 @attribute [Authorize]
 @layout ConversationLayout
+@using Catalog.Messenger.Client
 @using Microsoft.AspNetCore.SignalR.Client
 @using Microsoft.AspNetCore.Components.Routing
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Diagnostics
-@* @using Catalog.Client *@
-@using global::Catalog.Messenger.Client
 @using Humanizer
 @implements IAsyncDisposable
 @inject IDialogService DialogService
@@ -54,6 +53,13 @@
                     bool sameMinutesAsLast = previousMessage == null || IsSameTime(message, previousMessage);
 
                     <MudMessage id="@($"message-{message.Id}")" @key="@message.Id" Class="@($"{(isFirstMessage || !sameMinutesAsLast ? "first" : String.Empty)} {(isLastMessage ? "last" : string.Empty)}")" IsFooterVisible="@isLastMessage" IsSideContentVisible="@(!IsFromCurrentUser(message))" Position="@(IsFromCurrentUser(message) ? MessagePosition.Right : MessagePosition.Left)">
+
+                        <Header>
+                            @if(!IsFromCurrentUser(message) && HasMoreThanTwoParticipants) 
+                            {
+                                <text>@message.SentBy.GetDisplayName()</text>
+                            }
+                        </Header>
 
                         <Footer>
                             @if (isLastMessage)
@@ -495,8 +501,13 @@
         await LoadItemsCore(take);
     }
 
+    ConversationDto conversation;
+
+    public bool HasMoreThanTwoParticipants => conversation.Participants.Count() > 2;
+
     async Task LoadItemsCore(int take = 10)
     {
+        conversation = await ConversationsClient.GetConversations2Async(ConversationId);
         var results = await ConversationsClient.GetMessagesAsync(ConversationId, this.skip, take, null!, null);
         total = results.TotalCount;
         this.skip += results.Items.Count;

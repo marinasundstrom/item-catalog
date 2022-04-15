@@ -21,6 +21,11 @@ public static class Mapper
 
     public static Contracts.ConversationDto ToDto(this Domain.Entities.Conversation conversation)
     {
-        return new Contracts.ConversationDto(conversation.Id, conversation.Title, conversation.CreatedBy!.ToDto(), conversation.Created);
+        return new Contracts.ConversationDto(conversation.Id, conversation.Title, conversation.Participants.Select(p => p.ToDto()), conversation.CreatedBy!.ToDto(), conversation.Created);
+    }
+
+    public static Contracts.ParticipantDto ToDto(this Domain.Entities.ConversationParticipant participant)
+    {
+        return new Contracts.ParticipantDto(participant.Id, participant.User.ToDto(), participant.Created);
     }
 }

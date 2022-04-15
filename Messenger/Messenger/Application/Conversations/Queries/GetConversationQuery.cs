@@ -22,6 +22,8 @@ public record GetConversationQuery(string Id) : IRequest<ConversationDto?>
         public async Task<ConversationDto?> Handle(GetConversationQuery request, CancellationToken cancellationToken)
         {
             var conversation = await context.Conversations
+                .Include(c => c.Participants)
+                .ThenInclude(c => c.User)
                 .Include(i => i.CreatedBy)
                 .Include(i => i.LastModifiedBy)
                 .AsSplitQuery()

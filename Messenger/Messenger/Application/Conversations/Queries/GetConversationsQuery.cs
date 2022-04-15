@@ -25,6 +25,8 @@ public record GetConversationsQuery(
         public async Task<Results<ConversationDto>> Handle(GetConversationsQuery request, CancellationToken cancellationToken)
         {
             var query = context.Conversations
+                .Include(c => c.Participants)
+                .ThenInclude(c => c.User)
                 .Include(c => c.CreatedBy)
                 .Include(c => c.LastModifiedBy)
                 .OrderByDescending(c => c.Created)
